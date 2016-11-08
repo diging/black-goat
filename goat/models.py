@@ -1,5 +1,5 @@
-from django import models
-from django.auth.models import User
+from django.db import models
+from django.contrib.auth.models import User
 
 
 opt = {'blank': True, 'null': True}
