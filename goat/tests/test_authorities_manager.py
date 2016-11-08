@@ -2,11 +2,14 @@ import unittest, mock, types
 
 from goat.authorities import AuthorityManager
 
+with open('goat/tests/authorities/conceptpower.json') as f:
+    configuration = f.read()
+
 
 class TestAuthorityManager(unittest.TestCase):
     def test_init(self):
         try:
-            manager = AuthorityManager('conceptpower', 'goat/tests/authorities')
+            manager = AuthorityManager(configuration)
         except:
             self.fail('cannot initialize AuthorityManager')
 
@@ -14,21 +17,21 @@ class TestAuthorityManager(unittest.TestCase):
         self.assertIsInstance(manager.configuration, dict)
 
     def test_get_globs(self):
-        manager = AuthorityManager('conceptpower', 'goat/tests/authorities')
+        manager = AuthorityManager(configuration)
         self.assertIsInstance(manager._get_globs(), dict)
 
     def test_get_method_config(self):
-        manager = AuthorityManager('conceptpower', 'goat/tests/authorities')
+        manager = AuthorityManager(configuration)
         self.assertIsInstance(manager._get_method_config('get'), dict)
 
     def test_get_nsmap(self):
-        manager = AuthorityManager('conceptpower', 'goat/tests/authorities')
+        manager = AuthorityManager(configuration)
         nsmap = manager._get_nsmap(manager._get_method_config('get'))
         self.assertIsInstance(nsmap, dict)
         self.assertIn('digitalHPS', nsmap)
 
     def test_generic(self):
-        manager = AuthorityManager('conceptpower', 'goat/tests/authorities')
+        manager = AuthorityManager(configuration)
         func = manager._generic('get')
         self.assertIsInstance(func, types.FunctionType)
 
@@ -70,7 +73,7 @@ class TestAuthorityManager(unittest.TestCase):
             </conceptpowerReply>
             """
         expected_endpoint = 'http://chps.asu.edu/conceptpower/rest/Concept'
-        manager = AuthorityManager('conceptpower', 'goat/tests/authorities')
+        manager = AuthorityManager(configuration)
         func = manager._generic('get')
 
         result = func(id=1)
@@ -82,6 +85,6 @@ class TestAuthorityManager(unittest.TestCase):
         self.assertIn('description', result)
 
     def test_generic_nonsense(self):
-        manager = AuthorityManager('conceptpower', 'goat/tests/authorities')
+        manager = AuthorityManager(configuration)
         with self.assertRaises(NotImplementedError):
             manager._generic('nonsense')

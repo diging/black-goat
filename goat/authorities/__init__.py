@@ -19,9 +19,8 @@ class AuthorityManager(object):
 
     """
 
-    def __init__(self, config, path=settings.AUTHORITY_CONFIGURATION_PATH):
-        with open('%s/%s.json' % (path, config)) as f:
-            self.configuration = json.load(f)
+    def __init__(self, configuration):
+        self.configuration = json.loads(configuration)
         self.methods = {method.pop('name'):method for method
                         in self.configuration.get("methods")}
 

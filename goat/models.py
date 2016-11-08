@@ -5,14 +5,30 @@ from django.contrib.auth.models import User
 opt = {'blank': True, 'null': True}
 
 
-class Authority(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
-    added_by = models.ForeignKey(User, related_name='authorities')
+class BasicAccessionMixin(models.Model):
+    """
+    Basic data tracking information.
+    """
+    class Meta:
+        abstract = True
+
+    added_by = models.ForeignKey(User)
     added = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
 
-class Concept(models.Model):
+class Authority(BasicAccessionMixin):
+    """
+    An Authority service, system, file, or other source of concepts.
+    """
+    name = models.CharField(max_length=255)
+    description = models.TextField(**opt)
+
+    configuration = models.TextField(**opt)
+    """JSON-serialized configuration (if available) for this authority."""
+
+
+class Concept(BasicAccessionMixin):
     """
     Represents a single entry in an authority service or system.
 
@@ -32,12 +48,6 @@ class Concept(models.Model):
     description = models.TextField(null=True, blank=True)
     """If available, a freeform description provided by the authority."""
 
-    added_by = models.ForeignKey(User, related_name='concepts')
-    """The user who added this concept."""
-
-    added = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
     data = models.TextField(blank=True, null=True)
     """JSON-pickled data about this concept from the authority service."""
 
@@ -46,3 +56,32 @@ class Concept(models.Model):
     Some authority systems may have type ontologies. Types should be treated as
     concepts.
     """
+
+
+class IdentitySystem(BasicAccessionMixin):
+    """
+    An identity system organizes a set of identity propositions about concepts.
+
+    This allows many different identity models to coexist for different
+    purposes, without having to commit to a particular view of the world.
+    """
+
+    pass
+
+
+class Identity(BasicAccessionMixin):
+    """
+    An identity proposition about a set of concepts.
+    """
+
+    name = models.CharField(max_length=255, **opt)
+    """Can be used to provide an appellation for the cluster of concepts."""
+
+    part_of = models.ForeignKey('IdentitySystem', related_name='identities')
+    """The system to which this identity belongs."""
+
+    confidence = models.FloatField(default=1.0)
+    """This can (optionally) be used to express relative confidence levels."""
+
+    concepts = models.ManyToManyField('Concept', related_name='identities')
+    """The concepts asserted to be identical."""
