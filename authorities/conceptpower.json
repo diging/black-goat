@@ -10,8 +10,9 @@
             path: "{endpoint}/Concept",
             parameters: [
                 {
-                    key: "id",
-                    value: "{ID}"
+                    accept: "id",
+                    send: "sendid",
+                    required: "true",
                 }
             ],
             response: {
