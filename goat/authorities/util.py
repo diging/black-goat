@@ -47,9 +47,9 @@ def parse_xml_path(path_string, nsmap={}):
 
     # Decide how to obtain the final value of interest.
     if attribute:
-        _data = lambda e: e.attrib.get(attribute[1:-1], None)
+        _data = lambda e: e.attrib.get(attribute[1:-1], None).strip()
     else:
-        _data = lambda e: e.text
+        _data = lambda e: e.text.strip()
 
     def _call(elem):
         base = _get(elem, path)
@@ -111,16 +111,17 @@ def generate_request(config, glob={}):
     return _call
 
 
-def parse_result(config, data, glob={}, nsmap={}):
-    if config.get('type', 'xml') == 'xml':
-        path_parser = parse_xml_path
-        data = ET.fromstring(data)
-    else:
-        raise NotImplementedError('No parser for %s' % config.get('type'))
-
+def parse_result(config, data, path_parser=parse_xml_path, glob={}, nsmap={}):
+    base_path = config.get('path', None)
     parsed_data = {}
     for parameter in config.get('parameters'):
-        multiple = parameter.get('type', 'instance') == 'series'
-        func = path_parser(parameter.get('path'), nsmap, multiple)
-        parsed_data[parameter.get('name'): func(data)]
+        path = parameter.get('path')
+        if base_path:
+            path = '/'.join([base_path, path])
+        func = path_parser(path, nsmap)
+        parsed_data[parameter.get('name')] = func(data)
     return parsed_data
+
+
+def parse_raw_xml(raw):
+    return ET.fromstring(raw)
