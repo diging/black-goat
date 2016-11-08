@@ -4,6 +4,7 @@ from django.auth.models import User
 
 opt = {'blank': True, 'null': True}
 
+
 class Authority(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
