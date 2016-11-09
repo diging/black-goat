@@ -12,6 +12,26 @@ from django.http import (JsonResponse, HttpResponse, HttpResponseBadRequest,
                          HttpResponseRedirect, Http404, HttpResponseForbidden)
 
 
+class GoatPermission(BasePermission):
+    def has_permission(self, request, view):
+        model_name = view.__class__.queryset.model.__name__.lower()
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        elif request.method in ['PUT', 'POST', 'PATCH']:
+            return request.user.has_perm('goat.add_%s' % model_name)
+        elif request.method == 'DELETE':
+            return False
+
+    def has_object_permission(self, request, view, obj):
+        model_name = type(obj).__name__.lower()
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        elif request.method in ['PUT', 'POST', 'PATCH']:
+            return request.user.has_perm('change_%s' % model_name, obj)
+        elif request.method == 'DELETE':
+            return request.user.has_perm('delete_%s' % model_name, obj)
+
+
 def home(request):
     """
     Just a goat.
@@ -37,22 +57,20 @@ class CreateWithUserInfoMixin(object):
 
 
 class ConceptViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly, DjangoObjectPermissions,
-                          DjangoModelPermissions]
+    permission_classes = [GoatPermission,]
+
     queryset = Concept.objects.all()
     serializer_class = ConceptSerializer
 
 
 class AuthorityViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly, DjangoObjectPermissions,
-                          DjangoModelPermissions]
+    permission_classes = [GoatPermission]
     queryset = Authority.objects.all()
     serializer_class = AuthoritySerializer
 
 
 class IdentityViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly, DjangoObjectPermissions,
-                          DjangoModelPermissions]
+    permission_classes = [GoatPermission]
     queryset = Identity.objects.all()
     serializer_class = IdentitySerializer
 
@@ -82,7 +100,6 @@ class IdentityViewSet(viewsets.ModelViewSet):
 
 
 class IdentitySystemViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly, DjangoObjectPermissions,
-                          DjangoModelPermissions]
+    permission_classes = [GoatPermission]
     queryset = IdentitySystem.objects.all()
     serializer_class = IdentitySystemSerializer
