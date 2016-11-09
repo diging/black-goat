@@ -35,19 +35,22 @@ class CreateWithUserInfoMixin(object):
 
 
 class ConceptViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly, DjangoObjectPermissions, DjangoModelPermissions]
+    permission_classes = [IsAuthenticatedOrReadOnly, DjangoObjectPermissions,
+                          DjangoModelPermissions]
     queryset = Concept.objects.all()
     serializer_class = ConceptSerializer
 
 
 class AuthorityViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
-    permission_classes = [DjangoObjectPermissions, DjangoModelPermissions]
+    permission_classes = [IsAuthenticatedOrReadOnly, DjangoObjectPermissions,
+                          DjangoModelPermissions]
     queryset = Authority.objects.all()
     serializer_class = AuthoritySerializer
 
 
 class IdentityViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, DjangoObjectPermissions,
+                          DjangoModelPermissions]
     queryset = Identity.objects.all()
     serializer_class = IdentitySerializer
 
@@ -78,6 +81,7 @@ class IdentityViewSet(viewsets.ModelViewSet):
 
 
 class IdentitySystemViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
-    permission_classes = [DjangoObjectPermissions, DjangoModelPermissions]
+    permission_classes = [IsAuthenticatedOrReadOnly, DjangoObjectPermissions,
+                          DjangoModelPermissions]
     queryset = IdentitySystem.objects.all()
     serializer_class = IdentitySystemSerializer
