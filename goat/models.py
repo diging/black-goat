@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+import datetime
+
 
 opt = {'blank': True, 'null': True}
 
@@ -27,6 +29,9 @@ class Authority(BasicAccessionMixin):
     configuration = models.TextField(**opt)
     """JSON-serialized configuration (if available) for this authority."""
 
+    def __unicode__(self):
+        return self.name
+
 
 class Concept(BasicAccessionMixin):
     """
@@ -42,7 +47,7 @@ class Concept(BasicAccessionMixin):
     name = models.CharField(max_length=255)
     """Primary name or label, used for search and display."""
 
-    identifier = models.CharField(max_length=255)
+    identifier = models.CharField(max_length=255, unique=True)
     """The symbol used by ``authority`` to identify this concept."""
 
     description = models.TextField(null=True, blank=True)
@@ -57,6 +62,9 @@ class Concept(BasicAccessionMixin):
     concepts.
     """
 
+    def __unicode__(self):
+        return self.name
+
 
 class IdentitySystem(BasicAccessionMixin):
     """
@@ -66,7 +74,10 @@ class IdentitySystem(BasicAccessionMixin):
     purposes, without having to commit to a particular view of the world.
     """
 
-    pass
+    name = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.name
 
 
 class Identity(BasicAccessionMixin):
@@ -85,3 +96,6 @@ class Identity(BasicAccessionMixin):
 
     concepts = models.ManyToManyField('Concept', related_name='identities')
     """The concepts asserted to be identical."""
+
+    def __unicode__(self):
+        return self.name
