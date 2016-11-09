@@ -4,6 +4,7 @@ python:
 env:
   global:
     - DJANGO_SETTINGS_MODULE=goat.settings
+    - TEST=True
 install:
   - pip install -r requirements.txt
 script:

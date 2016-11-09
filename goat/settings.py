@@ -11,21 +11,16 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
+import os, dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'tt7n5vhscg4#g_4_aki!8#x^3klmzy5u9pib7a_q40e6z5v1m*'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+SECRET_KEY = os.environ.get('SECRET_KEY', 'nope')
+DEBUG = eval(os.environ.get('DEBUG', 'False'))
 ALLOWED_HOSTS = []
+DEVELOP = eval(os.environ.get('DEVELOP', 'False'))
+TEST = eval(os.environ.get('TEST', 'False'))
 
 
 # Application definition
@@ -108,13 +103,19 @@ WSGI_APPLICATION = 'goat.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if DEVELOP or TEST:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': dj_database_url.config()
+    }
+    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+
 
 
 # Internationalization
