@@ -1,1 +1,1 @@
-web: gunicorn goat.wsgi --log-file=-
+web: gunicorn goat.wsgi --log-file -
