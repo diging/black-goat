@@ -7,9 +7,16 @@ from rest_framework.permissions import BasePermission, IsAuthenticatedOrReadOnly
 
 from guardian.shortcuts import get_user_perms
 
+from django.template import RequestContext, loader
+from django.http import (JsonResponse, HttpResponse, HttpResponseBadRequest,
+                         HttpResponseRedirect, Http404, HttpResponseForbidden)
+
 
 def home(request):
-    return
+    context = RequestContext(request, {})
+    template = loader.get_template('goat/base.html')
+
+    return HttpResponse(template.render(context))
 
 class CreateWithUserInfoMixin(object):
     """
