@@ -13,10 +13,12 @@ from django.http import (JsonResponse, HttpResponse, HttpResponseBadRequest,
 
 
 def home(request):
+    """
+    Just a goat.
+    """
     context = RequestContext(request, {})
-    template = loader.get_template('goat/base.html')
+    return HttpResponse(loader.get_template('goat/base.html').render(context))
 
-    return HttpResponse(template.render(context))
 
 class CreateWithUserInfoMixin(object):
     """
@@ -68,11 +70,10 @@ class IdentityViewSet(viewsets.ModelViewSet):
         serializer.initial_data['added_by'] = added_by.id
         serializer.is_valid(raise_exception=True)
         identity_system = serializer.validated_data.get('part_of')
-        print identity_system, added_by, get_user_perms(added_by, identity_system)
         if not added_by.has_perm('change_identitysystem', identity_system):
             _data = {
                 'detail': "You lack authorization to add identity relations to"
-                          " that identity system"
+                          " that identity system."
               }
             return Response(_data, status=status.HTTP_401_UNAUTHORIZED)
         self.perform_create(serializer)
