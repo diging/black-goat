@@ -24,15 +24,30 @@ def orchestrate_search(self, user, authorities, params):
     results = SearchResultSet.objects.create(added_by=user,
                                              task_id=self.request.id,
                                              state=SearchResultSet.PENDING)
-    tasks = [search.s(auth, params, results.id) for auth in authorities]
+    tasks = [search.s(user, auth, params, results.id) for auth in authorities]
     chord(tasks)(register_results.s())
     return results.id
 
 
 @app.task(name='goat.tasks.search', bind=True)
-def search(self, authority, params, result_id):
+def search(self, user, authority, params, result_id):
     """
-    Perform a search for a single :class:`.Authority` instance.
+    Perform a search using a single :class:`.Authority` instance.
+
+    Parameters
+    ----------
+    user : :class:`django.contrib.auth.models.User`
+    authority : :class:`goat.models.Authority`
+    params : dict
+    result_id : int
+        PK-identifier for :class:`goat.models.SearchResultSet`\.
+
+    Returns
+    -------
+    concepts : list
+        A list of :class:`goat.models.Concept` instances.
+    result_id : int
+        PK-identifier for :class:`goat.models.SearchResultSet`\.
     """
     concepts = []
 
@@ -40,17 +55,27 @@ def search(self, authority, params, result_id):
 
     for result in results:
         if result.concept_type:
-            concept_type, _ = Concept.objects.get_or_create(identifier=result.concept_type)
-            concepts.append(
-                Concept.objects.get_or_create(
-                    identifier=result.identifier,
-                    defaults={
-                        'name': result.name,
-                        'description': result.description,
-                        'concept_type': concept_type,
-                    }
-                )[0]
+            concept_type, _ = Concept.objects.get_or_create(
+                identifier=result.concept_type,
+                defaults={
+                    'added_by': user,
+                    'authority': authority
+                }
             )
+        else:
+            concept_type = None
+        concepts.append(
+            Concept.objects.get_or_create(
+                identifier=result.identifier,
+                defaults={
+                    'added_by': user,
+                    'name': result.name,
+                    'description': result.description,
+                    'concept_type': concept_type,
+                    'authority': authority
+                }
+            )[0]
+        )
     return concepts, result_id
 
 

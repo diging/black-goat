@@ -9,7 +9,6 @@ class ConceptSearchResult(object):
     def __init__(self, name='', identifier='', **extra):
         assert isinstance(name, unicode)
         assert isinstance(identifier, unicode)
-        self.authority = authority
         self.name = name
         self.identifier = name
         self.extra = extra

@@ -19,7 +19,7 @@ def is_multiple(tag):
     tuple
         tag name (str), multiple (bool)
     """
-    return re.match('([^\*]+)(\*)?', tag).groups()
+    return re.match(ur'([^\*]+)(\*)?', tag).groups()
 
 
 def get_recursive_pathfinder(nsmap={}):
@@ -65,8 +65,8 @@ def content_picker_factory(env):
     """
     attribute = env.get('attribute', False)
     if attribute:
-        return lambda e: getattr(e, 'attrib', {}).get(attribute[1:-1], '').strip()
-    return lambda e: getattr(getattr(e, 'text', ''), 'strip', lambda: '')()
+        return lambda e: getattr(e, 'attrib', {}).get(attribute[1:-1], u'').strip().decode('utf-8')
+    return lambda e: getattr(getattr(e, 'text', u''), 'strip', lambda: u'')().decode('utf-8')
 
 
 def passthrough_picker_factory(env):
@@ -98,7 +98,7 @@ def decompose_path(path_string):
     path : list
     attribute : str or None
     """
-    path, attribute = re.match('([^\[]+)(\[.+\])?', path_string).groups()
+    path, attribute = re.match(ur'([^\[]+)(\[.+\])?', path_string).groups()
     if '[' in path and not attribute:
         raise ValueError("Malformed path: attribute references must come at"
                          " the very end of the path.")
@@ -170,7 +170,7 @@ def generate_request(config, glob={}):
     required = {param['accept'] for param in config.get("parameters", [])
                 if param.get('required', False)}
 
-    format_keys = re.findall('\{([^\}]+)\}', path_partial)
+    format_keys = re.findall(ur'\{([^\}]+)\}', path_partial)
     fmt = {k: v for k, v in glob.iteritems() if k in format_keys}
 
     def _get_path(extra={}):
@@ -264,4 +264,6 @@ def parse_raw_xml(raw):
     -------
     :class:`lxml.etree.Element`
     """
+    if type(raw) is str:
+        raw = raw.decode('utf-8')
     return ET.fromstring(raw)

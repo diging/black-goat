@@ -3,11 +3,13 @@ from __future__ import absolute_import
 
 from goat.models import *
 from goat.serializers import *
-from goat import tasks
+from goat import tasks, filters
 
 from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from rest_framework.permissions import BasePermission, IsAuthenticatedOrReadOnly, DjangoObjectPermissions, DjangoModelPermissions
+from django_filters.rest_framework import DjangoFilterBackend
 
 from guardian.shortcuts import get_user_perms
 
@@ -49,34 +51,45 @@ def home(request):
 
 @login_required
 def search(request):
-    q = request.GET.get('q', '')
+    q = request.GET.get('q', None)
+    if not q:
+        return JsonResponse({'detail': 'No query provided.'}, status=400)
+
     result = tasks.orchestrate_search.delay(request.user, Authority.objects.all(), {'q': q})
-    return JsonResponse({'result': result.id})
+    relative_path = reverse('search') + result.id + u'/'
+    absolute_path = request.build_absolute_uri(relative_path)
+    return HttpResponseRedirect(relative_path)
+    return JsonResponse({'results': absolute_path})
 
 
 @login_required
 def search_results(request, result_id):
-    result = SearchResultSet.objects.get(task_id=result_id)
+    try:
+        result = SearchResultSet.objects.get(task_id=result_id)
+    except SearchResultSet.DoesNotExist:
+        return JsonResponse({'detail': "Your search is pending creation."}, status=200)
     if result.added_by != request.user:
         raise
 
-    if not result.state == SearchResultSet.SUCCESS:
-        task = AsyncResult(result_id)
-        result.state = task.state
-        result.save()
+    # if not result.state == SearchResultSet.SUCCESS:
+    #     task = AsyncResult(result_id)
+    #     result.state = task.state
+    #     result.save()
 
     if result.state == SearchResultSet.PENDING:
         _data = {
             'detail': "Your search is being executed; please check back later."
         }
         _status = 202
+    elif result.state == SearchResultSet.SUCCESS:
+        # Send the client to the concept list view with the search filter
+        #  parameter.
+        redirect_target = reverse('concept-list') + u'?search=' + result.task_id
+        return HttpResponseRedirect(redirect_target)
     else:
         _data = {'detail': result.state}
         _status = 200
-    print result.results.all()
     return JsonResponse(_data, status=_status)
-
-
 
 
 class CreateWithUserInfoMixin(object):
@@ -99,6 +112,8 @@ class ConceptViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
     permission_classes = [GoatPermission,]
     queryset = Concept.objects.all()
     serializer_class = ConceptSerializer
+    filter_backends = (DjangoFilterBackend, )
+    filter_class = filters.ConceptFilter
 
 
 class AuthorityViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):

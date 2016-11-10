@@ -36,10 +36,7 @@ class Authority(BasicAccessionMixin):
         if not self.configuration:
             raise AttributeError("Configuration unavailable for %s" % self.name)
         manager = AuthorityManager(self.configuration)#.search(params)
-
-        def _call(params):
-            manager.search(params)
-        return _call
+        return lambda params: manager.search(params)
 
     def __unicode__(self):
         return self.name
