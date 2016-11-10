@@ -127,6 +127,21 @@ class TestParseXMLPath(unittest.TestCase):
 
         self.assertEqual(parse_xml_path(path)(root), field.text)
 
+    def test_no_namespace_no_attrib_sep(self):
+        """
+        If a separator is provided, should use that separator to individuate
+        multiple values from a single element.
+        """
+        root = ET.Element('root')
+        field = ET.Element('afieldname')
+        values = ['avalue', 'asecondvalue', 'athirdvalue']
+        field.text = ','.join(values)
+        root.append(field)
+        path = "afieldname|,"
+
+        result = parse_xml_path(path)(root)
+        self.assertSetEqual(set(result), set(values))
+
     def test_no_namespace_no_attrib_multiple(self):
         """
 

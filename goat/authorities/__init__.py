@@ -10,8 +10,12 @@ class ConceptSearchResult(object):
         assert isinstance(name, unicode)
         assert isinstance(identifier, unicode)
         self.name = name
-        self.identifier = name
+        self.identifier = identifier
         self.extra = extra
+
+    @property
+    def identities(self):
+        return self.extra.get('identities', None)
 
     @property
     def description(self):
@@ -117,5 +121,4 @@ class AuthorityManager(object):
         -------
         list
         """
-        print self._generic('search')(**params)
         return [ConceptSearchResult(**o) for o in self._generic('search')(**params)]

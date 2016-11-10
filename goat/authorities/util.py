@@ -63,10 +63,13 @@ def content_picker_factory(env):
     -------
     function
     """
-    attribute = env.get('attribute', False)
+    attribute, sep = env.get('attribute', False), env.get('sep', None)
+    _separator = lambda value: [v.strip() for v in value.split(sep)] if sep else value
     if attribute:
-        return lambda e: getattr(e, 'attrib', {}).get(attribute[1:-1], u'').strip().decode('utf-8')
-    return lambda e: getattr(getattr(e, 'text', u''), 'strip', lambda: u'')().decode('utf-8')
+        _picker = lambda e: _separator(getattr(e, 'attrib', {}).get(attribute[1:-1], u'').strip().decode('utf-8'))
+    else:
+        _picker = lambda e: _separator(getattr(getattr(e, 'text', u''), 'strip', lambda: u'')().decode('utf-8'))
+    return _picker
 
 
 def passthrough_picker_factory(env):
@@ -98,13 +101,22 @@ def decompose_path(path_string):
     path : list
     attribute : str or None
     """
+    if '|' in path_string:
+        try:
+            path_string, sep = path_string.split('|')
+        except ValueError:
+            raise ValueError("Malformed path: only one separator reference"
+                             " (|) allowed.")
+    else:
+        sep = None
+
     path, attribute = re.match(ur'([^\[]+)(\[.+\])?', path_string).groups()
     if '[' in path and not attribute:
         raise ValueError("Malformed path: attribute references must come at"
                          " the very end of the path.")
 
     path = path.split('/')
-    return path, attribute
+    return path, attribute, sep
 
 
 def parse_xml_path(path_string, nsmap={}, picker_factory=content_picker_factory):
@@ -126,7 +138,7 @@ def parse_xml_path(path_string, nsmap={}, picker_factory=content_picker_factory)
     function
     """
 
-    path, attribute = decompose_path(path_string)
+    path, attribute, sep = decompose_path(path_string)
 
     # Path can be arbitrarily deep, so we use recursion here to chain .find()
     #  calls from the root element to the deepest child.
@@ -135,11 +147,16 @@ def parse_xml_path(path_string, nsmap={}, picker_factory=content_picker_factory)
     # Decide how to obtain the final value of interest.
     _picker = picker_factory(locals())
 
+    def _apply(obj):    # No empty values.
+        value = _picker(obj)
+        if value and (not type(value) is list or value[0]):
+            return value
+
     def _call(elem):
         base = _get(elem, path)
         if type(base) is list:
-            return [_picker(child) for child in base]
-        return _picker(base)
+            return [_apply(child) for child in base]
+        return _apply(base)
     return _call
 
 

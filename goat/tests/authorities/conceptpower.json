@@ -27,18 +27,19 @@
                 "parameters": [
                     {
                         "name": "name",
-                        "type": "instance",
                         "path": "digitalHPS:lemma"
                     },
                     {
                         "name": "description",
-                        "type": "instance",
                         "path": "digitalHPS:description"
                     },
                     {
-                        "name": "type",
-                        "type": "instance",
+                        "name": "concept_type",
                         "path": "digitalHPS:type[type_uri]"
+                    },
+                    {
+                        "name": "identities",
+                        "path": "digitalHPS:equal_to|,"
                     }
                 ]
             }
@@ -73,12 +74,16 @@
                         "path": "digitalHPS:description"
                     },
                     {
-                        "name": "type",
+                        "name": "concept_type",
                         "path": "digitalHPS:type[type_uri]"
                     },
                     {
                         "name": "identifier",
                         "path": "digitalHPS:id[concept_uri]"
+                    },
+                    {
+                        "name": "identities",
+                        "path": "digitalHPS:equal_to|,"
                     }
                 ]
             }

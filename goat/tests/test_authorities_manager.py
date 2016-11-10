@@ -1,6 +1,6 @@
 import unittest, mock, types
 
-from goat.authorities import AuthorityManager
+from goat.authorities import AuthorityManager, ConceptSearchResult
 
 with open('goat/tests/authorities/conceptpower.json') as f:
     configuration = f.read()
@@ -84,7 +84,7 @@ class TestAuthorityManager(unittest.TestCase):
         self.assertEqual(mock_get.call_count, 1)
         self.assertEqual(mock_get.call_args[0][0], expected_endpoint)
 
-        self.assertIn('type', result)
+        self.assertIn('concept_type', result)
         self.assertIn('name', result)
         self.assertIn('description', result)
 
@@ -105,9 +105,25 @@ class TestAuthorityManager(unittest.TestCase):
         self.assertEqual(mock_get.call_args[0][0], path)
         self.assertEqual(len(results), 5)
         for result in results:
-            self.assertIn('type', result)
+            self.assertIn('concept_type', result)
             self.assertIn('name', result)
             self.assertIn('description', result)
+
+    @mock.patch('requests.get')
+    def test_search(self, mock_get):
+        class MockResponse(object):
+            def __init__(self, content):
+                self.content = content
+
+        with open('goat/tests/mock_responses/cp_search.xml', 'r') as f:
+            mock_get.return_value = MockResponse(f.read())
+        path = 'http://chps.asu.edu/conceptpower/rest/ConceptLookup/test/noun'
+        manager = AuthorityManager(configuration)
+        results = manager.search({'q': 'test'})
+
+        self.assertEqual(len(results), 5)
+        for result in results:
+            self.assertIsInstance(result, ConceptSearchResult)
 
     def test_generic_nonsense(self):
         manager = AuthorityManager(configuration)

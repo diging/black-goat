@@ -26,10 +26,13 @@ class Authority(BasicAccessionMixin):
     An Authority service, system, file, or other source of concepts.
     """
     name = models.CharField(max_length=255)
+    namespace = models.CharField(max_length=255, **opt)
     description = models.TextField(**opt)
 
     configuration = models.TextField(**opt)
     """JSON-serialized configuration (if available) for this authority."""
+
+    builtin_identity_system = models.ForeignKey('IdentitySystem', **opt)
 
     @property
     def search(self):
@@ -50,7 +53,7 @@ class Concept(BasicAccessionMixin):
     of Congress or VIAF.
     """
 
-    authority = models.ForeignKey('Authority', related_name='concepts')
+    authority = models.ForeignKey('Authority', related_name='concepts', **opt)
     """The authority system to which this concept belongs."""
 
     name = models.CharField(max_length=255)
@@ -73,6 +76,14 @@ class Concept(BasicAccessionMixin):
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.authority:
+            for authority in Authority.objects.all():
+                if authority.namespace in self.identifier:
+                    self.authority = authority
+                    break
+        super(Concept, self).save(*args, **kwargs)
 
 
 class IdentitySystem(BasicAccessionMixin):

@@ -24,7 +24,8 @@ def orchestrate_search(self, user, authorities, params):
     results = SearchResultSet.objects.create(added_by=user,
                                              task_id=self.request.id,
                                              state=SearchResultSet.PENDING)
-    tasks = [search.s(user, auth, params, results.id) for auth in authorities]
+    tasks = [search.s(user, auth, params, results.id)
+             for auth in authorities if auth.configuration]
     chord(tasks)(register_results.s())
     return results.id
 
@@ -54,6 +55,8 @@ def search(self, user, authority, params, result_id):
     results = authority.search(params)
 
     for result in results:
+        identities = result.extra.pop('identities')
+
         if result.concept_type:
             concept_type, _ = Concept.objects.get_or_create(
                 identifier=result.concept_type,
@@ -64,18 +67,36 @@ def search(self, user, authority, params, result_id):
             )
         else:
             concept_type = None
-        concepts.append(
-            Concept.objects.get_or_create(
-                identifier=result.identifier,
-                defaults={
-                    'added_by': user,
-                    'name': result.name,
-                    'description': result.description,
-                    'concept_type': concept_type,
-                    'authority': authority
-                }
-            )[0]
+
+        concept, _ = Concept.objects.get_or_create(
+            identifier=result.identifier,
+            defaults={
+                'added_by': user,
+                'name': result.name,
+                'description': result.description,
+                'concept_type': concept_type,
+                'authority': authority
+            }
         )
+
+        if identities:
+            _defaults = {
+                'added_by': user
+            }
+            alt_concepts = [
+                Concept.objects.get_or_create(
+                    identifier=ident,
+                    defaults=_defaults)[0]
+                for ident in identities
+            ]
+            identity = Identity.objects.create(
+                name = result.name,
+                part_of = authority.builtin_identity_system,
+                added_by = user
+            )
+            identity.concepts.add(concept, *alt_concepts)
+
+        concepts.append(concept)
     return concepts, result_id
 
 

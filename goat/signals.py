@@ -60,3 +60,8 @@ def authority_post_save(sender, **kwargs):
         assign_perm("change_authority", user, authority)
         assign_perm("delete_authority", user, authority)
         assign_perm("add_authority", user, authority)
+
+        authority.builtin_identity_system = IdentitySystem.objects.create(
+            name = u'builtin:%s' % authority.name,
+            added_by = authority.added_by
+        )
