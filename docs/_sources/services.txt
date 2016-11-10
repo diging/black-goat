@@ -433,3 +433,103 @@ If ``concept_type`` is provided, its value **must** be an URI of a type concept.
 If ``identities`` is provided, the values **must** be URIs of other concepts to
 which the focal concept is identical. These will be used to automatically
 generate identity statements.
+
+Full Example
+------------
+Here is a full configuration for the `Conceptpower API
+<http://diging.github.io/conceptpower/>`_, with ``get`` and ``search`` methods.
+
+.. code-block:: javascript
+
+    {
+        "name": "Conceptpower",
+        "description": "Conceptpower authority service",
+        "documentation": "http://diging.github.io/conceptpower",
+        "endpoint": "http://chps.asu.edu/conceptpower/rest",
+        "methods": [
+            {
+                "name": "get",
+                "method": "GET",
+                "path": "{endpoint}/Concept",
+                "parameters": [
+                    {
+                        "accept": "id",
+                        "send": "sendid",
+                        "required": true
+                    }
+                ],
+                "response": {
+                    "type": "xml",
+                    "path": "digitalHPS:conceptEntry",
+                    "namespaces": [
+                        {
+                            "prefix": "digitalHPS",
+                            "namespace": "http://www.digitalhps.org/"
+                        }
+                    ],
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "path": "digitalHPS:lemma"
+                        },
+                        {
+                            "name": "description",
+                            "path": "digitalHPS:description"
+                        },
+                        {
+                            "name": "concept_type",
+                            "path": "digitalHPS:type[type_uri]"
+                        },
+                        {
+                            "name": "identities",
+                            "path": "digitalHPS:equal_to|,"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "search",
+                "method": "GET",
+                "path": "{endpoint}/ConceptLookup/{q}/noun",
+                "parameters": [
+                    {
+                        "accept": "q",
+                        "send": "q",
+                        "required": true
+                    }
+                ],
+                "response": {
+                    "type": "xml",
+                    "path": "digitalHPS:conceptEntry*",
+                    "namespaces": [
+                        {
+                            "prefix": "digitalHPS",
+                            "namespace": "http://www.digitalhps.org/"
+                        }
+                    ],
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "path": "digitalHPS:lemma"
+                        },
+                        {
+                            "name": "description",
+                            "path": "digitalHPS:description"
+                        },
+                        {
+                            "name": "concept_type",
+                            "path": "digitalHPS:type[type_uri]"
+                        },
+                        {
+                            "name": "identifier",
+                            "path": "digitalHPS:id[concept_uri]"
+                        },
+                        {
+                            "name": "identities",
+                            "path": "digitalHPS:equal_to|,"
+                        }
+                    ]
+                }
+            }
+        ]
+    }

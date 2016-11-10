@@ -472,6 +472,104 @@ which the focal concept is identical. These will be used to automatically
 generate identity statements.</p>
 </div>
 </div>
+<div class="section" id="full-example">
+<h2>Full Example<a class="headerlink" href="#full-example" title="Permalink to this headline">¶</a></h2>
+<p>Here is a full configuration for the <a class="reference external" href="http://diging.github.io/conceptpower/">Conceptpower API</a>, with <code class="docutils literal"><span class="pre">get</span></code> and <code class="docutils literal"><span class="pre">search</span></code> methods.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Conceptpower&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;Conceptpower authority service&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;documentation&quot;</span><span class="o">:</span> <span class="s2">&quot;http://diging.github.io/conceptpower&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;endpoint&quot;</span><span class="o">:</span> <span class="s2">&quot;http://chps.asu.edu/conceptpower/rest&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;methods&quot;</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;get&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="o">:</span> <span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;{endpoint}/Concept&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;parameters&quot;</span><span class="o">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;accept&quot;</span><span class="o">:</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;send&quot;</span><span class="o">:</span> <span class="s2">&quot;sendid&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;required&quot;</span><span class="o">:</span> <span class="kc">true</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;response&quot;</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;xml&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS:conceptEntry&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;namespaces&quot;</span><span class="o">:</span> <span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;prefix&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;namespace&quot;</span><span class="o">:</span> <span class="s2">&quot;http://www.digitalhps.org/&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">],</span>
+                <span class="s2">&quot;parameters&quot;</span><span class="o">:</span> <span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS:lemma&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS:description&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;concept_type&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS:type[type_uri]&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;identities&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS:equal_to|,&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;search&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="o">:</span> <span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;{endpoint}/ConceptLookup/{q}/noun&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;parameters&quot;</span><span class="o">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;accept&quot;</span><span class="o">:</span> <span class="s2">&quot;q&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;send&quot;</span><span class="o">:</span> <span class="s2">&quot;q&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;required&quot;</span><span class="o">:</span> <span class="kc">true</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;response&quot;</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;xml&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS:conceptEntry*&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;namespaces&quot;</span><span class="o">:</span> <span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;prefix&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;namespace&quot;</span><span class="o">:</span> <span class="s2">&quot;http://www.digitalhps.org/&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">],</span>
+                <span class="s2">&quot;parameters&quot;</span><span class="o">:</span> <span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS:lemma&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS:description&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;concept_type&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS:type[type_uri]&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;identifier&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS:id[concept_uri]&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;identities&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS:equal_to|,&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -508,6 +606,7 @@ generate identity statements.</p>
 <li><a class="reference internal" href="#create"><code class="docutils literal"><span class="pre">create</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#full-example">Full Example</a></li>
 </ul>
 </li>
 </ul>
