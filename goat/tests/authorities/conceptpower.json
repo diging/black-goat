@@ -42,6 +42,46 @@
                     }
                 ]
             }
+        },
+        {
+            "name": "search",
+            "method": "GET",
+            "path": "{endpoint}/ConceptLookup/{q}/noun",
+            "parameters": [
+                {
+                    "accept": "q",
+                    "send": "q",
+                    "required": "true"
+                }
+            ],
+            "response": {
+                "type": "xml",
+                "path": "digitalHPS:conceptEntry*",
+                "namespaces": [
+                    {
+                        "prefix": "digitalHPS",
+                        "namespace": "http://www.digitalhps.org/"
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "path": "digitalHPS:lemma"
+                    },
+                    {
+                        "name": "description",
+                        "path": "digitalHPS:description"
+                    },
+                    {
+                        "name": "type",
+                        "path": "digitalHPS:type[type_uri]"
+                    },
+                    {
+                        "name": "identifier",
+                        "path": "digitalHPS:id[concept_uri]"
+                    }
+                ]
+            }
         }
     ]
 }

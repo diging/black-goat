@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 
 import datetime
 
+from goat.authorities import AuthorityManager
+
 
 opt = {'blank': True, 'null': True}
 
@@ -28,6 +30,16 @@ class Authority(BasicAccessionMixin):
 
     configuration = models.TextField(**opt)
     """JSON-serialized configuration (if available) for this authority."""
+
+    @property
+    def search(self):
+        if not self.configuration:
+            raise AttributeError("Configuration unavailable for %s" % self.name)
+        manager = AuthorityManager(self.configuration)#.search(params)
+
+        def _call(params):
+            manager.search(params)
+        return _call
 
     def __unicode__(self):
         return self.name
@@ -99,3 +111,20 @@ class Identity(BasicAccessionMixin):
 
     def __unicode__(self):
         return self.name
+
+
+class SearchResultSet(BasicAccessionMixin):
+    created = models.DateTimeField(auto_now_add=True)
+
+    task_id = models.CharField(max_length=255, **opt)
+    """The identifier of the asynchronous search task."""
+
+    results = models.ManyToManyField('Concept', related_name='search_sets')
+    """
+    Refers to :class:`.Concept` instances that comprise the outcome of the
+    search.
+    """
+
+    SUCCESS = 'SUCCESS'
+    PENDING = 'PENDING'
+    state = models.CharField(max_length=255, **opt)

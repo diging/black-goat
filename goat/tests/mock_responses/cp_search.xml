@@ -1,0 +1,95 @@
+<conceptpowerReply xmlns:digitalHPS="http://www.digitalhps.org/">
+    <digitalHPS:conceptEntry>
+        <digitalHPS:id concept_id="CONe5b55803-1ef6-4abe-b81c-1493e97421df" concept_uri="http://www.digitalhps.org/concepts/CONe5b55803-1ef6-4abe-b81c-1493e97421df">
+            http://www.digitalhps.org/concepts/CONe5b55803-1ef6-4abe-b81c-1493e97421df
+        </digitalHPS:id>
+        <digitalHPS:lemma>Margaret Elizabeth Bradshaw</digitalHPS:lemma>
+        <digitalHPS:pos>noun</digitalHPS:pos>
+        <digitalHPS:description>Botanist at the University of Exeter</digitalHPS:description>
+        <digitalHPS:conceptList>Persons</digitalHPS:conceptList>
+        <digitalHPS:creator_id>deryc.painter</digitalHPS:creator_id>
+        <digitalHPS:equal_to/>
+        <digitalHPS:modified_by>erick, erick@Mon Oct 10 05:51:40 MST 2016</digitalHPS:modified_by>
+        <digitalHPS:similar_to/>
+        <digitalHPS:synonym_ids/>
+        <digitalHPS:type type_id="986a7cc9-c0c1-4720-b344-853f08c136ab" type_uri="http://www.digitalhps.org/types/TYPE_986a7cc9-c0c1-4720-b344-853f08c136ab">E21 Person</digitalHPS:type>
+        <digitalHPS:deleted>false</digitalHPS:deleted>
+        <digitalHPS:wordnet_id/>
+    </digitalHPS:conceptEntry>
+    <digitalHPS:conceptEntry>
+        <digitalHPS:id concept_id="WID-11074284-N-03-Christopher_William_Bradshaw_Isherwood" concept_uri="http://www.digitalhps.org/concepts/WID-11074284-N-03-Christopher_William_Bradshaw_Isherwood">
+            http://www.digitalhps.org/concepts/WID-11074284-N-03-Christopher_William_Bradshaw_Isherwood
+        </digitalHPS:id>
+        <digitalHPS:lemma>christopher william bradshaw isherwood</digitalHPS:lemma>
+        <digitalHPS:pos>noun</digitalHPS:pos>
+        <digitalHPS:description>
+            United States writer (born in England) whose best known novels portray Berlin in the 1930's and who collaborated with W. H. Auden in writing plays in verse (1904-1986)
+        </digitalHPS:description>
+        <digitalHPS:conceptList>WordNet</digitalHPS:conceptList>
+        <digitalHPS:creator_id/>
+        <digitalHPS:equal_to/>
+        <digitalHPS:modified_by/>
+        <digitalHPS:similar_to/>
+        <digitalHPS:synonym_ids>
+            WID-11074284-N-01-Isherwood,WID-11074284-N-02-Christopher_Isherwood,
+        </digitalHPS:synonym_ids>
+        <digitalHPS:type/>
+        <digitalHPS:deleted>false</digitalHPS:deleted>
+        <digitalHPS:wordnet_id>
+            WID-11074284-N-03-Christopher_William_Bradshaw_Isherwood
+        </digitalHPS:wordnet_id>
+    </digitalHPS:conceptEntry>
+    <digitalHPS:conceptEntry>
+        <digitalHPS:id concept_id="72ec32b4-2a20-4d26-ab8f-a173f067542d" concept_uri="http://www.digitalhps.org/concepts/72ec32b4-2a20-4d26-ab8f-a173f067542d">
+            http://www.digitalhps.org/concepts/72ec32b4-2a20-4d26-ab8f-a173f067542d
+        </digitalHPS:id>
+        <digitalHPS:lemma>Anthony D. Bradshaw</digitalHPS:lemma>
+        <digitalHPS:pos>noun</digitalHPS:pos>
+        <digitalHPS:description/>
+        <digitalHPS:conceptList>Phenotypic Plasticity</digitalHPS:conceptList>
+        <digitalHPS:creator_id/>
+        <digitalHPS:equal_to/>
+        <digitalHPS:modified_by/>
+        <digitalHPS:similar_to/>
+        <digitalHPS:synonym_ids/>
+        <digitalHPS:type/>
+        <digitalHPS:deleted>false</digitalHPS:deleted>
+        <digitalHPS:wordnet_id/>
+    </digitalHPS:conceptEntry>
+    <digitalHPS:conceptEntry>
+        <digitalHPS:id concept_id="066efc74-8710-4a1f-9111-3a27d880438e" concept_uri="http://www.digitalhps.org/concepts/066efc74-8710-4a1f-9111-3a27d880438e">
+            http://www.digitalhps.org/concepts/066efc74-8710-4a1f-9111-3a27d880438e
+        </digitalHPS:id>
+        <digitalHPS:lemma>Anthony David Bradshaw (1926-2008)</digitalHPS:lemma>
+        <digitalHPS:pos>noun</digitalHPS:pos>
+        <digitalHPS:description>Plant ecologist</digitalHPS:description>
+        <digitalHPS:conceptList>Persons</digitalHPS:conceptList>
+        <digitalHPS:creator_id/>
+        <digitalHPS:equal_to>http://viaf.org/viaf/32086324</digitalHPS:equal_to>
+        <digitalHPS:modified_by>erick, erick@Tue Nov 08 06:45:29 MST 2016</digitalHPS:modified_by>
+        <digitalHPS:similar_to/>
+        <digitalHPS:synonym_ids>72ec32b4-2a20-4d26-ab8f-a173f067542d,</digitalHPS:synonym_ids>
+        <digitalHPS:type type_id="986a7cc9-c0c1-4720-b344-853f08c136ab" type_uri="http://www.digitalhps.org/types/TYPE_986a7cc9-c0c1-4720-b344-853f08c136ab">E21 Person</digitalHPS:type>
+        <digitalHPS:deleted>false</digitalHPS:deleted>
+        <digitalHPS:wordnet_id/>
+    </digitalHPS:conceptEntry>
+    <digitalHPS:conceptEntry>
+        <digitalHPS:id concept_id="CON76832db2-7abb-4c77-b08e-239017b6a585" concept_uri="http://www.digitalhps.org/concepts/CON76832db2-7abb-4c77-b08e-239017b6a585">
+            http://www.digitalhps.org/concepts/CON76832db2-7abb-4c77-b08e-239017b6a585
+        </digitalHPS:id>
+        <digitalHPS:lemma>Bradshaw 1965</digitalHPS:lemma>
+        <digitalHPS:pos>noun</digitalHPS:pos>
+        <digitalHPS:description>
+            Bradshaw, Anthony David. 1965. "The evolutionary significance of phenotypic plasticity in plants." Advances in Genetics 13: 115-155.
+        </digitalHPS:description>
+        <digitalHPS:conceptList>Publications</digitalHPS:conceptList>
+        <digitalHPS:creator_id>erick</digitalHPS:creator_id>
+        <digitalHPS:equal_to/>
+        <digitalHPS:modified_by/>
+        <digitalHPS:similar_to/>
+        <digitalHPS:synonym_ids/>
+        <digitalHPS:type type_id="94d05eb7-bcee-4f4b-b18e-819dd1ffb20a" type_uri="http://www.digitalhps.org/types/TYPE_94d05eb7-bcee-4f4b-b18e-819dd1ffb20a">E28 Conceptual Object</digitalHPS:type>
+        <digitalHPS:deleted>false</digitalHPS:deleted>
+        <digitalHPS:wordnet_id/>
+    </digitalHPS:conceptEntry>
+</conceptpowerReply>

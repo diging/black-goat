@@ -8,6 +8,19 @@ class AuthoritySerializer(serializers.ModelSerializer):
         model = Authority
         fields = '__all__'
 
+    def validate_configuration(self, value):
+        """
+        If a configuration is provided, ensure that it is valid JSON.
+        """
+        import json
+        if value:
+            try:
+                json.loads(value)
+            except ValueError:
+                raise serializers.ValidationError("Configuration must be valid"
+                                                  "JSON.")
+        return value
+
 
 class ConceptSerializer(serializers.ModelSerializer):
     class Meta:

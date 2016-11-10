@@ -37,7 +37,11 @@ class TestAuthorityManager(unittest.TestCase):
 
     @mock.patch('requests.get')
     def test_generic_get(self, mock_get):
-        mock_get.return_value = """
+        class MockResponse(object):
+            def __init__(self, content):
+                self.content = content
+
+        mock_get.return_value = MockResponse("""
             <conceptpowerReply xmlns:digitalHPS="http://www.digitalhps.org/">
                 <digitalHPS:conceptEntry>
                    <digitalHPS:id
@@ -71,7 +75,7 @@ class TestAuthorityManager(unittest.TestCase):
                    <digitalHPS:wordnet_id/>
                 </digitalHPS:conceptEntry>
             </conceptpowerReply>
-            """
+            """)
         expected_endpoint = 'http://chps.asu.edu/conceptpower/rest/Concept'
         manager = AuthorityManager(configuration)
         func = manager._generic('get')
@@ -79,10 +83,31 @@ class TestAuthorityManager(unittest.TestCase):
         result = func(id=1)
         self.assertEqual(mock_get.call_count, 1)
         self.assertEqual(mock_get.call_args[0][0], expected_endpoint)
-        self.assertIsInstance(result, dict)
+
         self.assertIn('type', result)
         self.assertIn('name', result)
         self.assertIn('description', result)
+
+    @mock.patch('requests.get')
+    def test_generic_search(self, mock_get):
+        class MockResponse(object):
+            def __init__(self, content):
+                self.content = content
+
+        with open('goat/tests/mock_responses/cp_search.xml', 'r') as f:
+            mock_get.return_value = MockResponse(f.read())
+        path = 'http://chps.asu.edu/conceptpower/rest/ConceptLookup/test/noun'
+        manager = AuthorityManager(configuration)
+        func = manager._generic('search')
+
+        results = func(q='test')
+        self.assertEqual(mock_get.call_count, 1)
+        self.assertEqual(mock_get.call_args[0][0], path)
+        self.assertEqual(len(results), 5)
+        for result in results:
+            self.assertIn('type', result)
+            self.assertIn('name', result)
+            self.assertIn('description', result)
 
     def test_generic_nonsense(self):
         manager = AuthorityManager(configuration)

@@ -5,6 +5,25 @@ from goat.authorities.util import *
 import json
 
 
+class ConceptSearchResult(object):
+    def __init__(self, name='', identifier='', **extra):
+        assert isinstance(name, unicode)
+        assert isinstance(identifier, unicode)
+        self.authority = authority
+        self.name = name
+        self.identifier = name
+        self.extra = extra
+
+    @property
+    def description(self):
+        return self.extra.get('description', None)
+
+    @property
+    def concept_type(self):
+        return self.extra.get('concept_type', None)
+
+
+
 class AuthorityManager(object):
     """
     Configuration-driven manager for authority services.
@@ -99,4 +118,5 @@ class AuthorityManager(object):
         -------
         list
         """
-        return self._generic('search')(**params)
+        print self._generic('search')(**params)
+        return [ConceptSearchResult(**o) for o in self._generic('search')(**params)]

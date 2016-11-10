@@ -1,5 +1,9 @@
+from __future__ import absolute_import
+
+
 from goat.models import *
 from goat.serializers import *
+from goat import tasks
 
 from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
@@ -10,6 +14,9 @@ from guardian.shortcuts import get_user_perms
 from django.template import RequestContext, loader
 from django.http import (JsonResponse, HttpResponse, HttpResponseBadRequest,
                          HttpResponseRedirect, Http404, HttpResponseForbidden)
+from django.contrib.auth.decorators import login_required
+
+from celery.result import AsyncResult
 
 
 class GoatPermission(BasePermission):
@@ -40,6 +47,38 @@ def home(request):
     return HttpResponse(loader.get_template('goat/base.html').render(context))
 
 
+@login_required
+def search(request):
+    q = request.GET.get('q', '')
+    result = tasks.orchestrate_search.delay(request.user, Authority.objects.all(), {'q': q})
+    return JsonResponse({'result': result.id})
+
+
+@login_required
+def search_results(request, result_id):
+    result = SearchResultSet.objects.get(task_id=result_id)
+    if result.added_by != request.user:
+        raise
+
+    if not result.state == SearchResultSet.SUCCESS:
+        task = AsyncResult(result_id)
+        result.state = task.state
+        result.save()
+
+    if result.state == SearchResultSet.PENDING:
+        _data = {
+            'detail': "Your search is being executed; please check back later."
+        }
+        _status = 202
+    else:
+        _data = {'detail': result.state}
+        _status = 200
+    print result.results.all()
+    return JsonResponse(_data, status=_status)
+
+
+
+
 class CreateWithUserInfoMixin(object):
     """
     Extends the default :meth:`.ModelViewSet.create` to populate the
@@ -58,7 +97,6 @@ class CreateWithUserInfoMixin(object):
 
 class ConceptViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
     permission_classes = [GoatPermission,]
-
     queryset = Concept.objects.all()
     serializer_class = ConceptSerializer
 

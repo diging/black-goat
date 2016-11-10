@@ -33,6 +33,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'djcelery',
     'rest_framework',
     'rest_framework.authtoken',
     'guardian',
@@ -150,3 +151,8 @@ STATICFILES_DIRS = (
 
 AUTHORITY_CONFIGURATION_PATH = 'authorities'
 ANONYMOUS_USER_NAME = 'AnonymousUser'
+
+
+CELERY_IMPORTS = ('goat.tasks',)
+CELERY_DEFAULT_RATE_LIMIT = "100/m"
+CELERYD_TASK_TIME_LIMIT = 300000
