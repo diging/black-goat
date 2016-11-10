@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>goat.authorities package &mdash; black-goat 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="black-goat 0.1 documentation" href="index.html" />
+    <link rel="up" title="goat package" href="goat.html" />
+    <link rel="next" title="goat.migrations package" href="goat.migrations.html" />
+    <link rel="prev" title="goat package" href="goat.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="goat-authorities-package">
+<h1>goat.authorities package<a class="headerlink" href="#goat-authorities-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-goat.authorities.util">
+<span id="goat-authorities-util-module"></span><h2>goat.authorities.util module<a class="headerlink" href="#module-goat.authorities.util" title="Permalink to this headline">¶</a></h2>
+<p>Helper functions for parsing authority descriptions.</p>
+<dl class="function">
+<dt id="goat.authorities.util.content_picker_factory">
+<code class="descclassname">goat.authorities.util.</code><code class="descname">content_picker_factory</code><span class="sig-paren">(</span><em>env</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#content_picker_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.content_picker_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a function that retrives the CDATA content or attribute value of
+an <code class="xref py py-class docutils literal"><span class="pre">lxml.etree.Element</span></code>.</p>
+<p>env : dict</p>
+<p>function</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="goat.authorities.util.decompose_path">
+<code class="descclassname">goat.authorities.util.</code><code class="descname">decompose_path</code><span class="sig-paren">(</span><em>path_string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#decompose_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.decompose_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split a path string into its constituent parts.</p>
+<p>path_string : str</p>
+<p>path : list
+attribute : str or None</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="goat.authorities.util.generate_request">
+<code class="descclassname">goat.authorities.util.</code><code class="descname">generate_request</code><span class="sig-paren">(</span><em>config</em>, <em>glob={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#generate_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.generate_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a function that performs an HTTP request based on the configuration
+in <code class="docutils literal"><span class="pre">config</span></code>.</p>
+<p>config : dict
+glob : dict</p>
+<dl class="docutils">
+<dt>function</dt>
+<dd>Expects keyword arguments defined in the configuration. If provided,
+<code class="docutils literal"><span class="pre">headers</span></code> will be pulled out and passed as headers in the request.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="goat.authorities.util.get_recursive_pathfinder">
+<code class="descclassname">goat.authorities.util.</code><code class="descname">get_recursive_pathfinder</code><span class="sig-paren">(</span><em>nsmap={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#get_recursive_pathfinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.get_recursive_pathfinder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a recursive function that follows the path in <code class="docutils literal"><span class="pre">tags</span></code>, starting
+at <code class="docutils literal"><span class="pre">elem</span></code>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="goat.authorities.util.is_multiple">
+<code class="descclassname">goat.authorities.util.</code><code class="descname">is_multiple</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#is_multiple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.is_multiple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect the multi-value flag (<code class="docutils literal"><span class="pre">*</span></code>) in a path part (<code class="docutils literal"><span class="pre">tag</span></code>).</p>
+<p>tag : str</p>
+<dl class="docutils">
+<dt>tuple</dt>
+<dd>tag name (str), multiple (bool)</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="goat.authorities.util.parse_raw_xml">
+<code class="descclassname">goat.authorities.util.</code><code class="descname">parse_raw_xml</code><span class="sig-paren">(</span><em>raw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#parse_raw_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.parse_raw_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse raw XML response content.</p>
+<p>raw : unicode</p>
+<p><code class="xref py py-class docutils literal"><span class="pre">lxml.etree.Element</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="goat.authorities.util.parse_result">
+<code class="descclassname">goat.authorities.util.</code><code class="descname">parse_result</code><span class="sig-paren">(</span><em>config</em>, <em>data</em>, <em>path_parser=&lt;function parse_xml_path&gt;</em>, <em>glob={}</em>, <em>nsmap={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#parse_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.parse_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract data from an <code class="xref py py-class docutils literal"><span class="pre">lxml.etree.Element</span></code> using a configuration
+schema.</p>
+<p>config : dict
+data : <code class="xref py py-class docutils literal"><span class="pre">lxml.etree.Element</span></code>
+path_parser : function
+glob : dict
+nsmap : dict</p>
+<p>list</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="goat.authorities.util.parse_xml_path">
+<code class="descclassname">goat.authorities.util.</code><code class="descname">parse_xml_path</code><span class="sig-paren">(</span><em>path_string</em>, <em>nsmap={}</em>, <em>picker_factory=&lt;function content_picker_factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#parse_xml_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.parse_xml_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a function that will retrieve data of interest from an
+<code class="xref py py-class docutils literal"><span class="pre">lxml.etree.Element</span></code>.</p>
+<dl class="docutils">
+<dt>path_string <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>See docs for how this should be written. TODO: write the docs.</dd>
+<dt>nsmap: dict</dt>
+<dd>See the <code class="docutils literal"><span class="pre">lxml.etree</span></code> docs.</dd>
+</dl>
+<p>picker_factory : function</p>
+<p>function</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="goat.authorities.util.passthrough_picker_factory">
+<code class="descclassname">goat.authorities.util.</code><code class="descname">passthrough_picker_factory</code><span class="sig-paren">(</span><em>env</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#passthrough_picker_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.passthrough_picker_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a function that simply returns a passed
+<code class="xref py py-class docutils literal"><span class="pre">lxml.etree.Element</span></code>.</p>
+<p>env : dict</p>
+<p>function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-goat.authorities">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-goat.authorities" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="goat.authorities.AuthorityManager">
+<em class="property">class </em><code class="descclassname">goat.authorities.</code><code class="descname">AuthorityManager</code><span class="sig-paren">(</span><em>configuration</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities.html#AuthorityManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.AuthorityManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Configuration-driven manager for authority services.</p>
+<dl class="docutils">
+<dt>config <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>Name of an authority configuration in <code class="docutils literal"><span class="pre">authorities</span></code>. Will look for
+<code class="docutils literal"><span class="pre">{path}/{config}.json</span></code>.</dd>
+<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>Location of configurations.</dd>
+</dl>
+<dl class="method">
+<dt id="goat.authorities.AuthorityManager.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>identifier</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities.html#AuthorityManager.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.AuthorityManager.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a concept record from the configured authority.</p>
+<dl class="docutils">
+<dt>identifier <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>Used to populate the <code class="docutils literal"><span class="pre">id</span></code> parameter in the request.</dd>
+</dl>
+<p>dict</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="goat.authorities.AuthorityManager.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities.html#AuthorityManager.search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.AuthorityManager.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for concept records in the configured authority.</p>
+<dl class="docutils">
+<dt>params <span class="classifier-delimiter">:</span> <span class="classifier">kwargs</span></dt>
+<dd>Query parameters used to populate the search request.</dd>
+</dl>
+<p>list</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="goat.authorities.ConceptSearchResult">
+<em class="property">class </em><code class="descclassname">goat.authorities.</code><code class="descname">ConceptSearchResult</code><span class="sig-paren">(</span><em>name=''</em>, <em>identifier=''</em>, <em>**extra</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities.html#ConceptSearchResult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.ConceptSearchResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="goat.authorities.ConceptSearchResult.concept_type">
+<code class="descname">concept_type</code><a class="headerlink" href="#goat.authorities.ConceptSearchResult.concept_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="goat.authorities.ConceptSearchResult.description">
+<code class="descname">description</code><a class="headerlink" href="#goat.authorities.ConceptSearchResult.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="goat.authorities.ConceptSearchResult.identities">
+<code class="descname">identities</code><a class="headerlink" href="#goat.authorities.ConceptSearchResult.identities" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">goat.authorities package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-goat.authorities.util">goat.authorities.util module</a></li>
+<li><a class="reference internal" href="#module-goat.authorities">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="goat.html">goat package</a><ul>
+      <li>Previous: <a href="goat.html" title="previous chapter">goat package</a></li>
+      <li>Next: <a href="goat.migrations.html" title="next chapter">goat.migrations package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/goat.authorities.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Erick Peirson.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/goat.authorities.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

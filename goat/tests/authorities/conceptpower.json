@@ -12,7 +12,7 @@
                 {
                     "accept": "id",
                     "send": "sendid",
-                    "required": "true"
+                    "required": true
                 }
             ],
             "response": {
@@ -52,7 +52,7 @@
                 {
                     "accept": "q",
                     "send": "q",
-                    "required": "true"
+                    "required": true
                 }
             ],
             "response": {

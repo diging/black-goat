@@ -1,0 +1,563 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Authority Service Description &mdash; black-goat 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="black-goat 0.1 documentation" href="index.html" />
+    <link rel="next" title="REST API" href="rest.html" />
+    <link rel="prev" title="Black Goat: Authority Aggregation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="authority-service-description">
+<h1>Authority Service Description<a class="headerlink" href="#authority-service-description" title="Permalink to this headline">¶</a></h1>
+<p>BlackGoat can query remote authority services that expose RESTful APIs. You can
+tell BlackGoat how to query an API using a configuration document. This page
+describes the convention for writing a service configuration document that
+BlackGoat can understand.</p>
+<p>The current version of BlackGoat supports public APIs only. Methods like
+<a class="reference internal" href="#create"><span>create</span></a> will presumably require some form of authentication, so this
+specification will be extended in the near future to support various
+authentication schemes.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>A service configuration document is a valid JSON document that describes what
+methods the service exposes, and how to use those methods.</p>
+<p>There are several core <a class="reference internal" href="#special"><span>Special Methods</span></a> that (ideally) each authority service
+will provide and describe, including <a class="reference internal" href="#getmethod"><span>get</span></a> and :ref:<code class="docutils literal"><span class="pre">searchmethod</span></code>.</p>
+</div>
+<div class="section" id="template">
+<span id="id1"></span><h2>Template<a class="headerlink" href="#template" title="Permalink to this headline">¶</a></h2>
+<p>Many properties of a configuration will use special template declarations to
+describe how an endpoint should be called.</p>
+<p><code class="docutils literal"><span class="pre">{}</span></code> - Curly braces can be used to indicate where parameters should be
+inserted. There are some global variables (e.g. <code class="docutils literal"><span class="pre">endpoint</span></code>) that are
+available in any template. For method paths, variable names will be
+dereferenced against the <code class="docutils literal"><span class="pre">parameters</span></code> defined for that method.</p>
+</div>
+<div class="section" id="top-level-properties">
+<h2>Top-level Properties<a class="headerlink" href="#top-level-properties" title="Permalink to this headline">¶</a></h2>
+<p>The following properties should be included at the top level of the document.</p>
+<table border="1" class="docutils" id="id8">
+<caption><span class="caption-text">Top-level properties</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="8%" />
+<col width="17%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property</th>
+<th class="head">Type</th>
+<th class="head">Required</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">name</span></code></td>
+<td>String</td>
+<td>No</td>
+<td>A (brief) name of the authority service. May be used for display.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">description</span></code></td>
+<td>String</td>
+<td>No</td>
+<td>A free-form description of the service. May be used for display.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">documentation</span></code></td>
+<td>String</td>
+<td>Recommended</td>
+<td>The location of human-readable documentation for the service.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">endpoint</span></code></td>
+<td>String</td>
+<td>Yes</td>
+<td>The root endpoint of the service API. This property will be used to build
+requests, and can be referenced in path templates as <code class="docutils literal"><span class="pre">{endpoint}</span></code>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">methods</span></code></td>
+<td>Array</td>
+<td>Yes</td>
+<td>This property contains all of the <a class="reference internal" href="#methods"><span>Method Descriptions</span></a> offered by the service.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Conceptpower&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;Conceptpower authority service&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;documentation&quot;</span><span class="o">:</span> <span class="s2">&quot;http://diging.github.io/conceptpower&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;endpoint&quot;</span><span class="o">:</span> <span class="s2">&quot;http://chps.asu.edu/conceptpower/rest&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;methods&quot;</span><span class="o">:</span> <span class="p">[...]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="method-descriptions">
+<span id="methods"></span><h2>Method Descriptions<a class="headerlink" href="#method-descriptions" title="Permalink to this headline">¶</a></h2>
+<p>A service configuration can describe an unlimited number of methods. Each method
+is represented as an object in the top-level <a class="reference internal" href="#methods"><span>Method Descriptions</span></a> property. Each
+method should contain the properties shown below. There are several
+<a class="reference internal" href="#special"><span>Special Methods</span></a> whose descriptions, if included, must conform to some additional
+constraints.</p>
+<table border="1" class="docutils" id="id9">
+<caption><span class="caption-text">General method properties</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="8%" />
+<col width="17%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property</th>
+<th class="head">Type</th>
+<th class="head">Required</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">name</span></code></td>
+<td>String</td>
+<td>Yes</td>
+<td>An Unix-name for the method.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">description</span></code></td>
+<td>String</td>
+<td>No</td>
+<td>A free-form description of the method. Used for display.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">path</span></code></td>
+<td><a class="reference internal" href="#template"><span>Template</span></a></td>
+<td>Yes</td>
+<td>The location of the method interface relative to <code class="docutils literal"><span class="pre">endpoint</span></code>. This can
+include parameters described in <code class="docutils literal"><span class="pre">parameters</span></code> (the name provided in
+the <code class="docutils literal"><span class="pre">send</span></code> parameter should be used).</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">method</span></code></td>
+<td>String</td>
+<td>Yes</td>
+<td>This should be the name of an HTTP method, e.g. &#8220;GET&#8221;, &#8220;POST&#8221;, &#8220;PUT&#8221;,
+etc.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#parameters"><span>parameters</span></a></td>
+<td>Array</td>
+<td>No</td>
+<td>If the method accepts specific parameters, they should be defined here.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#response"><span>response</span></a></td>
+<td>Object</td>
+<td>Yes</td>
+<td>Describes how to interpret the response from the method.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id2">
+<h3>Example<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="p">...</span>
+    <span class="s2">&quot;methods&quot;</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;get&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="o">:</span> <span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;{endpoint}/Concept&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;parameters&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="p">...</span> <span class="p">],</span>
+            <span class="s2">&quot;response&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="parameters">
+<span id="id3"></span><h3><code class="docutils literal"><span class="pre">parameters</span></code><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">parameters</span></code> property should contain descriptions of any parameters that
+should be passed to the method. Any parameters not used to render the
+<code class="docutils literal"><span class="pre">path</span></code> template will be passed in the payload of the request.</p>
+<p>Each object in <code class="docutils literal"><span class="pre">parameters</span></code> should include the following properties:</p>
+<table border="1" class="docutils" id="id10">
+<caption><span class="caption-text">Properties for parameters</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="8%" />
+<col width="17%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property</th>
+<th class="head">Type</th>
+<th class="head">Required</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">accept</span></code></td>
+<td>String</td>
+<td>Yes</td>
+<td>The name of the parameter exposed to BlackGoat. If the method is one of
+the special methods, the value of this property may be constrained.
+May also be used for display purposes.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">send</span></code></td>
+<td>String</td>
+<td>Yes</td>
+<td>The name of the parameter sent to the method. If the parameter is used
+in the <code class="docutils literal"><span class="pre">path</span></code> template, this is the name that will be exposed.
+Otherwise, this will be used as the parameter name in the request
+payload.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">required</span></code></td>
+<td>Boolean</td>
+<td>No</td>
+<td>If not provided, defaults to <code class="docutils literal"><span class="pre">false</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id4">
+<h4>Example<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="s2">&quot;parameters&quot;</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;accept&quot;</span><span class="o">:</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;send&quot;</span><span class="o">:</span> <span class="s2">&quot;sendid&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;required&quot;</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="p">}</span>
+    <span class="p">...</span>
+<span class="p">],</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="response">
+<span id="id5"></span><h3><code class="docutils literal"><span class="pre">response</span></code><a class="headerlink" href="#response" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">response</span></code> property should describe how to parse the response returned
+by the service.</p>
+<p>The following properties should be included:</p>
+<table border="1" class="docutils" id="id11">
+<caption><span class="caption-text">Properties for response</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="8%" />
+<col width="17%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property</th>
+<th class="head">Type</th>
+<th class="head">Required</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Should be <code class="docutils literal"><span class="pre">xml</span></code> (implemented) or <code class="docutils literal"><span class="pre">json</span></code> (coming soon).</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">path</span></code></td>
+<td><a class="reference internal" href="#paths"><span>Path</span></a></td>
+<td>No</td>
+<td>Describes the starting point for parsing data in the response document.
+If not provided, paths in the individual response parameters will be
+assumed to start at the root of the document.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">namespaces</span></code></td>
+<td>Array</td>
+<td>No</td>
+<td><p class="first">Any namespaces used in the response document should be provided here.
+Each namespace should be an object with two parameters: <code class="docutils literal"><span class="pre">prefix</span></code>
+(used in parameter paths) and <code class="docutils literal"><span class="pre">namespace</span></code>. For example:</p>
+<div class="last highlight-javascript"><div class="highlight"><pre><span></span><span class="s2">&quot;namespaces&quot;</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;prefix&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;namespace&quot;</span><span class="o">:</span> <span class="s2">&quot;http://www.digitalhps.org/&quot;</span>
+    <span class="p">},</span>
+    <span class="p">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">parameters</span></code></td>
+<td>Array</td>
+<td>Yes</td>
+<td><p class="first">Each object in <code class="docutils literal"><span class="pre">parameters</span></code> should contain two properties: <code class="docutils literal"><span class="pre">name</span></code>,
+which will be the data key exposed to BlackGoat, and <code class="docutils literal"><span class="pre">path</span></code>, which
+should describe where in the response to find the corresponding value.
+See <a class="reference internal" href="#paths"><span>Path</span></a> for details.
+For example:</p>
+<div class="last highlight-javascript"><div class="highlight"><pre><span></span><span class="s2">&quot;parameters&quot;</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">...</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;concept_type&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;digitalHPS:type[type_uri]&quot;</span>
+    <span class="p">},</span>
+    <span class="p">...</span>
+ <span class="p">]</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="path">
+<span id="paths"></span><h2>Path<a class="headerlink" href="#path" title="Permalink to this headline">¶</a></h2>
+<p>When interpreting a response from an API, BlackGoat will use the paths defined
+in the method&#8217;s <code class="docutils literal"><span class="pre">parameters</span></code> property to extract specific pieces of
+information.</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">/</span></code> - Parts (levels) of a path should be separated by the forward slash.</li>
+<li><code class="docutils literal"><span class="pre">:</span></code> - If <code class="docutils literal"><span class="pre">namespaces</span></code> are defined (see below), the colon should be used
+to explicitly declare the namespace of each part of a path. For example,
+the path <code class="docutils literal"><span class="pre">digitalHPS:conceptEntry/digitalHPS:lemma</span></code> refers to the <code class="docutils literal"><span class="pre">lemma</span></code>
+element inside the <code class="docutils literal"><span class="pre">conceptEntry</span></code> element, both of which belong to the
+<code class="docutils literal"><span class="pre">digitalHPS</span></code> namespace.</li>
+<li><code class="docutils literal"><span class="pre">[]</span></code> - If the value of interest resides in an attribute of the focal
+element, that attribute can be referenced using square braces. Note that this
+only applies to the deepest (last) element in the path. This really only
+applies to XML response. This should come before the <code class="docutils literal"><span class="pre">*</span></code> and <code class="docutils literal"><span class="pre">|</span></code>
+operators.</li>
+<li><code class="docutils literal"><span class="pre">*</span></code> - The asterisk following an element name indicates that there may be
+multiple elements that match the path at a given level. If provided in a
+parameter description, multiple values will be returned for that field. If
+provided in the base <code class="docutils literal"><span class="pre">path</span></code> for a <code class="docutils literal"><span class="pre">response</span></code>, then multiple results will
+be extracted. The <code class="docutils literal"><span class="pre">*</span></code> should come at the end of the element name, but before
+the <code class="docutils literal"><span class="pre">|</span></code> operator.</li>
+<li><code class="docutils literal"><span class="pre">|</span></code> - If provided after on the last element of the path, indicates that the
+value in the target element should be separated into multiple values using
+a specific delimiter. For example, <code class="docutils literal"><span class="pre">names|,</span></code> indicates that the value of
+the <code class="docutils literal"><span class="pre">names</span></code> element should be split on any commas.</li>
+</ul>
+<div class="section" id="id6">
+<h3>Example<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>Given the following document:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;root&gt;</span>
+    <span class="nt">&lt;things&gt;</span>
+        <span class="nt">&lt;thing&gt;</span>
+            <span class="nt">&lt;age</span> <span class="na">real-age=</span><span class="s">&quot;54&quot;</span><span class="nt">&gt;</span>43<span class="nt">&lt;/age&gt;</span>
+            <span class="nt">&lt;names&gt;</span>Bob, Robert, Rob<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;/thing&gt;</span>
+        <span class="nt">&lt;thing&gt;</span>
+            <span class="nt">&lt;age</span> <span class="na">real-age=</span><span class="s">&quot;4&quot;</span><span class="nt">&gt;</span>5<span class="nt">&lt;/age&gt;</span>
+            <span class="nt">&lt;names&gt;</span>Josephine, Jo<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;/thing&gt;</span>
+     <span class="nt">&lt;/things&gt;</span>
+ <span class="nt">&lt;/root&gt;</span>
+</pre></div>
+</div>
+<p>This configuration...</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="s2">&quot;response&quot;</span><span class="o">:</span> <span class="p">{</span>
+     <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;xml&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;root/things/thing*&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;parameters&quot;</span><span class="o">:</span> <span class="p">[</span>
+         <span class="p">{</span>
+             <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;monikers&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;names|,&quot;</span>
+         <span class="p">},</span>
+         <span class="p">{</span>
+             <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;age[real-age]&quot;</span>
+         <span class="p">}</span>
+     <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>...will extract the following data:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">[</span>
+     <span class="p">{</span>
+         <span class="s2">&quot;monikers&quot;</span><span class="o">:</span> <span class="p">[</span>
+             <span class="s2">&quot;Bob&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;Robert&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;Rob&quot;</span>
+         <span class="p">],</span>
+         <span class="s2">&quot;age&quot;</span><span class="o">:</span> <span class="s2">&quot;54&quot;</span>
+     <span class="p">},</span>
+     <span class="p">{</span>
+         <span class="s2">&quot;monikers&quot;</span><span class="o">:</span> <span class="p">[</span>
+             <span class="s2">&quot;Jo&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;Josephine&quot;</span>
+         <span class="p">],</span>
+         <span class="s2">&quot;age&quot;</span><span class="o">:</span> <span class="s2">&quot;4&quot;</span>
+     <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="special-methods">
+<span id="special"></span><h2>Special Methods<a class="headerlink" href="#special-methods" title="Permalink to this headline">¶</a></h2>
+<p>There are a few methods that most authority services will be expected to
+provide. Each of these methods has some specific constraints.</p>
+<div class="section" id="get">
+<span id="getmethod"></span><h3><code class="docutils literal"><span class="pre">get</span></code><a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">get</span></code> method should yield a data object that represents a single
+concept. The configuration for this method <strong>must</strong>...</p>
+<ul class="simple">
+<li>accept a parameter called <code class="docutils literal"><span class="pre">id</span></code>;</li>
+<li>yield the parameter <code class="docutils literal"><span class="pre">name</span></code>.</li>
+</ul>
+<p>It <strong>may</strong> also yield the parameters <code class="docutils literal"><span class="pre">description</span></code>, <code class="docutils literal"><span class="pre">concept_type</span></code>, and
+<code class="docutils literal"><span class="pre">identities</span></code>.</p>
+<p>If <code class="docutils literal"><span class="pre">concept_type</span></code> is provided, its value <strong>must</strong> be an URI of a type concept.</p>
+<p>If <code class="docutils literal"><span class="pre">identities</span></code> is provided, the values <strong>must</strong> be URIs of other concepts to
+which the focal concept is identical. These will be used to automatically
+generate identity statements.</p>
+</div>
+<div class="section" id="search">
+<span id="searchmethod"></span><h3><code class="docutils literal"><span class="pre">search</span></code><a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">search</span></code> method should yield an array of data objects, each of which
+represents a single concept. The configuration for this method <strong>must</strong>...</p>
+<ul class="simple">
+<li>accept a parameter called <code class="docutils literal"><span class="pre">q</span></code>;</li>
+<li>yield multiple results, each of which has the parameters <code class="docutils literal"><span class="pre">name</span></code> and
+<code class="docutils literal"><span class="pre">identifier</span></code>.</li>
+</ul>
+<p>It <strong>may</strong> also accept additional parameters.</p>
+<p>Each result <strong>may</strong> also contain the parameters <code class="docutils literal"><span class="pre">description</span></code>,
+<code class="docutils literal"><span class="pre">concept_type</span></code>, and <code class="docutils literal"><span class="pre">identities</span></code>.</p>
+<p>If <code class="docutils literal"><span class="pre">concept_type</span></code> is provided, its value <strong>must</strong> be an URI of a type concept.</p>
+<p>If <code class="docutils literal"><span class="pre">identities</span></code> is provided, the values <strong>must</strong> be URIs of other concepts to
+which the focal concept is identical. These will be used to automatically
+generate identity statements.</p>
+</div>
+<div class="section" id="create">
+<span id="id7"></span><h3><code class="docutils literal"><span class="pre">create</span></code><a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">create</span></code> method should accept data that will be used to generate a new
+concept in the authority system.</p>
+<p>The configuration for this method <strong>must</strong>...</p>
+<ul class="simple">
+<li>accept the parameter``name``;</li>
+<li>yield a single data object with the parameters <code class="docutils literal"><span class="pre">name</span></code> and <code class="docutils literal"><span class="pre">identifier</span></code>.</li>
+</ul>
+<p>It <strong>may</strong> accept additional parameters, such as <code class="docutils literal"><span class="pre">description</span></code> and
+<code class="docutils literal"><span class="pre">concept_type</span></code>.</p>
+<p>It <strong>may</strong> also yield the parameters <code class="docutils literal"><span class="pre">description</span></code>, <code class="docutils literal"><span class="pre">concept_type</span></code>, and
+<code class="docutils literal"><span class="pre">identities</span></code>.</p>
+<p>If <code class="docutils literal"><span class="pre">concept_type</span></code> is provided, its value <strong>must</strong> be an URI of a type concept.</p>
+<p>If <code class="docutils literal"><span class="pre">identities</span></code> is provided, the values <strong>must</strong> be URIs of other concepts to
+which the focal concept is identical. These will be used to automatically
+generate identity statements.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Authority Service Description</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#template">Template</a></li>
+<li><a class="reference internal" href="#top-level-properties">Top-level Properties</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#method-descriptions">Method Descriptions</a><ul>
+<li><a class="reference internal" href="#id2">Example</a></li>
+<li><a class="reference internal" href="#parameters"><code class="docutils literal"><span class="pre">parameters</span></code></a><ul>
+<li><a class="reference internal" href="#id4">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#response"><code class="docutils literal"><span class="pre">response</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#path">Path</a><ul>
+<li><a class="reference internal" href="#id6">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#special-methods">Special Methods</a><ul>
+<li><a class="reference internal" href="#get"><code class="docutils literal"><span class="pre">get</span></code></a></li>
+<li><a class="reference internal" href="#search"><code class="docutils literal"><span class="pre">search</span></code></a></li>
+<li><a class="reference internal" href="#create"><code class="docutils literal"><span class="pre">create</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Black Goat: Authority Aggregation</a></li>
+      <li>Next: <a href="rest.html" title="next chapter">REST API</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/services.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Erick Peirson.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/services.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

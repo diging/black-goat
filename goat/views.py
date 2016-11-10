@@ -138,12 +138,14 @@ class AuthorityViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
     permission_classes = [GoatPermission]
     queryset = Authority.objects.all()
     serializer_class = AuthoritySerializer
+    filter_backends = (DjangoFilterBackend, )
 
 
 class IdentityViewSet(viewsets.ModelViewSet):
     permission_classes = [GoatPermission]
     queryset = Identity.objects.all()
     serializer_class = IdentitySerializer
+    filter_backends = (DjangoFilterBackend, )
 
     def create(self, request, *args, **kwargs):
         """
@@ -174,3 +176,4 @@ class IdentitySystemViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
     permission_classes = [GoatPermission]
     queryset = IdentitySystem.objects.all()
     serializer_class = IdentitySystemSerializer
+    filter_backends = (DjangoFilterBackend, )
