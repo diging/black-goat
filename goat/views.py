@@ -51,44 +51,62 @@ def home(request):
 
 @login_required
 def search(request):
+    """
+    Trigger a search.
+
+    Since we may be searching quite a few authority systems, this view kicks
+    off an asynchronous search strategy and forwards the client to the search
+    status view.
+
+    TODO: should be able to filter the authorities used in the search.
+    """
     q = request.GET.get('q', None)
     if not q:
         return JsonResponse({'detail': 'No query provided.'}, status=400)
 
-    result = tasks.orchestrate_search.delay(request.user, Authority.objects.all(), {'q': q})
+    # We let the asynchronous task create the SearchResultSet, since it will
+    #  spawn tasks that need to update the SearchResultSet upon completion.
+    result = tasks.orchestrate_search.delay(request.user,
+                                            Authority.objects.all(),
+                                            {'q': q})
+
+    # We have to build this manually, since the SearchResultSet probably does
+    #  not yet exist.
     relative_path = reverse('search') + result.id + u'/'
-    absolute_path = request.build_absolute_uri(relative_path)
     return HttpResponseRedirect(relative_path)
-    return JsonResponse({'results': absolute_path})
 
 
 @login_required
 def search_results(request, result_id):
+    """
+    Check the status of a search.
+    """
+    # It is possible for the client to end up here before the SearchResultSet
+    #  is created (e.g. if Celery is super backed-up). So we'll just pretend
+    #  that it exists, and placate the client with a soothing message.
     try:
         result = SearchResultSet.objects.get(task_id=result_id)
     except SearchResultSet.DoesNotExist:
-        return JsonResponse({'detail': "Your search is pending creation."}, status=200)
+        return JsonResponse({'detail': "Your search is pending creation."},
+                            status=200)
+
+    # Only the owner of the search can check its status here.
     if result.added_by != request.user:
-        raise
+        _data, _status = {'detail': "This search does not belong to you."}, 403
 
-    # if not result.state == SearchResultSet.SUCCESS:
-    #     task = AsyncResult(result_id)
-    #     result.state = task.state
-    #     result.save()
-
-    if result.state == SearchResultSet.PENDING:
+    elif result.state == SearchResultSet.PENDING:
         _data = {
             'detail': "Your search is being executed; please check back later."
         }
-        _status = 202
+        _status = 202   # Accepted.
+
+    # If the search was successful, send the client to the concept list view
+    #  with the appropriate search filter parameter.
     elif result.state == SearchResultSet.SUCCESS:
-        # Send the client to the concept list view with the search filter
-        #  parameter.
         redirect_target = reverse('concept-list') + u'?search=' + result.task_id
         return HttpResponseRedirect(redirect_target)
-    else:
-        _data = {'detail': result.state}
-        _status = 200
+    else:    # TODO: Probably we should say something more informative here.
+        _data, _status = {'detail': result.state}, 200
     return JsonResponse(_data, status=_status)
 
 

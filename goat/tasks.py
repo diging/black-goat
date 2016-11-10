@@ -102,6 +102,15 @@ def search(self, user, authority, params, result_id):
 
 @app.task(name='goat.tasks.register_results', bind=True)
 def register_results(self, results):
+    """
+    Callback for :func:`.search`\. Updates the :class:`.SearchResultSet` with
+    :class:`.Concept`\s, and flags it as successful.
+
+    Parameters
+    ----------
+    results : list
+        Each item should be a return value (tuple) from :func:`.search`\.
+    """
     if not results:
         return
 
