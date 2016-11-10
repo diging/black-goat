@@ -6,8 +6,8 @@ from celery import Celery
 app = Celery('goat')
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
-app.conf.update(BROKER_URL=os.environ.get('REDIS_URL', 'redis://'),
-                CELERY_RESULT_BACKEND=os.environ.get('REDIS_URL', 'redis://'))
+app.conf.update(BROKER_URL=os.environ.get('REDISTOGO_URL', 'redis://'),
+                CELERY_RESULT_BACKEND=os.environ.get('REDISTOGO_URL', 'redis://'))
 
 from celery import chord
 
