@@ -2,8 +2,47 @@
 Helper functions for parsing authority descriptions.
 """
 
-import re, requests
+import re, requests, json, jsonpickle
 import lxml.etree as ET
+from pprint import pprint
+
+
+class JSONData(dict):
+    def __init__(self, obj={}):
+        for key, value in obj.iteritems():
+            if type(value) is list:
+                value = JSONArray(value)
+            elif type(value) is dict:
+                value = JSONData(value)
+            self[key] = value
+
+    def get(self, key, *args, **kwargs):
+        return super(JSONData, self).get(key)
+
+
+class JSONArray(list):
+    """
+    Adds ``get`` support to a list.
+    """
+    def __init__(self, obj=[]):
+        for item in obj:
+            if type(item) is dict:
+                item = JSONData(item)
+            self.append(item)
+
+    def get(self, key, *args, **kwargs):
+        """
+        Return the value of ``key`` in the first object in list.
+        """
+        return self[0].get(key) if len(self) > 0 else None
+
+    def get_list(self, key=None, *args, **kwargs):
+        """
+        Return the value of ``key`` in each object in list.
+        """
+        if key:
+            return [obj.get(key) for obj in self if key in obj]
+        return [obj for obj in self]
 
 
 def is_multiple(tag):
@@ -19,10 +58,14 @@ def is_multiple(tag):
     tuple
         tag name (str), multiple (bool)
     """
+    if not tag:
+        return None, None
+    if tag == '*':
+        return None, '*'
     return re.match(ur'([^\*]+)(\*)?', tag).groups()
 
 
-def get_recursive_pathfinder(nsmap={}):
+def get_recursive_pathfinder(nsmap={}, method='find', mult_method='findall'):
     """
     Generate a recursive function that follows the path in ``tags``, starting
     at ``elem``.
@@ -40,20 +83,26 @@ def get_recursive_pathfinder(nsmap={}):
 
         this_tag, multiple = is_multiple(tags.pop())
         base = _get(elem, tags)
+
         if type(base) is list:
             _apply = lambda b, t, meth: [getattr(c, meth)(t, nsmap) for c in b]
         else:
             _apply = lambda b, t, meth: getattr(b, meth)(t, nsmap)
         if multiple:
-            return _apply(base, this_tag, 'findall')
-        return _apply(base, this_tag, 'find')
+            return _apply(base, this_tag, mult_method)
+        return _apply(base, this_tag, method)
     return _get
 
 
-def content_picker_factory(env):
+_etree_attribute_getter = lambda e, attr: getattr(e, 'attrib', {}).get(attr, u'').strip().decode('utf-8')
+_etree_cdata_getter = lambda e: getattr(getattr(e, 'text', u''), 'strip', lambda: u'')().decode('utf-8')
+_json_content_getter = lambda e: e
+
+
+def content_picker_factory(env, content_getter=_etree_cdata_getter, attrib_getter=_etree_attribute_getter):
     """
     Generates a function that retrives the CDATA content or attribute value of
-    an :class:`lxml.etree.Element`\.
+    an element.
 
     Parameters
     ----------
@@ -66,13 +115,11 @@ def content_picker_factory(env):
     attribute, sep = env.get('attribute', False), env.get('sep', None)
     _separator = lambda value: [v.strip() for v in value.split(sep)] if sep else value
     if attribute:
-        _picker = lambda e: _separator(getattr(e, 'attrib', {}).get(attribute[1:-1], u'').strip().decode('utf-8'))
-    else:
-        _picker = lambda e: _separator(getattr(getattr(e, 'text', u''), 'strip', lambda: u'')().decode('utf-8'))
-    return _picker
+        return lambda elem: _separator(attrib_getter(elem, attribute[1:-1]))
+    return lambda elem: _separator(content_getter(elem))
 
 
-def passthrough_picker_factory(env):
+def passthrough_picker_factory(env, *args, **kwargs):
     """
     Generates a function that simply returns a passed
     :class:`lxml.etree.Element`\.
@@ -119,6 +166,67 @@ def decompose_path(path_string):
     return path, attribute, sep
 
 
+def _parse_path(path_string, nsmap={}, picker_factory={},
+                content_getter=_etree_cdata_getter,
+                attrib_getter=_etree_attribute_getter,
+                get_method='find', mult_method='findall'):
+    """
+    Generate a function that will retrieve data of interest from an arbitrary
+    object. This combines common logic from public parser functions.
+
+    Parameters
+    ----------
+    path_string : str
+        See docs for how this should be written. TODO: write the docs.
+    nsmap: dict
+    picker_factory : function
+    get_method : str
+    list_method : str
+
+    Returns
+    -------
+    function
+    """
+    path, attribute, sep = decompose_path(path_string)
+    _get = get_recursive_pathfinder(nsmap=nsmap, method=get_method,
+                                    mult_method=mult_method)
+    _picker = picker_factory(locals(), content_getter=content_getter)
+
+    def _apply(obj):    # No empty values.
+        value = _picker(obj)
+        if value and (not type(value) is list or value[0]):
+            return value
+
+    def _call(elem):
+        base = _get(elem, path)
+        if type(base) is list:
+            return [_apply(child) for child in base]
+        return _apply(base)
+    return _call
+
+
+def parse_json_path(path_string, nsmap={}, picker_factory=content_picker_factory):
+    """
+    Generate a function that will retrieve data of interest from a
+    :class:`.JSONData` object.
+
+    Parameters
+    ----------
+    path_string : str
+        See docs for how this should be written. TODO: write the docs.
+    nsmap: dict
+        Not used.
+    picker_factory : function
+
+
+    Returns
+    -------
+    function
+    """
+    return _parse_path(path_string, nsmap, picker_factory, _json_content_getter,
+                       _json_content_getter, 'get', 'get_list')
+
+
 def parse_xml_path(path_string, nsmap={}, picker_factory=content_picker_factory):
     """
     Generate a function that will retrieve data of interest from an
@@ -137,27 +245,7 @@ def parse_xml_path(path_string, nsmap={}, picker_factory=content_picker_factory)
     -------
     function
     """
-
-    path, attribute, sep = decompose_path(path_string)
-
-    # Path can be arbitrarily deep, so we use recursion here to chain .find()
-    #  calls from the root element to the deepest child.
-    _get = get_recursive_pathfinder(nsmap=nsmap)
-
-    # Decide how to obtain the final value of interest.
-    _picker = picker_factory(locals())
-
-    def _apply(obj):    # No empty values.
-        value = _picker(obj)
-        if value and (not type(value) is list or value[0]):
-            return value
-
-    def _call(elem):
-        base = _get(elem, path)
-        if type(base) is list:
-            return [_apply(child) for child in base]
-        return _apply(base)
-    return _call
+    return _parse_path(path_string, nsmap, picker_factory)
 
 
 def generate_request(config, glob={}):
@@ -177,7 +265,7 @@ def generate_request(config, glob={}):
         ``headers`` will be pulled out and passed as headers in the request.
     """
     try:
-        path_partial = config.get('path')
+        path_partial = config['path']
     except KeyError:
         raise ValueError("Malformed configuration: no path specified.")
 
@@ -247,8 +335,8 @@ def parse_result(config, data, path_parser=parse_xml_path, glob={}, nsmap={}):
     base_path = config.get('path', None)
     _, multiple = is_multiple(base_path)
     if base_path:
-        _parser = parse_xml_path(base_path, nsmap=nsmap,
-                                 picker_factory=passthrough_picker_factory)
+        _parser = path_parser(base_path, nsmap=nsmap,
+                              picker_factory=passthrough_picker_factory)
         base_elems = _parser(data)
     else:
         base_elems = [data]
@@ -256,11 +344,27 @@ def parse_result(config, data, path_parser=parse_xml_path, glob={}, nsmap={}):
     data = []
     base_elems = [base_elems] if not type(base_elems) is list else base_elems
     for base_elem in base_elems:
-        parsed_data = {}
+        # Serialized raw data is preserved.
+        parsed_data = {'raw': jsonpickle.dumps(base_elem)}
+
+        # Each parameter is parsed separately.
         for parameter in config.get('parameters'):
-            func = path_parser(parameter.get('path'), nsmap)
-            parsed_data[parameter.get('name')] = func(base_elem)
+            name = parameter.get('name')
+            value = path_parser(parameter.get('path'), nsmap)(base_elem)
+
+            # Templated parameters use response data and globals to generate
+            #  values (e.g. URI from ID).
+            template = parameter.get('template')
+            if template:
+                # Isolate only the globals needed to render the template.
+                format_keys = re.findall(ur'\{([^\}]+)\}', template)
+                fmt = {k: v for k, v in glob.iteritems() if k in format_keys}
+                if name in format_keys:    # Probably this is always true...
+                    fmt[name] = value
+                value = template.format(**fmt)
+            parsed_data[name] = value
         data.append(parsed_data)
+
     if not multiple:
         assert len(data) == 1
         return data[0]
@@ -281,6 +385,23 @@ def parse_raw_xml(raw):
     -------
     :class:`lxml.etree.Element`
     """
+    # if type(raw) is str:
+    #     raw = raw.decode('utf-8')
+    return ET.fromstring(raw)
+
+
+def parse_raw_json(raw):
+    """
+    Parse raw JSON response content.
+
+    Parameters
+    ----------
+    raw : unicode
+
+    Returns
+    -------
+    :class:`lxml.etree.Element`
+    """
     if type(raw) is str:
         raw = raw.decode('utf-8')
-    return ET.fromstring(raw)
+    return JSONData(json.loads(raw))

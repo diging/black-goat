@@ -55,7 +55,7 @@ def search(self, user, authority, params, result_id):
     results = authority.search(params)
 
     for result in results:
-        identities = result.extra.pop('identities')
+        identities = result.extra.pop('identities', None)
 
         if result.concept_type:
             concept_type, _ = Concept.objects.get_or_create(
@@ -73,6 +73,7 @@ def search(self, user, authority, params, result_id):
             defaults={
                 'added_by': user,
                 'name': result.name,
+                'local_identifier': result.local_identifier,
                 'description': result.description,
                 'concept_type': concept_type,
                 'authority': authority

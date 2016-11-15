@@ -14,6 +14,10 @@ class ConceptSearchResult(object):
         self.extra = extra
 
     @property
+    def local_identifier(self):
+        return self.extra.get('local_identifier', None)
+
+    @property
     def identities(self):
         return self.extra.get('identities', None)
 
@@ -25,6 +29,14 @@ class ConceptSearchResult(object):
     def concept_type(self):
         return self.extra.get('concept_type', None)
 
+    @property
+    def raw(self):
+        return self.extra.get('raw', None)
+
+
+def _get_method_params(cfg):
+    return [prm.get('accept') for prm
+            in cfg.get('response', {}).get('parameters', {})]
 
 
 class AuthorityManager(object):
@@ -74,18 +86,27 @@ class AuthorityManager(object):
         function
         """
         config = self._get_method_config(name)
-        response_type = config.get('type', 'xml')
-        if response_type != 'xml':
-            raise NotImplementedError('No parser for %s' % config.get('type'))
+        response_type = config.get('response', {}).get('type', 'xml').lower()
+
+        if response_type not in ['xml', 'json']:
+            raise NotImplementedError('No parser for %s' % response_type)
+
+        if response_type == 'xml':
+            parse_raw = parse_raw_xml
+            parse_path = parse_xml_path
+        elif response_type == 'json':
+            parse_raw = parse_raw_json
+            parse_path = parse_json_path
 
         request_func = generate_request(config, self._get_globs())
 
         def _call(*args, **kwargs):
             return parse_result(config.get('response'),
-                                parse_raw_xml(request_func(*args, **kwargs)),
-                                parse_xml_path,
+                                parse_raw(request_func(*args, **kwargs)),
+                                parse_path,
                                 self._get_globs(),
                                 self._get_nsmap(config))
+        _call.parameters = _get_method_params(config)
         return _call
 
     def __getattr__(self, name):
@@ -93,20 +114,30 @@ class AuthorityManager(object):
             return self._generic(name)
         return super(AuthorityManager, self).__getattr__(name)
 
-    def get(self, identifier):
+    def get(self, identifier=None, local_identifier=None):
         """
         Get a concept record from the configured authority.
+
+        Although both ``identifier`` and ``local_identifier`` are declared as
+        optional, it is a good idea to pass them both and let the configuration
+        sort things out.
 
         Parameters
         ----------
         identifier : str
             Used to populate the ``id`` parameter in the request.
+        local_identifier : str
+            Used to populate the ``local_id`` parameter in the request.
 
         Returns
         -------
         dict
         """
-        return self._generic('get')(id=identifier)
+        _call = self._generic('get')
+        if identifier and 'id' in _call.parameters:
+            return _call(id=identifier)
+        elif local_identifier and 'local_id' in _call.parameters:
+            return _call(local_id=local_identifier)
 
     def search(self, params):
         """

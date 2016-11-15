@@ -1,0 +1,100 @@
+{
+    "name": "VIAF",
+    "description": "Virtual Internet Authority File",
+    "documentation": "https://platform.worldcat.org/api-explorer/apis/VIAF",
+    "endpoint": "http://viaf.org",
+    "methods": [
+        {
+            "name": "get",
+            "method": "GET",
+            "path": "{endpoint}/viaf/{local_id}/viaf.xml",
+            "parameters": [
+                {
+                    "accept": "local_id",
+                    "send": "local_id",
+                    "required": true
+                }
+            ],
+            "response": {
+                "type": "xml",
+                "path": "",
+                "namespaces": [
+                    {
+                        "prefix": "rdf",
+                        "namespace": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                    },
+                    {
+                        "prefix": "dcterms",
+                        "namespace": "http://purl.org/dc/terms/"
+                    },
+                    {
+                        "prefix": "viaf",
+                        "namespace": "http://viaf.org/viaf/terms#"
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "concept_type",
+                        "path": "viaf:nameType"
+                    },
+                    {
+                        "name": "name",
+                        "path": "viaf:mainHeadings/viaf:data/viaf:text"
+                    },
+                    {
+                        "name": "identifier",
+                        "path": "viaf:Document/viaf:primaryTopic[resource]"
+                    },
+                    {
+                        "name": "local_identifier",
+                        "path": "viaf:viafID"
+                    },
+                    {
+                        "name": "identities",
+                        "path": "viaf:mainHeadings/viaf:data*/viaf:sources/viaf:sid*"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "search",
+            "method": "GET",
+            "path": "{endpoint}/viaf/AutoSuggest",
+            "parameters": [
+                {
+                    "accept": "q",
+                    "send": "query",
+                    "required": true
+                }
+            ],
+            "response": {
+                "type": "json",
+                "path": "result/*",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "path": "term"
+                    },
+                    {
+                        "name": "description",
+                        "path": "displayForm"
+                    },
+                    {
+                        "name": "concept_type",
+                        "path": "nametype",
+                        "template": "viaf:{concept_type}"
+                    },
+                    {
+                        "name": "identifier",
+                        "path": "viafid",
+                        "template": "{endpoint}/viaf/{identifier}"
+                    },
+                    {
+                        "name": "local_identifier",
+                        "path": "viafid"
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -60,7 +60,14 @@ class Concept(BasicAccessionMixin):
     """Primary name or label, used for search and display."""
 
     identifier = models.CharField(max_length=255, unique=True)
-    """The symbol used by ``authority`` to identify this concept."""
+    """
+    The URI for this concept.
+    """
+
+    local_identifier = models.CharField(max_length=255, **opt)
+    """
+    The symbol used by ``authority`` internally to identify this concept.
+    """
 
     description = models.TextField(null=True, blank=True)
     """If available, a freeform description provided by the authority."""

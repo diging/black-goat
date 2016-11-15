@@ -82,6 +82,10 @@
                         "path": "digitalHPS:id[concept_uri]"
                     },
                     {
+                        "name": "local_identifier",
+                        "path": "digitalHPS:id"
+                    },
+                    {
                         "name": "identities",
                         "path": "digitalHPS:equal_to|,"
                     }

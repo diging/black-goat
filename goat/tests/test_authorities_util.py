@@ -223,3 +223,113 @@ class TestParseXMLPath(unittest.TestCase):
         path = "test:afieldname"
 
         self.assertEqual(parse_xml_path(path, nsmap)(root), field.text)
+
+
+class TestJSONPath(unittest.TestCase):
+    def test_no_namespace_no_attrib(self):
+        """
+        The default behavior of :meth:`goat.authorities.util.parse_json_path`
+        is to return a callable that, when passed a ``dict`` parsed from JSON
+        finds the element with specified name and returns its value (presumably
+        CDATA).
+        """
+        doc = JSONData(json.loads("""
+            {
+                "key": "value"
+            }
+            """))
+
+        path = "key"
+
+        self.assertEqual(parse_json_path(path)(doc), "value")
+
+    def test_no_namespace_no_attrib_sep(self):
+        """
+        If a separator is provided, should use that separator to individuate
+        multiple values from a single element.
+        """
+        doc = JSONData(json.loads("""
+            {
+                "key": "value1,value2"
+            }
+            """))
+
+        path = "key|,"
+
+        result = parse_json_path(path)(doc)
+        self.assertSetEqual(set(result), set(["value1", "value2"]))
+
+    def test_no_namespace_no_attrib_multiple(self):
+        """
+        The aterisk * operator is used to indicate that multiple elements
+        should be expected.
+        """
+
+        doc = JSONData(json.loads("""
+            {
+                "data": [
+                    {
+                        "key": "value1"
+                    },
+                    {
+                        "key": "value2"
+                    }
+                ]
+            }
+            """))
+
+        path = "data/key*"
+
+        result = parse_json_path(path)(doc)
+
+        self.assertSetEqual(set(result), set(["value1", "value2"]))
+
+    def test_no_namespace_no_attrib_multiple_levels(self):
+        """
+        The path can have several levels, separated by '/' characters.
+        """
+        doc = JSONData(json.loads("""
+            {
+                "data": [
+                    {
+                        "key": "value1"
+                    }
+                ]
+            }
+            """))
+        path = "data/key"
+
+        self.assertEqual(parse_json_path(path)(doc), "value1")
+
+    def test_no_namespace_no_attrib_multiple_levels_multivalue(self):
+        """
+        Iteration can happen at any level of the path. An asterisk following
+        a path element indicates that the element belongs to an object inside
+        of an array. This is slightly counterintuitive, but keeps the syntax
+        consistent with the XML syntax.
+        """
+        doc = JSONData(json.loads("""
+            {
+                "data": [
+                    {
+                        "key": {
+                            "more": "data"
+                        }
+                    },
+                    {
+                        "key": {
+                            "more": "awesome"
+                        }
+                    }
+                ]
+            }
+            """))
+        path = "data/key*/more"
+        result = parse_json_path(path)(doc)
+        self.assertSetEqual(set(result), set(["data", "awesome"]))
+
+
+# class TestNativeVIAFDocument(unittest.TestCase):
+#     def test_get(self):
+#         doc = ET.parse('tests/mock_responses/viaf_get.xml')
+#         config =
