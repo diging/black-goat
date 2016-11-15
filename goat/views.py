@@ -53,7 +53,6 @@ def home(request):
     return HttpResponse(loader.get_template('goat/base.html').render(context))
 
 
-@login_required
 def identical(request):
     """
     This provides a simpler view onto :class:`.Identity` instances than the
@@ -80,7 +79,6 @@ def identical(request):
     return JsonResponse({'results': serialized})
 
 
-@login_required
 def search(request):
     """
     Trigger a search.
@@ -107,7 +105,6 @@ def search(request):
     return HttpResponseRedirect(relative_path)
 
 
-@login_required
 def search_results(request, result_id):
     """
     Check the status of a search.
