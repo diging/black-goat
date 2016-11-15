@@ -43,7 +43,8 @@
                     },
                     {
                         "name": "identifier",
-                        "path": "viaf:Document/viaf:primaryTopic[resource]"
+                        "path": "viaf:viafID",
+                        "template": "{endpoint}/viaf/{identifier}"
                     },
                     {
                         "name": "local_identifier",

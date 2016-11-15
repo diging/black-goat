@@ -65,3 +65,4 @@ def authority_post_save(sender, **kwargs):
             name = u'builtin:%s' % authority.name,
             added_by = authority.added_by
         )
+        authority.save()

@@ -8,6 +8,7 @@ from goat import tasks, filters
 from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework.renderers import JSONRenderer
 from rest_framework.permissions import BasePermission, IsAuthenticatedOrReadOnly, DjangoObjectPermissions, DjangoModelPermissions
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -16,9 +17,12 @@ from guardian.shortcuts import get_user_perms
 from django.template import RequestContext, loader
 from django.http import (JsonResponse, HttpResponse, HttpResponseBadRequest,
                          HttpResponseRedirect, Http404, HttpResponseForbidden)
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from celery.result import AsyncResult
+
+from itertools import groupby
 
 
 class GoatPermission(BasePermission):
@@ -47,6 +51,33 @@ def home(request):
     """
     context = RequestContext(request, {})
     return HttpResponse(loader.get_template('goat/base.html').render(context))
+
+
+@login_required
+def identical(request):
+    """
+    This provides a simpler view onto :class:`.Identity` instances than the
+    :class:`.IdentityViewSet`\. Here the client can pass an identifier and
+    (optionally) an ID for a :class:`.IdentitySystem` instance, and get an
+    array of identical :class:`.Concept`\s.
+    """
+
+    concept = get_object_or_404(Concept, identifier=request.GET.get('identifier'))
+
+    identities = concept.identities.all()
+
+    system_id = request.GET.get('system')
+    if system_id:
+        identities = identities.filter(part_of_id=system_id)
+    try:    # The QuerySet is lazy, so we do the serialization in here.
+        concepts = Concept.objects.filter(identities__in=identities.values_list('id', flat=True)).distinct('id')
+        serialized = ConceptSerializer(concepts, many=True).data
+    except:    # This is kind of a drag, but SQLite doesn't support DISTINCT ON.
+        concepts = Concept.objects.filter(identities__in=identities.values_list('id', flat=True))
+        concepts = [[c for c in concept][0] for i, concept in groupby(sorted(concepts, key=lambda o: o.id), key=lambda o: o.id)]
+        serialized = ConceptSerializer(concepts, many=True).data
+
+    return JsonResponse({'results': serialized})
 
 
 @login_required
@@ -139,6 +170,15 @@ class AuthorityViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
     queryset = Authority.objects.all()
     serializer_class = AuthoritySerializer
     filter_backends = (DjangoFilterBackend, )
+
+    def get_serializer_class(self):
+        """
+        Don't show the configuration in the list view.
+        """
+        if self.action == 'list':
+            return AuthoritySerializer
+        return AuthorityDetailSerializer
+
 
 
 class IdentityViewSet(viewsets.ModelViewSet):
