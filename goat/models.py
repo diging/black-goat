@@ -118,7 +118,7 @@ class Identity(BasicAccessionMixin):
     part_of = models.ForeignKey('IdentitySystem', related_name='identities')
     """The system to which this identity belongs."""
 
-    confidence = models.FloatField(default=1.0)
+    confidence = models.FloatField(default=1.0, blank=True, null=True)
     """This can (optionally) be used to express relative confidence levels."""
 
     concepts = models.ManyToManyField('Concept', related_name='identities')
