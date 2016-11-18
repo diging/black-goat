@@ -47,11 +47,41 @@
 <div class="section" id="module-goat.authorities.util">
 <span id="goat-authorities-util-module"></span><h2>goat.authorities.util module<a class="headerlink" href="#module-goat.authorities.util" title="Permalink to this headline">¶</a></h2>
 <p>Helper functions for parsing authority descriptions.</p>
+<dl class="class">
+<dt id="goat.authorities.util.JSONArray">
+<em class="property">class </em><code class="descclassname">goat.authorities.util.</code><code class="descname">JSONArray</code><span class="sig-paren">(</span><em>obj=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#JSONArray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.JSONArray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">list</span></code></p>
+<p>Adds <code class="docutils literal"><span class="pre">get</span></code> support to a list.</p>
+<dl class="method">
+<dt id="goat.authorities.util.JSONArray.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#JSONArray.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.JSONArray.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value of <code class="docutils literal"><span class="pre">key</span></code> in the first object in list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="goat.authorities.util.JSONArray.get_list">
+<code class="descname">get_list</code><span class="sig-paren">(</span><em>key=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#JSONArray.get_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.JSONArray.get_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value of <code class="docutils literal"><span class="pre">key</span></code> in each object in list.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="goat.authorities.util.JSONData">
+<em class="property">class </em><code class="descclassname">goat.authorities.util.</code><code class="descname">JSONData</code><span class="sig-paren">(</span><em>obj={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#JSONData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.JSONData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dict</span></code></p>
+<dl class="method">
+<dt id="goat.authorities.util.JSONData.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#JSONData.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.JSONData.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="goat.authorities.util.content_picker_factory">
-<code class="descclassname">goat.authorities.util.</code><code class="descname">content_picker_factory</code><span class="sig-paren">(</span><em>env</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#content_picker_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.content_picker_factory" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">goat.authorities.util.</code><code class="descname">content_picker_factory</code><span class="sig-paren">(</span><em>env</em>, <em>content_getter=&lt;function &lt;lambda&gt;&gt;</em>, <em>attrib_getter=&lt;function &lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#content_picker_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.content_picker_factory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates a function that retrives the CDATA content or attribute value of
-an <code class="xref py py-class docutils literal"><span class="pre">lxml.etree.Element</span></code>.</p>
+an element.</p>
 <p>env : dict</p>
 <p>function</p>
 </dd></dl>
@@ -81,7 +111,7 @@ glob : dict</p>
 
 <dl class="function">
 <dt id="goat.authorities.util.get_recursive_pathfinder">
-<code class="descclassname">goat.authorities.util.</code><code class="descname">get_recursive_pathfinder</code><span class="sig-paren">(</span><em>nsmap={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#get_recursive_pathfinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.get_recursive_pathfinder" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">goat.authorities.util.</code><code class="descname">get_recursive_pathfinder</code><span class="sig-paren">(</span><em>nsmap={}</em>, <em>method='find'</em>, <em>mult_method='findall'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#get_recursive_pathfinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.get_recursive_pathfinder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a recursive function that follows the path in <code class="docutils literal"><span class="pre">tags</span></code>, starting
 at <code class="docutils literal"><span class="pre">elem</span></code>.</p>
 </dd></dl>
@@ -95,6 +125,29 @@ at <code class="docutils literal"><span class="pre">elem</span></code>.</p>
 <dt>tuple</dt>
 <dd>tag name (str), multiple (bool)</dd>
 </dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="goat.authorities.util.parse_json_path">
+<code class="descclassname">goat.authorities.util.</code><code class="descname">parse_json_path</code><span class="sig-paren">(</span><em>path_string</em>, <em>nsmap={}</em>, <em>picker_factory=&lt;function content_picker_factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#parse_json_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.parse_json_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a function that will retrieve data of interest from a
+<a class="reference internal" href="#goat.authorities.util.JSONData" title="goat.authorities.util.JSONData"><code class="xref py py-class docutils literal"><span class="pre">JSONData</span></code></a> object.</p>
+<dl class="docutils">
+<dt>path_string <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>See docs for how this should be written. TODO: write the docs.</dd>
+<dt>nsmap: dict</dt>
+<dd>Not used.</dd>
+</dl>
+<p>picker_factory : function</p>
+<p>function</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="goat.authorities.util.parse_raw_json">
+<code class="descclassname">goat.authorities.util.</code><code class="descname">parse_raw_json</code><span class="sig-paren">(</span><em>raw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#parse_raw_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.parse_raw_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse raw JSON response content.</p>
+<p>raw : unicode</p>
+<p><code class="xref py py-class docutils literal"><span class="pre">lxml.etree.Element</span></code></p>
 </dd></dl>
 
 <dl class="function">
@@ -135,7 +188,7 @@ nsmap : dict</p>
 
 <dl class="function">
 <dt id="goat.authorities.util.passthrough_picker_factory">
-<code class="descclassname">goat.authorities.util.</code><code class="descname">passthrough_picker_factory</code><span class="sig-paren">(</span><em>env</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#passthrough_picker_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.passthrough_picker_factory" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">goat.authorities.util.</code><code class="descname">passthrough_picker_factory</code><span class="sig-paren">(</span><em>env</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities/util.html#passthrough_picker_factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.util.passthrough_picker_factory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates a function that simply returns a passed
 <code class="xref py py-class docutils literal"><span class="pre">lxml.etree.Element</span></code>.</p>
 <p>env : dict</p>
@@ -159,11 +212,16 @@ nsmap : dict</p>
 </dl>
 <dl class="method">
 <dt id="goat.authorities.AuthorityManager.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>identifier</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities.html#AuthorityManager.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.AuthorityManager.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>identifier=None</em>, <em>local_identifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities.html#AuthorityManager.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.AuthorityManager.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a concept record from the configured authority.</p>
+<p>Although both <code class="docutils literal"><span class="pre">identifier</span></code> and <code class="docutils literal"><span class="pre">local_identifier</span></code> are declared as
+optional, it is a good idea to pass them both and let the configuration
+sort things out.</p>
 <dl class="docutils">
 <dt>identifier <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
 <dd>Used to populate the <code class="docutils literal"><span class="pre">id</span></code> parameter in the request.</dd>
+<dt>local_identifier <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>Used to populate the <code class="docutils literal"><span class="pre">local_id</span></code> parameter in the request.</dd>
 </dl>
 <p>dict</p>
 </dd></dl>
@@ -198,6 +256,16 @@ nsmap : dict</p>
 <dl class="attribute">
 <dt id="goat.authorities.ConceptSearchResult.identities">
 <code class="descname">identities</code><a class="headerlink" href="#goat.authorities.ConceptSearchResult.identities" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="goat.authorities.ConceptSearchResult.local_identifier">
+<code class="descname">local_identifier</code><a class="headerlink" href="#goat.authorities.ConceptSearchResult.local_identifier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="goat.authorities.ConceptSearchResult.raw">
+<code class="descname">raw</code><a class="headerlink" href="#goat.authorities.ConceptSearchResult.raw" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

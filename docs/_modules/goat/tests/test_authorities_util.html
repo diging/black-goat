@@ -262,7 +262,117 @@
         <span class="n">root</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;test:afieldname&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">parse_xml_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">nsmap</span><span class="p">)(</span><span class="n">root</span><span class="p">),</span> <span class="n">field</span><span class="o">.</span><span class="n">text</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">parse_xml_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">nsmap</span><span class="p">)(</span><span class="n">root</span><span class="p">),</span> <span class="n">field</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="TestJSONPath"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_util.TestJSONPath">[docs]</a><span class="k">class</span> <span class="nc">TestJSONPath</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="TestJSONPath.test_no_namespace_no_attrib"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_util.TestJSONPath.test_no_namespace_no_attrib">[docs]</a>    <span class="k">def</span> <span class="nf">test_no_namespace_no_attrib</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The default behavior of :meth:`goat.authorities.util.parse_json_path`</span>
+<span class="sd">        is to return a callable that, when passed a ``dict`` parsed from JSON</span>
+<span class="sd">        finds the element with specified name and returns its value (presumably</span>
+<span class="sd">        CDATA).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">JSONData</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            {</span>
+<span class="s2">                &quot;key&quot;: &quot;value&quot;</span>
+<span class="s2">            }</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">))</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;key&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">parse_json_path</span><span class="p">(</span><span class="n">path</span><span class="p">)(</span><span class="n">doc</span><span class="p">),</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestJSONPath.test_no_namespace_no_attrib_sep"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_util.TestJSONPath.test_no_namespace_no_attrib_sep">[docs]</a>    <span class="k">def</span> <span class="nf">test_no_namespace_no_attrib_sep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If a separator is provided, should use that separator to individuate</span>
+<span class="sd">        multiple values from a single element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">JSONData</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            {</span>
+<span class="s2">                &quot;key&quot;: &quot;value1,value2&quot;</span>
+<span class="s2">            }</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">))</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;key|,&quot;</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">parse_json_path</span><span class="p">(</span><span class="n">path</span><span class="p">)(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertSetEqual</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="nb">set</span><span class="p">([</span><span class="s2">&quot;value1&quot;</span><span class="p">,</span> <span class="s2">&quot;value2&quot;</span><span class="p">]))</span>
+</div>
+<div class="viewcode-block" id="TestJSONPath.test_no_namespace_no_attrib_multiple"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_util.TestJSONPath.test_no_namespace_no_attrib_multiple">[docs]</a>    <span class="k">def</span> <span class="nf">test_no_namespace_no_attrib_multiple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The aterisk * operator is used to indicate that multiple elements</span>
+<span class="sd">        should be expected.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">JSONData</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            {</span>
+<span class="s2">                &quot;data&quot;: [</span>
+<span class="s2">                    {</span>
+<span class="s2">                        &quot;key&quot;: &quot;value1&quot;</span>
+<span class="s2">                    },</span>
+<span class="s2">                    {</span>
+<span class="s2">                        &quot;key&quot;: &quot;value2&quot;</span>
+<span class="s2">                    }</span>
+<span class="s2">                ]</span>
+<span class="s2">            }</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">))</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;data/key*&quot;</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">parse_json_path</span><span class="p">(</span><span class="n">path</span><span class="p">)(</span><span class="n">doc</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertSetEqual</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="nb">set</span><span class="p">([</span><span class="s2">&quot;value1&quot;</span><span class="p">,</span> <span class="s2">&quot;value2&quot;</span><span class="p">]))</span>
+</div>
+<div class="viewcode-block" id="TestJSONPath.test_no_namespace_no_attrib_multiple_levels"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_util.TestJSONPath.test_no_namespace_no_attrib_multiple_levels">[docs]</a>    <span class="k">def</span> <span class="nf">test_no_namespace_no_attrib_multiple_levels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The path can have several levels, separated by &#39;/&#39; characters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">JSONData</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            {</span>
+<span class="s2">                &quot;data&quot;: [</span>
+<span class="s2">                    {</span>
+<span class="s2">                        &quot;key&quot;: &quot;value1&quot;</span>
+<span class="s2">                    }</span>
+<span class="s2">                ]</span>
+<span class="s2">            }</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">))</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;data/key&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">parse_json_path</span><span class="p">(</span><span class="n">path</span><span class="p">)(</span><span class="n">doc</span><span class="p">),</span> <span class="s2">&quot;value1&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestJSONPath.test_no_namespace_no_attrib_multiple_levels_multivalue"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_util.TestJSONPath.test_no_namespace_no_attrib_multiple_levels_multivalue">[docs]</a>    <span class="k">def</span> <span class="nf">test_no_namespace_no_attrib_multiple_levels_multivalue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iteration can happen at any level of the path. An asterisk following</span>
+<span class="sd">        a path element indicates that the element belongs to an object inside</span>
+<span class="sd">        of an array. This is slightly counterintuitive, but keeps the syntax</span>
+<span class="sd">        consistent with the XML syntax.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">JSONData</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            {</span>
+<span class="s2">                &quot;data&quot;: [</span>
+<span class="s2">                    {</span>
+<span class="s2">                        &quot;key&quot;: {</span>
+<span class="s2">                            &quot;more&quot;: &quot;data&quot;</span>
+<span class="s2">                        }</span>
+<span class="s2">                    },</span>
+<span class="s2">                    {</span>
+<span class="s2">                        &quot;key&quot;: {</span>
+<span class="s2">                            &quot;more&quot;: &quot;awesome&quot;</span>
+<span class="s2">                        }</span>
+<span class="s2">                    }</span>
+<span class="s2">                ]</span>
+<span class="s2">            }</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">))</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;data/key*/more&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">parse_json_path</span><span class="p">(</span><span class="n">path</span><span class="p">)(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertSetEqual</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="nb">set</span><span class="p">([</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;awesome&quot;</span><span class="p">]))</span>
+
+
+<span class="c1"># class TestNativeVIAFDocument(unittest.TestCase):</span>
+<span class="c1">#     def test_get(self):</span>
+<span class="c1">#         doc = ET.parse(&#39;tests/mock_responses/viaf_get.xml&#39;)</span>
+<span class="c1">#         config =</span></div></div>
 </pre></div>
 
           </div>

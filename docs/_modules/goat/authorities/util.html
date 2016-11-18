@@ -42,10 +42,49 @@
 <span class="sd">Helper functions for parsing authority descriptions.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">json</span><span class="o">,</span> <span class="nn">jsonpickle</span>
 <span class="kn">import</span> <span class="nn">lxml.etree</span> <span class="kn">as</span> <span class="nn">ET</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
 
+<div class="viewcode-block" id="JSONData"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.JSONData">[docs]</a><span class="k">class</span> <span class="nc">JSONData</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">JSONArray</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">JSONData</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="JSONData.get"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.JSONData.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">JSONData</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="JSONArray"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.JSONArray">[docs]</a><span class="k">class</span> <span class="nc">JSONArray</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds ``get`` support to a list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">:</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">JSONData</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+<div class="viewcode-block" id="JSONArray.get"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.JSONArray.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the value of ``key`` in the first object in list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="JSONArray.get_list"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.JSONArray.get_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the value of ``key`` in each object in list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
+
+</div></div>
 <div class="viewcode-block" id="is_multiple"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.is_multiple">[docs]</a><span class="k">def</span> <span class="nf">is_multiple</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Detect the multi-value flag (``*``) in a path part (``tag``).</span>
@@ -59,10 +98,14 @@
 <span class="sd">    tuple</span>
 <span class="sd">        tag name (str), multiple (bool)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tag</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span>
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">ur&#39;([^\*]+)(\*)?&#39;</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
 
 </div>
-<div class="viewcode-block" id="get_recursive_pathfinder"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.get_recursive_pathfinder">[docs]</a><span class="k">def</span> <span class="nf">get_recursive_pathfinder</span><span class="p">(</span><span class="n">nsmap</span><span class="o">=</span><span class="p">{}):</span>
+<div class="viewcode-block" id="get_recursive_pathfinder"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.get_recursive_pathfinder">[docs]</a><span class="k">def</span> <span class="nf">get_recursive_pathfinder</span><span class="p">(</span><span class="n">nsmap</span><span class="o">=</span><span class="p">{},</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;find&#39;</span><span class="p">,</span> <span class="n">mult_method</span><span class="o">=</span><span class="s1">&#39;findall&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a recursive function that follows the path in ``tags``, starting</span>
 <span class="sd">    at ``elem``.</span>
@@ -80,20 +123,26 @@
 
         <span class="n">this_tag</span><span class="p">,</span> <span class="n">multiple</span> <span class="o">=</span> <span class="n">is_multiple</span><span class="p">(</span><span class="n">tags</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>
         <span class="n">base</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">tags</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
             <span class="n">_apply</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">b</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">meth</span><span class="p">:</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">meth</span><span class="p">)(</span><span class="n">t</span><span class="p">,</span> <span class="n">nsmap</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">b</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">_apply</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">b</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">meth</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">meth</span><span class="p">)(</span><span class="n">t</span><span class="p">,</span> <span class="n">nsmap</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">multiple</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">_apply</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">this_tag</span><span class="p">,</span> <span class="s1">&#39;findall&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">_apply</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">this_tag</span><span class="p">,</span> <span class="s1">&#39;find&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_apply</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">this_tag</span><span class="p">,</span> <span class="n">mult_method</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_apply</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">this_tag</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_get</span>
 
 </div>
-<div class="viewcode-block" id="content_picker_factory"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.content_picker_factory">[docs]</a><span class="k">def</span> <span class="nf">content_picker_factory</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+<span class="n">_etree_attribute_getter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s1">&#39;attrib&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="s1">u&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">_etree_cdata_getter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">u&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;strip&#39;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="s1">u&#39;&#39;</span><span class="p">)()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">_json_content_getter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span>
+
+
+<div class="viewcode-block" id="content_picker_factory"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.content_picker_factory">[docs]</a><span class="k">def</span> <span class="nf">content_picker_factory</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">content_getter</span><span class="o">=</span><span class="n">_etree_cdata_getter</span><span class="p">,</span> <span class="n">attrib_getter</span><span class="o">=</span><span class="n">_etree_attribute_getter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates a function that retrives the CDATA content or attribute value of</span>
-<span class="sd">    an :class:`lxml.etree.Element`\.</span>
+<span class="sd">    an element.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -106,13 +155,11 @@
     <span class="n">attribute</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attribute&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sep&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
     <span class="n">_separator</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)]</span> <span class="k">if</span> <span class="n">sep</span> <span class="k">else</span> <span class="n">value</span>
     <span class="k">if</span> <span class="n">attribute</span><span class="p">:</span>
-        <span class="n">_picker</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">_separator</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s1">&#39;attrib&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attribute</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">u&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">_picker</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">_separator</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">u&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;strip&#39;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="s1">u&#39;&#39;</span><span class="p">)()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">_picker</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">elem</span><span class="p">:</span> <span class="n">_separator</span><span class="p">(</span><span class="n">attrib_getter</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">attribute</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">elem</span><span class="p">:</span> <span class="n">_separator</span><span class="p">(</span><span class="n">content_getter</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="passthrough_picker_factory"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.passthrough_picker_factory">[docs]</a><span class="k">def</span> <span class="nf">passthrough_picker_factory</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+<div class="viewcode-block" id="passthrough_picker_factory"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.passthrough_picker_factory">[docs]</a><span class="k">def</span> <span class="nf">passthrough_picker_factory</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates a function that simply returns a passed</span>
 <span class="sd">    :class:`lxml.etree.Element`\.</span>
@@ -159,6 +206,67 @@
     <span class="k">return</span> <span class="n">path</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">sep</span>
 
 </div>
+<span class="k">def</span> <span class="nf">_parse_path</span><span class="p">(</span><span class="n">path_string</span><span class="p">,</span> <span class="n">nsmap</span><span class="o">=</span><span class="p">{},</span> <span class="n">picker_factory</span><span class="o">=</span><span class="p">{},</span>
+                <span class="n">content_getter</span><span class="o">=</span><span class="n">_etree_cdata_getter</span><span class="p">,</span>
+                <span class="n">attrib_getter</span><span class="o">=</span><span class="n">_etree_attribute_getter</span><span class="p">,</span>
+                <span class="n">get_method</span><span class="o">=</span><span class="s1">&#39;find&#39;</span><span class="p">,</span> <span class="n">mult_method</span><span class="o">=</span><span class="s1">&#39;findall&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a function that will retrieve data of interest from an arbitrary</span>
+<span class="sd">    object. This combines common logic from public parser functions.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path_string : str</span>
+<span class="sd">        See docs for how this should be written. TODO: write the docs.</span>
+<span class="sd">    nsmap: dict</span>
+<span class="sd">    picker_factory : function</span>
+<span class="sd">    get_method : str</span>
+<span class="sd">    list_method : str</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="n">decompose_path</span><span class="p">(</span><span class="n">path_string</span><span class="p">)</span>
+    <span class="n">_get</span> <span class="o">=</span> <span class="n">get_recursive_pathfinder</span><span class="p">(</span><span class="n">nsmap</span><span class="o">=</span><span class="n">nsmap</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">get_method</span><span class="p">,</span>
+                                    <span class="n">mult_method</span><span class="o">=</span><span class="n">mult_method</span><span class="p">)</span>
+    <span class="n">_picker</span> <span class="o">=</span> <span class="n">picker_factory</span><span class="p">(</span><span class="nb">locals</span><span class="p">(),</span> <span class="n">content_getter</span><span class="o">=</span><span class="n">content_getter</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_apply</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>    <span class="c1"># No empty values.</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">_picker</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span> <span class="ow">or</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">_call</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">_apply</span><span class="p">(</span><span class="n">child</span><span class="p">)</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">base</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">_apply</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_call</span>
+
+
+<div class="viewcode-block" id="parse_json_path"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.parse_json_path">[docs]</a><span class="k">def</span> <span class="nf">parse_json_path</span><span class="p">(</span><span class="n">path_string</span><span class="p">,</span> <span class="n">nsmap</span><span class="o">=</span><span class="p">{},</span> <span class="n">picker_factory</span><span class="o">=</span><span class="n">content_picker_factory</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a function that will retrieve data of interest from a</span>
+<span class="sd">    :class:`.JSONData` object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path_string : str</span>
+<span class="sd">        See docs for how this should be written. TODO: write the docs.</span>
+<span class="sd">    nsmap: dict</span>
+<span class="sd">        Not used.</span>
+<span class="sd">    picker_factory : function</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_parse_path</span><span class="p">(</span><span class="n">path_string</span><span class="p">,</span> <span class="n">nsmap</span><span class="p">,</span> <span class="n">picker_factory</span><span class="p">,</span> <span class="n">_json_content_getter</span><span class="p">,</span>
+                       <span class="n">_json_content_getter</span><span class="p">,</span> <span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;get_list&#39;</span><span class="p">)</span>
+
+</div>
 <div class="viewcode-block" id="parse_xml_path"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.parse_xml_path">[docs]</a><span class="k">def</span> <span class="nf">parse_xml_path</span><span class="p">(</span><span class="n">path_string</span><span class="p">,</span> <span class="n">nsmap</span><span class="o">=</span><span class="p">{},</span> <span class="n">picker_factory</span><span class="o">=</span><span class="n">content_picker_factory</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a function that will retrieve data of interest from an</span>
@@ -177,27 +285,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">path</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="n">decompose_path</span><span class="p">(</span><span class="n">path_string</span><span class="p">)</span>
-
-    <span class="c1"># Path can be arbitrarily deep, so we use recursion here to chain .find()</span>
-    <span class="c1">#  calls from the root element to the deepest child.</span>
-    <span class="n">_get</span> <span class="o">=</span> <span class="n">get_recursive_pathfinder</span><span class="p">(</span><span class="n">nsmap</span><span class="o">=</span><span class="n">nsmap</span><span class="p">)</span>
-
-    <span class="c1"># Decide how to obtain the final value of interest.</span>
-    <span class="n">_picker</span> <span class="o">=</span> <span class="n">picker_factory</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-
-    <span class="k">def</span> <span class="nf">_apply</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>    <span class="c1"># No empty values.</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">_picker</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span> <span class="ow">or</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-            <span class="k">return</span> <span class="n">value</span>
-
-    <span class="k">def</span> <span class="nf">_call</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
-        <span class="n">base</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">_apply</span><span class="p">(</span><span class="n">child</span><span class="p">)</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">base</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">_apply</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_call</span>
+    <span class="k">return</span> <span class="n">_parse_path</span><span class="p">(</span><span class="n">path_string</span><span class="p">,</span> <span class="n">nsmap</span><span class="p">,</span> <span class="n">picker_factory</span><span class="p">)</span>
 
 </div>
 <div class="viewcode-block" id="generate_request"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.generate_request">[docs]</a><span class="k">def</span> <span class="nf">generate_request</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">glob</span><span class="o">=</span><span class="p">{}):</span>
@@ -217,7 +305,7 @@
 <span class="sd">        ``headers`` will be pulled out and passed as headers in the request.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">path_partial</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+        <span class="n">path_partial</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Malformed configuration: no path specified.&quot;</span><span class="p">)</span>
 
@@ -287,8 +375,8 @@
     <span class="n">base_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">multiple</span> <span class="o">=</span> <span class="n">is_multiple</span><span class="p">(</span><span class="n">base_path</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">base_path</span><span class="p">:</span>
-        <span class="n">_parser</span> <span class="o">=</span> <span class="n">parse_xml_path</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">nsmap</span><span class="o">=</span><span class="n">nsmap</span><span class="p">,</span>
-                                 <span class="n">picker_factory</span><span class="o">=</span><span class="n">passthrough_picker_factory</span><span class="p">)</span>
+        <span class="n">_parser</span> <span class="o">=</span> <span class="n">path_parser</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">nsmap</span><span class="o">=</span><span class="n">nsmap</span><span class="p">,</span>
+                              <span class="n">picker_factory</span><span class="o">=</span><span class="n">passthrough_picker_factory</span><span class="p">)</span>
         <span class="n">base_elems</span> <span class="o">=</span> <span class="n">_parser</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">base_elems</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">]</span>
@@ -296,11 +384,27 @@
     <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">base_elems</span> <span class="o">=</span> <span class="p">[</span><span class="n">base_elems</span><span class="p">]</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">base_elems</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span> <span class="k">else</span> <span class="n">base_elems</span>
     <span class="k">for</span> <span class="n">base_elem</span> <span class="ow">in</span> <span class="n">base_elems</span><span class="p">:</span>
-        <span class="n">parsed_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Serialized raw data is preserved.</span>
+        <span class="n">parsed_data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;raw&#39;</span><span class="p">:</span> <span class="n">jsonpickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">base_elem</span><span class="p">)}</span>
+
+        <span class="c1"># Each parameter is parsed separately.</span>
         <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;parameters&#39;</span><span class="p">):</span>
-            <span class="n">func</span> <span class="o">=</span> <span class="n">path_parser</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">),</span> <span class="n">nsmap</span><span class="p">)</span>
-            <span class="n">parsed_data</span><span class="p">[</span><span class="n">parameter</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">base_elem</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">path_parser</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">),</span> <span class="n">nsmap</span><span class="p">)(</span><span class="n">base_elem</span><span class="p">)</span>
+
+            <span class="c1"># Templated parameters use response data and globals to generate</span>
+            <span class="c1">#  values (e.g. URI from ID).</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;template&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">template</span><span class="p">:</span>
+                <span class="c1"># Isolate only the globals needed to render the template.</span>
+                <span class="n">format_keys</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">ur&#39;\{([^\}]+)\}&#39;</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
+                <span class="n">fmt</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">format_keys</span><span class="p">}</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">format_keys</span><span class="p">:</span>    <span class="c1"># Probably this is always true...</span>
+                    <span class="n">fmt</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">fmt</span><span class="p">)</span>
+            <span class="n">parsed_data</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parsed_data</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">multiple</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -321,9 +425,26 @@
 <span class="sd">    -------</span>
 <span class="sd">    :class:`lxml.etree.Element`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># if type(raw) is str:</span>
+    <span class="c1">#     raw = raw.decode(&#39;utf-8&#39;)</span>
+    <span class="k">return</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="parse_raw_json"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.parse_raw_json">[docs]</a><span class="k">def</span> <span class="nf">parse_raw_json</span><span class="p">(</span><span class="n">raw</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse raw JSON response content.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    raw : unicode</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :class:`lxml.etree.Element`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">JSONData</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">raw</span><span class="p">))</span></div>
 </pre></div>
 
           </div>

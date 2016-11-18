@@ -45,6 +45,9 @@
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;goat/tests/authorities/conceptpower.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">configuration</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;goat/tests/authorities/viaf.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">viaf_configuration</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
 
 <div class="viewcode-block" id="TestAuthorityManager"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_manager.TestAuthorityManager">[docs]</a><span class="k">class</span> <span class="nc">TestAuthorityManager</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
 <div class="viewcode-block" id="TestAuthorityManager.test_init"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_manager.TestAuthorityManager.test_init">[docs]</a>    <span class="k">def</span> <span class="nf">test_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -167,6 +170,100 @@
 </div>
 <div class="viewcode-block" id="TestAuthorityManager.test_generic_nonsense"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_manager.TestAuthorityManager.test_generic_nonsense">[docs]</a>    <span class="k">def</span> <span class="nf">test_generic_nonsense</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">manager</span> <span class="o">=</span> <span class="n">AuthorityManager</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">):</span>
+            <span class="n">manager</span><span class="o">.</span><span class="n">_generic</span><span class="p">(</span><span class="s1">&#39;nonsense&#39;</span><span class="p">)</span>
+
+
+</div></div>
+<div class="viewcode-block" id="TestAuthorityManagerVIAF"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_manager.TestAuthorityManagerVIAF">[docs]</a><span class="k">class</span> <span class="nc">TestAuthorityManagerVIAF</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="TestAuthorityManagerVIAF.test_init"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_manager.TestAuthorityManagerVIAF.test_init">[docs]</a>    <span class="k">def</span> <span class="nf">test_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">manager</span> <span class="o">=</span> <span class="n">AuthorityManager</span><span class="p">(</span><span class="n">viaf_configuration</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">&#39;cannot initialize AuthorityManager&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="n">manager</span><span class="o">.</span><span class="n">methods</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">configuration</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestAuthorityManagerVIAF.test_get_globs"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_manager.TestAuthorityManagerVIAF.test_get_globs">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_globs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">AuthorityManager</span><span class="p">(</span><span class="n">viaf_configuration</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">_get_globs</span><span class="p">(),</span> <span class="nb">dict</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestAuthorityManagerVIAF.test_get_method_config"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_manager.TestAuthorityManagerVIAF.test_get_method_config">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_method_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">AuthorityManager</span><span class="p">(</span><span class="n">viaf_configuration</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">_get_method_config</span><span class="p">(</span><span class="s1">&#39;get&#39;</span><span class="p">),</span> <span class="nb">dict</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestAuthorityManagerVIAF.test_get_nsmap"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_manager.TestAuthorityManagerVIAF.test_get_nsmap">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_nsmap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">AuthorityManager</span><span class="p">(</span><span class="n">viaf_configuration</span><span class="p">)</span>
+        <span class="n">nsmap</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">_get_nsmap</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">_get_method_config</span><span class="p">(</span><span class="s1">&#39;get&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">nsmap</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s1">&#39;viaf&#39;</span><span class="p">,</span> <span class="n">nsmap</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestAuthorityManagerVIAF.test_generic"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_manager.TestAuthorityManagerVIAF.test_generic">[docs]</a>    <span class="k">def</span> <span class="nf">test_generic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">AuthorityManager</span><span class="p">(</span><span class="n">viaf_configuration</span><span class="p">)</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">_generic</span><span class="p">(</span><span class="s1">&#39;get&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">)</span>
+</div>
+    <span class="nd">@mock.patch</span><span class="p">(</span><span class="s1">&#39;requests.get&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="TestAuthorityManagerVIAF.test_generic_get"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_manager.TestAuthorityManagerVIAF.test_generic_get">[docs]</a>    <span class="k">def</span> <span class="nf">test_generic_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_get</span><span class="p">):</span>
+        <span class="k">class</span> <span class="nc">MockResponse</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">content</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;goat/tests/mock_responses/viaf_get.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">mock_get</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MockResponse</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="n">expected_endpoint</span> <span class="o">=</span> <span class="s1">&#39;http://viaf.org/viaf/1/viaf.xml&#39;</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">AuthorityManager</span><span class="p">(</span><span class="n">viaf_configuration</span><span class="p">)</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">_generic</span><span class="p">(</span><span class="s1">&#39;get&#39;</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">local_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">mock_get</span><span class="o">.</span><span class="n">call_count</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">mock_get</span><span class="o">.</span><span class="n">call_args</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">expected_endpoint</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s1">&#39;concept_type&#39;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</div>
+    <span class="nd">@mock.patch</span><span class="p">(</span><span class="s1">&#39;requests.get&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="TestAuthorityManagerVIAF.test_generic_search"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_manager.TestAuthorityManagerVIAF.test_generic_search">[docs]</a>    <span class="k">def</span> <span class="nf">test_generic_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_get</span><span class="p">):</span>
+        <span class="k">class</span> <span class="nc">MockResponse</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">content</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;goat/tests/mock_responses/viaf_search.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">mock_get</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MockResponse</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;http://viaf.org/viaf/AutoSuggest&quot;</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">AuthorityManager</span><span class="p">(</span><span class="n">viaf_configuration</span><span class="p">)</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">_generic</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">)</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">mock_get</span><span class="o">.</span><span class="n">call_count</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">mock_get</span><span class="o">.</span><span class="n">call_args</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s1">&#39;concept_type&#39;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</div>
+    <span class="nd">@mock.patch</span><span class="p">(</span><span class="s1">&#39;requests.get&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="TestAuthorityManagerVIAF.test_search"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_manager.TestAuthorityManagerVIAF.test_search">[docs]</a>    <span class="k">def</span> <span class="nf">test_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_get</span><span class="p">):</span>
+        <span class="k">class</span> <span class="nc">MockResponse</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">content</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;goat/tests/mock_responses/viaf_search.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">mock_get</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MockResponse</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;http://viaf.org/viaf/AutoSuggest&quot;</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">AuthorityManager</span><span class="p">(</span><span class="n">viaf_configuration</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">search</span><span class="p">({</span><span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="s1">&#39;test&#39;</span><span class="p">})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">ConceptSearchResult</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestAuthorityManagerVIAF.test_generic_nonsense"><a class="viewcode-back" href="../../../goat.tests.html#goat.tests.test_authorities_manager.TestAuthorityManagerVIAF.test_generic_nonsense">[docs]</a>    <span class="k">def</span> <span class="nf">test_generic_nonsense</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">AuthorityManager</span><span class="p">(</span><span class="n">viaf_configuration</span><span class="p">)</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">):</span>
             <span class="n">manager</span><span class="o">.</span><span class="n">_generic</span><span class="p">(</span><span class="s1">&#39;nonsense&#39;</span><span class="p">)</span></div></div>
 </pre></div>

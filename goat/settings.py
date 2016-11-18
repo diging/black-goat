@@ -59,7 +59,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissions',
         'rest_framework.permissions.DjangoObjectPermissions',
     ),
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
 }
 
 AUTHENTICATION_BACKENDS = (

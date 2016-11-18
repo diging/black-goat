@@ -46,33 +46,56 @@
 <div class="section" id="get">
 <h3><code class="docutils literal"><span class="pre">GET</span></code><a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h3>
 <p>Returns a list of known authority services.</p>
+<div class="section" id="sample-response">
+<h4>Sample Response<a class="headerlink" href="#sample-response" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;count&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;count&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
     <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
     <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
     <span class="s2">&quot;results&quot;</span><span class="o">:</span> <span class="p">[</span>
         <span class="p">{</span>
-         <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">4</span><span class="p">,</span>
-         <span class="s2">&quot;added&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-11-09T21:27:26.955443Z&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;updated&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-11-10T12:30:03.360530Z&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Conceptpower&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;namespace&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-         <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;configuration&quot;</span><span class="o">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;added_by&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
-         <span class="s2">&quot;builtin_identity_system&quot;</span><span class="o">:</span> <span class="kc">null</span>
+            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="s2">&quot;added_by&quot;</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;erickpeirson&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;builtin_identity_system&quot;</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;builtin:VIAF&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;added&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-11-15T20:55:02.682300Z&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;updated&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-11-15T20:55:12.030762Z&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;VIAF&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;namespace&quot;</span><span class="o">:</span> <span class="s2">&quot;http://viaf.org/viaf/&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;Virtual Internet Authority File&quot;</span>
         <span class="p">},</span>
-        <span class="p">...</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">7</span><span class="p">,</span>
+            <span class="s2">&quot;added_by&quot;</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;erickpeirson&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;builtin_identity_system&quot;</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;builtin:Conceptpower&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;added&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-11-15T20:55:44.522994Z&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;updated&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-11-15T20:55:50.012521Z&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Conceptpower&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;namespace&quot;</span><span class="o">:</span> <span class="s2">&quot;http://www.digitalhps.org/&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;Conceptpower online authority service&quot;</span>
+        <span class="p">}</span>
     <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </div>
+</div>
 <div class="section" id="post">
 <h3><code class="docutils literal"><span class="pre">POST</span></code><a class="headerlink" href="#post" title="Permalink to this headline">¶</a></h3>
 <p>Register a new authority service.</p>
-<table border="1" class="docutils" id="id2">
-<caption><span class="caption-text">Accepted fields</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<table border="1" class="docutils" id="id7">
+<caption><span class="caption-text">Accepted fields</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="17%" />
 <col width="8%" />
@@ -119,6 +142,220 @@ in <a class="reference internal" href="#authoritydetail"><span>/authority/{id}/<
 <span id="authoritydetail"></span><h2><code class="docutils literal"><span class="pre">/authority/{id}/</span></code><a class="headerlink" href="#authority-id" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id1">
 <h3><code class="docutils literal"><span class="pre">GET</span></code><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Returns details about an authority service. This view includes the JSON
+configuration document for the service.</p>
+<div class="section" id="id2">
+<h4>Sample Response<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="s2">&quot;added_by&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;erickpeirson&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;builtin_identity_system&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;builtin:Conceptpower&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;added&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-11-15T20:55:44.522994Z&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;updated&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-11-15T20:55:50.012521Z&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Conceptpower&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;namespace&quot;</span><span class="o">:</span> <span class="s2">&quot;http://www.digitalhps.org/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;Conceptpower online authority service&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;configuration&quot;</span><span class="o">:</span> <span class="s2">&quot;{\r\n    \&quot;name\&quot;: \&quot;Conceptpower\&quot;, ... }&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="concept">
+<span id="conceptlist"></span><h2><code class="docutils literal"><span class="pre">/concept/</span></code><a class="headerlink" href="#concept" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3><code class="docutils literal"><span class="pre">GET</span></code><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Returns a list of known concepts.</p>
+<p>The following parameters can be used to filter/sort the results.</p>
+<table border="1" class="docutils" id="id8">
+<caption><span class="caption-text">Accepted parameters</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="8%" />
+<col width="17%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property</th>
+<th class="head">Type</th>
+<th class="head">Required</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">name</span></code></td>
+<td>String</td>
+<td>No</td>
+<td>Returns only concepts whose <code class="docutils literal"><span class="pre">name</span></code> contains (case-insensitive) the
+provided value.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">identifier</span></code></td>
+<td>String</td>
+<td>No</td>
+<td>Returns only concepts whose <code class="docutils literal"><span class="pre">identifier</span></code> matches the passed value. This
+should (in theory) return only one result.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">concept_type</span></code></td>
+<td>String</td>
+<td>No</td>
+<td>Returns only concepts of a specific type (by type <code class="docutils literal"><span class="pre">identifier</span></code>).</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">added_by</span></code></td>
+<td>String</td>
+<td>No</td>
+<td>Returns only concepts added by a specific user (by <code class="docutils literal"><span class="pre">username</span></code>).</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">authority</span></code></td>
+<td>Int</td>
+<td>No</td>
+<td>Return only concepts from a specific authority (by ID).</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td>String</td>
+<td>No</td>
+<td>Order by a specific field. Recognizes <code class="docutils literal"><span class="pre">name</span></code>, <code class="docutils literal"><span class="pre">-name</span></code>,
+<code class="docutils literal"><span class="pre">concept_type</span></code>, and <code class="docutils literal"><span class="pre">-concept_type</span></code>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">page</span></code></td>
+<td>Int</td>
+<td>No</td>
+<td>Page number (starting at 1).</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id4">
+<h4>Sample Response<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;count&quot;</span><span class="o">:</span> <span class="mi">19</span><span class="p">,</span>
+    <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="s2">&quot;http://127.0.0.1:8000/concept/?page=2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="s2">&quot;results&quot;</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">55</span><span class="p">,</span>
+            <span class="s2">&quot;added_by&quot;</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;erickpeirson&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;authority&quot;</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">6</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;VIAF&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;added&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-11-15T20:56:30.502749Z&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;updated&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-11-15T20:56:30.502820Z&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;identifier&quot;</span><span class="o">:</span> <span class="s2">&quot;viaf:personal&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;local_identifier&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="s2">&quot;concept_type&quot;</span><span class="o">:</span> <span class="kc">null</span>
+        <span class="p">},</span>
+        <span class="p">...</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">64</span><span class="p">,</span>
+            <span class="s2">&quot;added_by&quot;</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;erickpeirson&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;authority&quot;</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">6</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;VIAF&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;added&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-11-15T20:56:30.686089Z&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;updated&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-11-15T20:56:30.686124Z&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Bradshaw, Rita, 1950-&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;identifier&quot;</span><span class="o">:</span> <span class="s2">&quot;http://viaf.org/viaf/66597118&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;local_identifier&quot;</span><span class="o">:</span> <span class="s2">&quot;66597118&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;Bradshaw, Rita, 1950-&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;concept_type&quot;</span><span class="o">:</span> <span class="mi">55</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id5">
+<h3><code class="docutils literal"><span class="pre">POST</span></code><a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>Register a new concept.</p>
+<table border="1" class="docutils" id="id9">
+<caption><span class="caption-text">Accepted parameters</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="8%" />
+<col width="17%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property</th>
+<th class="head">Type</th>
+<th class="head">Required</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">name</span></code></td>
+<td>String</td>
+<td>Yes</td>
+<td>The primary human-readable representation of the concept.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">identifier</span></code></td>
+<td>String</td>
+<td>Yes</td>
+<td>This should be a valid URI for the concept.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">local_identifier</span></code></td>
+<td>String</td>
+<td>Yes</td>
+<td>An identifier used internally by the authority service to identify this
+concept.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">description</span></code></td>
+<td>String</td>
+<td>No</td>
+<td>A longer-form description of the concept. Used for display.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">authority</span></code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>The ID of the authority service to which this concept belongs.</td>
+</tr>
+</tbody>
+</table>
+<p>Should return <code class="docutils literal"><span class="pre">201</span></code> with the same representation of the authority service as
+in <a class="reference internal" href="#conceptdetail"><span>/concept/{id}/</span></a>.</p>
+</div>
+</div>
+<div class="section" id="concept-id">
+<span id="conceptdetail"></span><h2><code class="docutils literal"><span class="pre">/concept/{id}/</span></code><a class="headerlink" href="#concept-id" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h3><code class="docutils literal"><span class="pre">GET</span></code><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>Returns details about a concept.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">56</span><span class="p">,</span>
+    <span class="s2">&quot;added_by&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;erickpeirson&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;authority&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;VIAF&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;added&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-11-15T20:56:30.525892Z&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;updated&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-11-15T20:56:30.525930Z&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Bradshaw Isherwood, Christopher William, 1904-1986&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;identifier&quot;</span><span class="o">:</span> <span class="s2">&quot;http://viaf.org/viaf/76317308&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;local_identifier&quot;</span><span class="o">:</span> <span class="s2">&quot;76317308&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;Bradshaw Isherwood, Christopher William, 1904-1986&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;concept_type&quot;</span><span class="o">:</span> <span class="mi">55</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -133,12 +370,30 @@ in <a class="reference internal" href="#authoritydetail"><span>/authority/{id}/<
   <ul>
 <li><a class="reference internal" href="#">REST API</a><ul>
 <li><a class="reference internal" href="#authority"><code class="docutils literal"><span class="pre">/authority/</span></code></a><ul>
-<li><a class="reference internal" href="#get"><code class="docutils literal"><span class="pre">GET</span></code></a></li>
+<li><a class="reference internal" href="#get"><code class="docutils literal"><span class="pre">GET</span></code></a><ul>
+<li><a class="reference internal" href="#sample-response">Sample Response</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#post"><code class="docutils literal"><span class="pre">POST</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#authority-id"><code class="docutils literal"><span class="pre">/authority/{id}/</span></code></a><ul>
-<li><a class="reference internal" href="#id1"><code class="docutils literal"><span class="pre">GET</span></code></a></li>
+<li><a class="reference internal" href="#id1"><code class="docutils literal"><span class="pre">GET</span></code></a><ul>
+<li><a class="reference internal" href="#id2">Sample Response</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#concept"><code class="docutils literal"><span class="pre">/concept/</span></code></a><ul>
+<li><a class="reference internal" href="#id3"><code class="docutils literal"><span class="pre">GET</span></code></a><ul>
+<li><a class="reference internal" href="#id4">Sample Response</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id5"><code class="docutils literal"><span class="pre">POST</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#concept-id"><code class="docutils literal"><span class="pre">/concept/{id}/</span></code></a><ul>
+<li><a class="reference internal" href="#id6"><code class="docutils literal"><span class="pre">GET</span></code></a></li>
 </ul>
 </li>
 </ul>

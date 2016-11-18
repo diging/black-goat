@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>goat.signals &mdash; black-goat 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="black-goat 0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for goat.signals</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.db.models.signals</span> <span class="kn">import</span> <span class="n">post_save</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.dispatch</span> <span class="kn">import</span> <span class="n">receiver</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">Permission</span>
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">guardian.shortcuts</span> <span class="kn">import</span> <span class="n">assign_perm</span>
+
+<span class="kn">from</span> <span class="nn">goat.models</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="nd">@receiver</span><span class="p">(</span><span class="n">post_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">User</span><span class="p">)</span>
+<div class="viewcode-block" id="user_post_save"><a class="viewcode-back" href="../../goat.html#goat.signals.user_post_save">[docs]</a><span class="k">def</span> <span class="nf">user_post_save</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    All users should be able to create by default.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;instance&quot;</span><span class="p">),</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;created&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">created</span> <span class="ow">and</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">!=</span> <span class="n">settings</span><span class="o">.</span><span class="n">ANONYMOUS_USER_NAME</span><span class="p">:</span>
+        <span class="n">perms</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;add_concept&#39;</span><span class="p">,</span> <span class="s1">&#39;add_authority&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;add_identity&#39;</span><span class="p">,</span> <span class="s1">&#39;add_identitysystem&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">codename</span> <span class="ow">in</span> <span class="n">perms</span><span class="p">:</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">user_permissions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Permission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="n">codename</span><span class="p">))</span>
+
+</div>
+<span class="nd">@receiver</span><span class="p">(</span><span class="n">post_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">IdentitySystem</span><span class="p">)</span>
+<div class="viewcode-block" id="identity_system_post_save"><a class="viewcode-back" href="../../goat.html#goat.signals.identity_system_post_save">[docs]</a><span class="k">def</span> <span class="nf">identity_system_post_save</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">identity_system</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;instance&quot;</span><span class="p">),</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;created&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">created</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">identity_system</span><span class="o">.</span><span class="n">added_by</span>
+        <span class="n">assign_perm</span><span class="p">(</span><span class="s2">&quot;change_identitysystem&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">identity_system</span><span class="p">)</span>
+        <span class="n">assign_perm</span><span class="p">(</span><span class="s2">&quot;delete_identitysystem&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">identity_system</span><span class="p">)</span>
+        <span class="n">assign_perm</span><span class="p">(</span><span class="s2">&quot;add_identitysystem&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">identity_system</span><span class="p">)</span>
+
+
+</div>
+<span class="nd">@receiver</span><span class="p">(</span><span class="n">post_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">Identity</span><span class="p">)</span>
+<div class="viewcode-block" id="identity_post_save"><a class="viewcode-back" href="../../goat.html#goat.signals.identity_post_save">[docs]</a><span class="k">def</span> <span class="nf">identity_post_save</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">identity</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;instance&quot;</span><span class="p">),</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;created&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">created</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">added_by</span>
+        <span class="n">assign_perm</span><span class="p">(</span><span class="s2">&quot;change_identity&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">identity</span><span class="p">)</span>
+        <span class="n">assign_perm</span><span class="p">(</span><span class="s2">&quot;delete_identity&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">identity</span><span class="p">)</span>
+        <span class="n">assign_perm</span><span class="p">(</span><span class="s2">&quot;add_identity&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">identity</span><span class="p">)</span>
+
+</div>
+<span class="nd">@receiver</span><span class="p">(</span><span class="n">post_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">Concept</span><span class="p">)</span>
+<div class="viewcode-block" id="concept_post_save"><a class="viewcode-back" href="../../goat.html#goat.signals.concept_post_save">[docs]</a><span class="k">def</span> <span class="nf">concept_post_save</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">concept</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;instance&quot;</span><span class="p">),</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;created&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">created</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">concept</span><span class="o">.</span><span class="n">added_by</span>
+        <span class="n">assign_perm</span><span class="p">(</span><span class="s2">&quot;change_concept&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">concept</span><span class="p">)</span>
+        <span class="n">assign_perm</span><span class="p">(</span><span class="s2">&quot;delete_concept&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">concept</span><span class="p">)</span>
+        <span class="n">assign_perm</span><span class="p">(</span><span class="s2">&quot;add_concept&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">concept</span><span class="p">)</span>
+
+</div>
+<span class="nd">@receiver</span><span class="p">(</span><span class="n">post_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">Authority</span><span class="p">)</span>
+<div class="viewcode-block" id="authority_post_save"><a class="viewcode-back" href="../../goat.html#goat.signals.authority_post_save">[docs]</a><span class="k">def</span> <span class="nf">authority_post_save</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">authority</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;instance&quot;</span><span class="p">),</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;created&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">created</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">authority</span><span class="o">.</span><span class="n">added_by</span>
+        <span class="n">assign_perm</span><span class="p">(</span><span class="s2">&quot;change_authority&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">authority</span><span class="p">)</span>
+        <span class="n">assign_perm</span><span class="p">(</span><span class="s2">&quot;delete_authority&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">authority</span><span class="p">)</span>
+        <span class="n">assign_perm</span><span class="p">(</span><span class="s2">&quot;add_authority&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">authority</span><span class="p">)</span>
+
+        <span class="n">authority</span><span class="o">.</span><span class="n">builtin_identity_system</span> <span class="o">=</span> <span class="n">IdentitySystem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s1">u&#39;builtin:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">authority</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">added_by</span> <span class="o">=</span> <span class="n">authority</span><span class="o">.</span><span class="n">added_by</span>
+        <span class="p">)</span>
+        <span class="n">authority</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Erick Peirson.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

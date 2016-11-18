@@ -46,6 +46,7 @@ class AuthoritySerializer(serializers.ModelSerializer):
 
 class AuthorityDetailSerializer(serializers.ModelSerializer):
     added_by = UserSerializer()
+    builtin_identity_system = IdentitySystemLightSerializer()
 
     class Meta:
         model = Authority

@@ -116,7 +116,7 @@ def search_results(request, result_id):
         result = SearchResultSet.objects.get(task_id=result_id)
     except SearchResultSet.DoesNotExist:
         return JsonResponse({'detail': "Your search is pending creation."},
-                            status=200)
+                            status=202)
 
     # Only the owner of the search can check its status here.
     if result.added_by != request.user:

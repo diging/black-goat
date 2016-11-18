@@ -44,23 +44,124 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="goat-migrations-0001-initial-module">
-<h2>goat.migrations.0001_initial module<a class="headerlink" href="#goat-migrations-0001-initial-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-goat.migrations.0001_initial">
+<span id="goat-migrations-0001-initial-module"></span><h2>goat.migrations.0001_initial module<a class="headerlink" href="#module-goat.migrations.0001_initial" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="goat.migrations.0001_initial.Migration">
+<em class="property">class </em><code class="descclassname">goat.migrations.0001_initial.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/migrations/0001_initial.html#Migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.migrations.0001_initial.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="goat.migrations.0001_initial.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = [(u'auth', u'__first__')]</em><a class="headerlink" href="#goat.migrations.0001_initial.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="goat.migrations.0001_initial.Migration.initial">
+<code class="descname">initial</code><em class="property"> = True</em><a class="headerlink" href="#goat.migrations.0001_initial.Migration.initial" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="goat.migrations.0001_initial.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;CreateModel  fields=[(u'id', &lt;django.db.models.fields.AutoField&gt;), (u'added', &lt;django.db.models.fields.DateTimeField&gt;), (u'updated', &lt;django.db.models.fields.DateTimeField&gt;), (u'name', &lt;django.db.models.fields.CharField&gt;), (u'description', &lt;django.db.models.fields.TextField&gt;), (u'configuration', &lt;django.db.models.fields.TextField&gt;), (u'added_by', &lt;django.db.models.fields.related.ForeignKey&gt;)], options={u'abstract': False}, name=u'Authority'&gt;, &lt;CreateModel  fields=[(u'id', &lt;django.db.models.fields.AutoField&gt;), (u'added', &lt;django.db.models.fields.DateTimeField&gt;), (u'updated', &lt;django.db.models.fields.DateTimeField&gt;), (u'name', &lt;django.db.models.fields.CharField&gt;), (u'identifier', &lt;django.db.models.fields.CharField&gt;), (u'description', &lt;django.db.models.fields.TextField&gt;), (u'data', &lt;django.db.models.fields.TextField&gt;), (u'added_by', &lt;django.db.models.fields.related.ForeignKey&gt;), (u'authority', &lt;django.db.models.fields.related.ForeignKey&gt;), (u'concept_type', &lt;django.db.models.fields.related.ForeignKey&gt;)], options={u'abstract': False}, name=u'Concept'&gt;, &lt;CreateModel  fields=[(u'id', &lt;django.db.models.fields.AutoField&gt;), (u'added', &lt;django.db.models.fields.DateTimeField&gt;), (u'updated', &lt;django.db.models.fields.DateTimeField&gt;), (u'name', &lt;django.db.models.fields.CharField&gt;), (u'confidence', &lt;django.db.models.fields.FloatField&gt;), (u'added_by', &lt;django.db.models.fields.related.ForeignKey&gt;), (u'concepts', &lt;django.db.models.fields.related.ManyToManyField&gt;)], options={u'abstract': False}, name=u'Identity'&gt;, &lt;CreateModel  fields=[(u'id', &lt;django.db.models.fields.AutoField&gt;), (u'added', &lt;django.db.models.fields.DateTimeField&gt;), (u'updated', &lt;django.db.models.fields.DateTimeField&gt;), (u'name', &lt;django.db.models.fields.CharField&gt;), (u'added_by', &lt;django.db.models.fields.related.ForeignKey&gt;)], options={u'abstract': False}, name=u'IdentitySystem'&gt;, &lt;AddField  field=&lt;django.db.models.fields.related.ForeignKey&gt;, name=u'part_of', model_name=u'identity'&gt;]</em><a class="headerlink" href="#goat.migrations.0001_initial.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="goat-migrations-0002-searchresultset-module">
-<h2>goat.migrations.0002_searchresultset module<a class="headerlink" href="#goat-migrations-0002-searchresultset-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-goat.migrations.0002_searchresultset">
+<span id="goat-migrations-0002-searchresultset-module"></span><h2>goat.migrations.0002_searchresultset module<a class="headerlink" href="#module-goat.migrations.0002_searchresultset" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="goat.migrations.0002_searchresultset.Migration">
+<em class="property">class </em><code class="descclassname">goat.migrations.0002_searchresultset.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/migrations/0002_searchresultset.html#Migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.migrations.0002_searchresultset.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="goat.migrations.0002_searchresultset.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = [(u'auth', u'__first__'), (u'goat', u'0001_initial')]</em><a class="headerlink" href="#goat.migrations.0002_searchresultset.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="goat.migrations.0002_searchresultset.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;CreateModel  fields=[(u'id', &lt;django.db.models.fields.AutoField&gt;), (u'added', &lt;django.db.models.fields.DateTimeField&gt;), (u'updated', &lt;django.db.models.fields.DateTimeField&gt;), (u'created', &lt;django.db.models.fields.DateTimeField&gt;), (u'task_id', &lt;django.db.models.fields.CharField&gt;), (u'added_by', &lt;django.db.models.fields.related.ForeignKey&gt;), (u'results', &lt;django.db.models.fields.related.ManyToManyField&gt;)], options={u'abstract': False}, name=u'SearchResultSet'&gt;]</em><a class="headerlink" href="#goat.migrations.0002_searchresultset.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="goat-migrations-0003-searchresultset-state-module">
-<h2>goat.migrations.0003_searchresultset_state module<a class="headerlink" href="#goat-migrations-0003-searchresultset-state-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-goat.migrations.0003_searchresultset_state">
+<span id="goat-migrations-0003-searchresultset-state-module"></span><h2>goat.migrations.0003_searchresultset_state module<a class="headerlink" href="#module-goat.migrations.0003_searchresultset_state" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="goat.migrations.0003_searchresultset_state.Migration">
+<em class="property">class </em><code class="descclassname">goat.migrations.0003_searchresultset_state.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/migrations/0003_searchresultset_state.html#Migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.migrations.0003_searchresultset_state.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="goat.migrations.0003_searchresultset_state.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = [(u'goat', u'0002_searchresultset')]</em><a class="headerlink" href="#goat.migrations.0003_searchresultset_state.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="goat.migrations.0003_searchresultset_state.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;AddField  field=&lt;django.db.models.fields.CharField&gt;, name=u'state', model_name=u'searchresultset'&gt;]</em><a class="headerlink" href="#goat.migrations.0003_searchresultset_state.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="goat-migrations-0004-authority-builtin-identity-system-module">
-<h2>goat.migrations.0004_authority_builtin_identity_system module<a class="headerlink" href="#goat-migrations-0004-authority-builtin-identity-system-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-goat.migrations.0004_authority_builtin_identity_system">
+<span id="goat-migrations-0004-authority-builtin-identity-system-module"></span><h2>goat.migrations.0004_authority_builtin_identity_system module<a class="headerlink" href="#module-goat.migrations.0004_authority_builtin_identity_system" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="goat.migrations.0004_authority_builtin_identity_system.Migration">
+<em class="property">class </em><code class="descclassname">goat.migrations.0004_authority_builtin_identity_system.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/migrations/0004_authority_builtin_identity_system.html#Migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.migrations.0004_authority_builtin_identity_system.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="goat.migrations.0004_authority_builtin_identity_system.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = [(u'goat', u'0003_searchresultset_state')]</em><a class="headerlink" href="#goat.migrations.0004_authority_builtin_identity_system.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="goat.migrations.0004_authority_builtin_identity_system.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;AddField  field=&lt;django.db.models.fields.related.ForeignKey&gt;, name=u'builtin_identity_system', model_name=u'authority'&gt;]</em><a class="headerlink" href="#goat.migrations.0004_authority_builtin_identity_system.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="goat-migrations-0005-authority-namespace-module">
-<h2>goat.migrations.0005_authority_namespace module<a class="headerlink" href="#goat-migrations-0005-authority-namespace-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-goat.migrations.0005_authority_namespace">
+<span id="goat-migrations-0005-authority-namespace-module"></span><h2>goat.migrations.0005_authority_namespace module<a class="headerlink" href="#module-goat.migrations.0005_authority_namespace" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="goat.migrations.0005_authority_namespace.Migration">
+<em class="property">class </em><code class="descclassname">goat.migrations.0005_authority_namespace.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/migrations/0005_authority_namespace.html#Migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.migrations.0005_authority_namespace.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="goat.migrations.0005_authority_namespace.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = [(u'goat', u'0004_authority_builtin_identity_system')]</em><a class="headerlink" href="#goat.migrations.0005_authority_namespace.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="goat.migrations.0005_authority_namespace.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;AddField  field=&lt;django.db.models.fields.CharField&gt;, name=u'namespace', model_name=u'authority'&gt;]</em><a class="headerlink" href="#goat.migrations.0005_authority_namespace.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="goat-migrations-0006-auto-20161110-1741-module">
-<h2>goat.migrations.0006_auto_20161110_1741 module<a class="headerlink" href="#goat-migrations-0006-auto-20161110-1741-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-goat.migrations.0006_auto_20161110_1741">
+<span id="goat-migrations-0006-auto-20161110-1741-module"></span><h2>goat.migrations.0006_auto_20161110_1741 module<a class="headerlink" href="#module-goat.migrations.0006_auto_20161110_1741" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="goat.migrations.0006_auto_20161110_1741.Migration">
+<em class="property">class </em><code class="descclassname">goat.migrations.0006_auto_20161110_1741.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/migrations/0006_auto_20161110_1741.html#Migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.migrations.0006_auto_20161110_1741.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="goat.migrations.0006_auto_20161110_1741.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = [(u'goat', u'0005_authority_namespace')]</em><a class="headerlink" href="#goat.migrations.0006_auto_20161110_1741.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="goat.migrations.0006_auto_20161110_1741.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;AlterField  field=&lt;django.db.models.fields.related.ForeignKey&gt;, name=u'authority', model_name=u'concept'&gt;]</em><a class="headerlink" href="#goat.migrations.0006_auto_20161110_1741.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-goat.migrations">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-goat.migrations" title="Permalink to this headline">¶</a></h2>
@@ -77,12 +178,12 @@
   <ul>
 <li><a class="reference internal" href="#">goat.migrations package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#goat-migrations-0001-initial-module">goat.migrations.0001_initial module</a></li>
-<li><a class="reference internal" href="#goat-migrations-0002-searchresultset-module">goat.migrations.0002_searchresultset module</a></li>
-<li><a class="reference internal" href="#goat-migrations-0003-searchresultset-state-module">goat.migrations.0003_searchresultset_state module</a></li>
-<li><a class="reference internal" href="#goat-migrations-0004-authority-builtin-identity-system-module">goat.migrations.0004_authority_builtin_identity_system module</a></li>
-<li><a class="reference internal" href="#goat-migrations-0005-authority-namespace-module">goat.migrations.0005_authority_namespace module</a></li>
-<li><a class="reference internal" href="#goat-migrations-0006-auto-20161110-1741-module">goat.migrations.0006_auto_20161110_1741 module</a></li>
+<li><a class="reference internal" href="#module-goat.migrations.0001_initial">goat.migrations.0001_initial module</a></li>
+<li><a class="reference internal" href="#module-goat.migrations.0002_searchresultset">goat.migrations.0002_searchresultset module</a></li>
+<li><a class="reference internal" href="#module-goat.migrations.0003_searchresultset_state">goat.migrations.0003_searchresultset_state module</a></li>
+<li><a class="reference internal" href="#module-goat.migrations.0004_authority_builtin_identity_system">goat.migrations.0004_authority_builtin_identity_system module</a></li>
+<li><a class="reference internal" href="#module-goat.migrations.0005_authority_namespace">goat.migrations.0005_authority_namespace module</a></li>
+<li><a class="reference internal" href="#module-goat.migrations.0006_auto_20161110_1741">goat.migrations.0006_auto_20161110_1741 module</a></li>
 <li><a class="reference internal" href="#module-goat.migrations">Module contents</a></li>
 </ul>
 </li>
