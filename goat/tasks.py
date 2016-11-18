@@ -51,7 +51,9 @@ def search(self, user, authority, params, result_id):
         PK-identifier for :class:`goat.models.SearchResultSet`\.
     """
     concepts = []
-
+    if user is None:
+        user = authority.created_by
+        
     results = authority.search(params)
 
     for result in results:

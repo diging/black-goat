@@ -93,9 +93,11 @@ def search(request):
     if not q:
         return JsonResponse({'detail': 'No query provided.'}, status=400)
 
+    user = request.user if request.user.username != 'AnonymousUser' else None
+
     # We let the asynchronous task create the SearchResultSet, since it will
     #  spawn tasks that need to update the SearchResultSet upon completion.
-    result = tasks.orchestrate_search.delay(request.user,
+    result = tasks.orchestrate_search.delay(user,
                                             Authority.objects.all(),
                                             {'q': q})
 
