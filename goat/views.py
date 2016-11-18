@@ -93,7 +93,7 @@ def search(request):
     if not q:
         return JsonResponse({'detail': 'No query provided.'}, status=400)
 
-    user = request.user if request.user.username != 'AnonymousUser' else None
+    user = request.user if request.user.username != '' else None
 
     # We let the asynchronous task create the SearchResultSet, since it will
     #  spawn tasks that need to update the SearchResultSet upon completion.
