@@ -94,8 +94,14 @@ def get_recursive_pathfinder(nsmap={}, method='find', mult_method='findall'):
     return _get
 
 
-_etree_attribute_getter = lambda e, attr: getattr(e, 'attrib', {}).get(attr, u'').strip().decode('utf-8')
-_etree_cdata_getter = lambda e: getattr(getattr(e, 'text', u''), 'strip', lambda: u'')().decode('utf-8')
+def _to_unicode(e):
+    if isinstance(e, unicode):
+        return e
+    return e.decode('utf-8')
+
+
+_etree_attribute_getter = lambda e, attr: _to_unicode(getattr(e, 'attrib', {}).get(attr, u'').strip())#.encode('utf-8')
+_etree_cdata_getter = lambda e: _to_unicode(getattr(getattr(e, 'text', u''), 'strip', lambda: u'')())#.encode('utf-8')
 _json_content_getter = lambda e: e
 
 
