@@ -2,11 +2,11 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Authority Service Description &mdash; black-goat 0.1 documentation</title>
+    <title>Authority Service Description &#8212; black-goat 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -27,11 +27,14 @@
     <link rel="next" title="REST API" href="rest.html" />
     <link rel="prev" title="Black Goat: Authority Aggregation" href="index.html" />
    
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -45,15 +48,15 @@ tell BlackGoat how to query an API using a configuration document. This page
 describes the convention for writing a service configuration document that
 BlackGoat can understand.</p>
 <p>The current version of BlackGoat supports public APIs only. Methods like
-<a class="reference internal" href="#create"><span>create</span></a> will presumably require some form of authentication, so this
+<a class="reference internal" href="#create"><span class="std std-ref">create</span></a> will presumably require some form of authentication, so this
 specification will be extended in the near future to support various
 authentication schemes.</p>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>A service configuration document is a valid JSON document that describes what
 methods the service exposes, and how to use those methods.</p>
-<p>There are several core <a class="reference internal" href="#special"><span>Special Methods</span></a> that (ideally) each authority service
-will provide and describe, including <a class="reference internal" href="#getmethod"><span>get</span></a> and :ref:<code class="docutils literal"><span class="pre">searchmethod</span></code>.</p>
+<p>There are several core <a class="reference internal" href="#special"><span class="std std-ref">Special Methods</span></a> that (ideally) each authority service
+will provide and describe, including <a class="reference internal" href="#getmethod"><span class="std std-ref">get</span></a> and :ref:<code class="docutils literal"><span class="pre">searchmethod</span></code>.</p>
 </div>
 <div class="section" id="template">
 <span id="id1"></span><h2>Template<a class="headerlink" href="#template" title="Permalink to this headline">¶</a></h2>
@@ -107,7 +110,7 @@ requests, and can be referenced in path templates as <code class="docutils liter
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">methods</span></code></td>
 <td>Array</td>
 <td>Yes</td>
-<td>This property contains all of the <a class="reference internal" href="#methods"><span>Method Descriptions</span></a> offered by the service.</td>
+<td>This property contains all of the <a class="reference internal" href="#methods"><span class="std std-ref">Method Descriptions</span></a> offered by the service.</td>
 </tr>
 </tbody>
 </table>
@@ -127,9 +130,9 @@ requests, and can be referenced in path templates as <code class="docutils liter
 <div class="section" id="method-descriptions">
 <span id="methods"></span><h2>Method Descriptions<a class="headerlink" href="#method-descriptions" title="Permalink to this headline">¶</a></h2>
 <p>A service configuration can describe an unlimited number of methods. Each method
-is represented as an object in the top-level <a class="reference internal" href="#methods"><span>Method Descriptions</span></a> property. Each
+is represented as an object in the top-level <a class="reference internal" href="#methods"><span class="std std-ref">Method Descriptions</span></a> property. Each
 method should contain the properties shown below. There are several
-<a class="reference internal" href="#special"><span>Special Methods</span></a> whose descriptions, if included, must conform to some additional
+<a class="reference internal" href="#special"><span class="std std-ref">Special Methods</span></a> whose descriptions, if included, must conform to some additional
 constraints.</p>
 <table border="1" class="docutils" id="id9">
 <caption><span class="caption-text">General method properties</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
@@ -158,7 +161,7 @@ constraints.</p>
 <td>A free-form description of the method. Used for display.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">path</span></code></td>
-<td><a class="reference internal" href="#template"><span>Template</span></a></td>
+<td><a class="reference internal" href="#template"><span class="std std-ref">Template</span></a></td>
 <td>Yes</td>
 <td>The location of the method interface relative to <code class="docutils literal"><span class="pre">endpoint</span></code>. This can
 include parameters described in <code class="docutils literal"><span class="pre">parameters</span></code> (the name provided in
@@ -170,12 +173,12 @@ the <code class="docutils literal"><span class="pre">send</span></code> paramete
 <td>This should be the name of an HTTP method, e.g. &#8220;GET&#8221;, &#8220;POST&#8221;, &#8220;PUT&#8221;,
 etc.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#parameters"><span>parameters</span></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#parameters"><span class="std std-ref">parameters</span></a></td>
 <td>Array</td>
 <td>No</td>
 <td>If the method accepts specific parameters, they should be defined here.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#response"><span>response</span></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#response"><span class="std std-ref">response</span></a></td>
 <td>Object</td>
 <td>Yes</td>
 <td>Describes how to interpret the response from the method.</td>
@@ -286,7 +289,7 @@ by the service.</p>
 <td>Should be <code class="docutils literal"><span class="pre">xml</span></code> (implemented) or <code class="docutils literal"><span class="pre">json</span></code> (coming soon).</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">path</span></code></td>
-<td><a class="reference internal" href="#paths"><span>Path</span></a></td>
+<td><a class="reference internal" href="#paths"><span class="std std-ref">Path</span></a></td>
 <td>No</td>
 <td>Describes the starting point for parsing data in the response document.
 If not provided, paths in the individual response parameters will be
@@ -315,7 +318,7 @@ Each namespace should be an object with two parameters: <code class="docutils li
 <td><p class="first">Each object in <code class="docutils literal"><span class="pre">parameters</span></code> should contain two properties: <code class="docutils literal"><span class="pre">name</span></code>,
 which will be the data key exposed to BlackGoat, and <code class="docutils literal"><span class="pre">path</span></code>, which
 should describe where in the response to find the corresponding value.
-See <a class="reference internal" href="#paths"><span>Path</span></a> for details.
+See <a class="reference internal" href="#paths"><span class="std std-ref">Path</span></a> for details.
 For example:</p>
 <div class="last highlight-javascript"><div class="highlight"><pre><span></span><span class="s2">&quot;parameters&quot;</span><span class="o">:</span> <span class="p">[</span>
     <span class="p">...</span>
@@ -629,14 +632,11 @@ generate identity statements.</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -647,8 +647,8 @@ generate identity statements.</p>
       &copy;2016, Erick Peirson.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
       <a href="_sources/services.txt"

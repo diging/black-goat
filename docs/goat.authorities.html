@@ -2,11 +2,11 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>goat.authorities package &mdash; black-goat 0.1 documentation</title>
+    <title>goat.authorities package &#8212; black-goat 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -28,11 +28,14 @@
     <link rel="next" title="goat.migrations package" href="goat.migrations.html" />
     <link rel="prev" title="goat package" href="goat.html" />
    
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -133,8 +136,8 @@ at <code class="docutils literal"><span class="pre">elem</span></code>.</p>
 <dd><p>Generate a function that will retrieve data of interest from a
 <a class="reference internal" href="#goat.authorities.util.JSONData" title="goat.authorities.util.JSONData"><code class="xref py py-class docutils literal"><span class="pre">JSONData</span></code></a> object.</p>
 <dl class="docutils">
-<dt>path_string <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>See docs for how this should be written. TODO: write the docs.</dd>
+<dt>path_string</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">str</span><dd>See docs for how this should be written. TODO: write the docs.</dd>
 <dt>nsmap: dict</dt>
 <dd>Not used.</dd>
 </dl>
@@ -177,8 +180,8 @@ nsmap : dict</p>
 <dd><p>Generate a function that will retrieve data of interest from an
 <code class="xref py py-class docutils literal"><span class="pre">lxml.etree.Element</span></code>.</p>
 <dl class="docutils">
-<dt>path_string <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>See docs for how this should be written. TODO: write the docs.</dd>
+<dt>path_string</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">str</span><dd>See docs for how this should be written. TODO: write the docs.</dd>
 <dt>nsmap: dict</dt>
 <dd>See the <code class="docutils literal"><span class="pre">lxml.etree</span></code> docs.</dd>
 </dl>
@@ -204,12 +207,17 @@ nsmap : dict</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Configuration-driven manager for authority services.</p>
 <dl class="docutils">
-<dt>config <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>Name of an authority configuration in <code class="docutils literal"><span class="pre">authorities</span></code>. Will look for
+<dt>config</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">str</span><dd>Name of an authority configuration in <code class="docutils literal"><span class="pre">authorities</span></code>. Will look for
 <code class="docutils literal"><span class="pre">{path}/{config}.json</span></code>.</dd>
-<dt>path <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>Location of configurations.</dd>
+<dt>path</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">str</span><dd>Location of configurations.</dd>
 </dl>
+<dl class="method">
+<dt id="goat.authorities.AuthorityManager.accepts">
+<code class="descname">accepts</code><span class="sig-paren">(</span><em>method</em>, <em>*params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities.html#AuthorityManager.accepts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.AuthorityManager.accepts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="goat.authorities.AuthorityManager.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>identifier=None</em>, <em>local_identifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities.html#AuthorityManager.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.AuthorityManager.get" title="Permalink to this definition">¶</a></dt>
@@ -218,10 +226,10 @@ nsmap : dict</p>
 optional, it is a good idea to pass them both and let the configuration
 sort things out.</p>
 <dl class="docutils">
-<dt>identifier <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>Used to populate the <code class="docutils literal"><span class="pre">id</span></code> parameter in the request.</dd>
-<dt>local_identifier <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd>Used to populate the <code class="docutils literal"><span class="pre">local_id</span></code> parameter in the request.</dd>
+<dt>identifier</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">str</span><dd>Used to populate the <code class="docutils literal"><span class="pre">id</span></code> parameter in the request.</dd>
+<dt>local_identifier</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">str</span><dd>Used to populate the <code class="docutils literal"><span class="pre">local_id</span></code> parameter in the request.</dd>
 </dl>
 <p>dict</p>
 </dd></dl>
@@ -231,8 +239,8 @@ sort things out.</p>
 <code class="descname">search</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/authorities.html#AuthorityManager.search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.authorities.AuthorityManager.search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search for concept records in the configured authority.</p>
 <dl class="docutils">
-<dt>params <span class="classifier-delimiter">:</span> <span class="classifier">kwargs</span></dt>
-<dd>Query parameters used to populate the search request.</dd>
+<dt>params</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">kwargs</span><dd>Query parameters used to populate the search request.</dd>
 </dl>
 <p>list</p>
 </dd></dl>
@@ -309,14 +317,11 @@ sort things out.</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -327,8 +332,8 @@ sort things out.</p>
       &copy;2016, Erick Peirson.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
       <a href="_sources/goat.authorities.txt"

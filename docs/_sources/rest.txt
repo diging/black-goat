@@ -296,3 +296,64 @@ Returns details about a concept.
         "description": "Bradshaw Isherwood, Christopher William, 1904-1986",
         "concept_type": 55
     }
+
+
+.. _identical:
+
+``/identical/``
+---------------
+
+Returns a list of concepts that share identity relations with a specific
+concept.
+
+
+
+
+
+Sample Response
+................
+
+``/identical/?identifier=http://www.digitalhps.org/concepts/72ec32b4-2a20-4d26-ab8f-a173f067542d``
+
+.. code-block:: javascript
+
+    {
+        "results":[
+            {
+                "id":56,
+                "added_by":{
+                    "username":"erickpeirson",
+                    "email":""
+                },
+                "authority":{
+                    "id":6,
+                    "name":"VIAF"
+                },
+                "added":"2016-11-15T20:56:30.525892Z",
+                "updated":"2016-11-15T20:56:30.525930Z",
+                "name":"Bradshaw Isherwood, Christopher William, 1904-1986",
+                "identifier":"http://viaf.org/viaf/76317308",
+                "local_identifier":"76317308",
+                "description":"Bradshaw Isherwood, Christopher William, 1904-1986",
+                "concept_type":55
+            },
+            {
+                "id":69,
+                "added_by":{
+                    "username":"erickpeirson",
+                    "email":""
+                },
+                "authority":{
+                    "id":7,
+                    "name":"Conceptpower"
+                },
+                "added":"2016-11-15T20:56:30.989382Z",
+                "updated":"2016-11-15T20:56:30.989422Z",
+                "name":"Anthony D. Bradshaw",
+                "identifier":"http://www.digitalhps.org/concepts/72ec32b4-2a20-4d26-ab8f-a173f067542d",
+                "local_identifier":"http://www.digitalhps.org/concepts/72ec32b4-2a20-4d26-ab8f-a173f067542d",
+                "description":null,
+                "concept_type":null
+            }
+        ]
+    }

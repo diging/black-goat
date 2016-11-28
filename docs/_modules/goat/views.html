@@ -2,11 +2,11 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>goat.views &mdash; black-goat 0.1 documentation</title>
+    <title>goat.views &#8212; black-goat 0.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -26,11 +26,14 @@
     <link rel="top" title="black-goat 0.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
    
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -38,61 +41,62 @@
           <div class="body" role="main">
             
   <h1>Source code for goat.views</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
 
-<span class="kn">from</span> <span class="nn">goat.models</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">goat.serializers</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">goat</span> <span class="kn">import</span> <span class="n">tasks</span><span class="p">,</span> <span class="n">filters</span>
+<span class="kn">from</span> <span class="nn">goat.models</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">goat.serializers</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">goat</span> <span class="k">import</span> <span class="n">tasks</span><span class="p">,</span> <span class="n">filters</span>
 
-<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">viewsets</span><span class="p">,</span> <span class="n">status</span>
-<span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
-<span class="kn">from</span> <span class="nn">rest_framework.reverse</span> <span class="kn">import</span> <span class="n">reverse</span>
-<span class="kn">from</span> <span class="nn">rest_framework.renderers</span> <span class="kn">import</span> <span class="n">JSONRenderer</span>
-<span class="kn">from</span> <span class="nn">rest_framework.permissions</span> <span class="kn">import</span> <span class="n">BasePermission</span><span class="p">,</span> <span class="n">IsAuthenticatedOrReadOnly</span><span class="p">,</span> <span class="n">DjangoObjectPermissions</span><span class="p">,</span> <span class="n">DjangoModelPermissions</span>
-<span class="kn">from</span> <span class="nn">django_filters.rest_framework</span> <span class="kn">import</span> <span class="n">DjangoFilterBackend</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="k">import</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">viewsets</span><span class="p">,</span> <span class="n">status</span>
+<span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="k">import</span> <span class="n">Response</span>
+<span class="kn">from</span> <span class="nn">rest_framework.reverse</span> <span class="k">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">rest_framework.renderers</span> <span class="k">import</span> <span class="n">JSONRenderer</span>
+<span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="k">import</span> <span class="n">detail_route</span><span class="p">,</span> <span class="n">list_route</span>
+<span class="kn">from</span> <span class="nn">rest_framework.permissions</span> <span class="k">import</span> <span class="n">BasePermission</span><span class="p">,</span> <span class="n">IsAuthenticatedOrReadOnly</span><span class="p">,</span> <span class="n">DjangoObjectPermissions</span><span class="p">,</span> <span class="n">DjangoModelPermissions</span>
+<span class="kn">from</span> <span class="nn">django_filters.rest_framework</span> <span class="k">import</span> <span class="n">DjangoFilterBackend</span>
 
-<span class="kn">from</span> <span class="nn">guardian.shortcuts</span> <span class="kn">import</span> <span class="n">get_user_perms</span>
+<span class="kn">from</span> <span class="nn">guardian.shortcuts</span> <span class="k">import</span> <span class="n">get_user_perms</span>
 
-<span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">RequestContext</span><span class="p">,</span> <span class="n">loader</span>
-<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="p">(</span><span class="n">JsonResponse</span><span class="p">,</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">HttpResponseBadRequest</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">django.template</span> <span class="k">import</span> <span class="n">RequestContext</span><span class="p">,</span> <span class="n">loader</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="k">import</span> <span class="p">(</span><span class="n">JsonResponse</span><span class="p">,</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">HttpResponseBadRequest</span><span class="p">,</span>
                          <span class="n">HttpResponseRedirect</span><span class="p">,</span> <span class="n">Http404</span><span class="p">,</span> <span class="n">HttpResponseForbidden</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span>
-<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="k">import</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="k">import</span> <span class="n">login_required</span>
 
-<span class="kn">from</span> <span class="nn">celery.result</span> <span class="kn">import</span> <span class="n">AsyncResult</span>
+<span class="kn">from</span> <span class="nn">celery.result</span> <span class="k">import</span> <span class="n">AsyncResult</span>
 
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">groupby</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">groupby</span>
 
 
 <div class="viewcode-block" id="GoatPermission"><a class="viewcode-back" href="../../goat.html#goat.views.GoatPermission">[docs]</a><span class="k">class</span> <span class="nc">GoatPermission</span><span class="p">(</span><span class="n">BasePermission</span><span class="p">):</span>
 <div class="viewcode-block" id="GoatPermission.has_permission"><a class="viewcode-back" href="../../goat.html#goat.views.GoatPermission.has_permission">[docs]</a>    <span class="k">def</span> <span class="nf">has_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
         <span class="n">model_name</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">queryset</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="n">permissions</span><span class="o">.</span><span class="n">SAFE_METHODS</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">return</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;PATCH&#39;</span><span class="p">]:</span>
             <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="s1">&#39;goat.add_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">model_name</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;DELETE&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
-</div>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
 <div class="viewcode-block" id="GoatPermission.has_object_permission"><a class="viewcode-back" href="../../goat.html#goat.views.GoatPermission.has_object_permission">[docs]</a>    <span class="k">def</span> <span class="nf">has_object_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="n">model_name</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="n">permissions</span><span class="o">.</span><span class="n">SAFE_METHODS</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">return</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;PATCH&#39;</span><span class="p">]:</span>
             <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="s1">&#39;change_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;DELETE&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="s1">&#39;delete_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="s1">&#39;delete_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="home"><a class="viewcode-back" href="../../goat.html#goat.views.home">[docs]</a><span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Just a goat.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">context</span> <span class="o">=</span> <span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{})</span>
-    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">loader</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s1">&#39;goat/base.html&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">context</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">loader</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s1">&#39;goat/base.html&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">context</span><span class="p">))</span></div>
 
-</div>
+
 <div class="viewcode-block" id="identical"><a class="viewcode-back" href="../../goat.html#goat.views.identical">[docs]</a><span class="k">def</span> <span class="nf">identical</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This provides a simpler view onto :class:`.Identity` instances than the</span>
@@ -109,16 +113,26 @@
     <span class="k">if</span> <span class="n">system_id</span><span class="p">:</span>
         <span class="n">identities</span> <span class="o">=</span> <span class="n">identities</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">part_of_id</span><span class="o">=</span><span class="n">system_id</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>    <span class="c1"># The QuerySet is lazy, so we do the serialization in here.</span>
-        <span class="n">concepts</span> <span class="o">=</span> <span class="n">Concept</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">identities__in</span><span class="o">=</span><span class="n">identities</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span><span class="o">.</span><span class="n">distinct</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
-        <span class="n">serialized</span> <span class="o">=</span> <span class="n">ConceptSerializer</span><span class="p">(</span><span class="n">concepts</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">concepts</span> <span class="o">=</span> <span class="n">Concept</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">identities__in</span><span class="o">=</span><span class="n">identities</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span><span class="o">.</span><span class="n">distinct</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+        <span class="n">serialized</span> <span class="o">=</span> <span class="n">ConceptSerializer</span><span class="p">(</span><span class="n">concepts</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
     <span class="k">except</span><span class="p">:</span>    <span class="c1"># This is kind of a drag, but SQLite doesn&#39;t support DISTINCT ON.</span>
-        <span class="n">concepts</span> <span class="o">=</span> <span class="n">Concept</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">identities__in</span><span class="o">=</span><span class="n">identities</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+        <span class="n">concepts</span> <span class="o">=</span> <span class="n">Concept</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">identities__in</span><span class="o">=</span><span class="n">identities</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
         <span class="n">concepts</span> <span class="o">=</span> <span class="p">[[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">concept</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">concept</span> <span class="ow">in</span> <span class="n">groupby</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">concepts</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">o</span><span class="p">:</span> <span class="n">o</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">o</span><span class="p">:</span> <span class="n">o</span><span class="o">.</span><span class="n">id</span><span class="p">)]</span>
-        <span class="n">serialized</span> <span class="o">=</span> <span class="n">ConceptSerializer</span><span class="p">(</span><span class="n">concepts</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">serialized</span> <span class="o">=</span> <span class="n">ConceptSerializer</span><span class="p">(</span><span class="n">concepts</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
 
-    <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;results&#39;</span><span class="p">:</span> <span class="n">serialized</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;results&#39;</span><span class="p">:</span> <span class="n">serialized</span><span class="p">})</span></div>
 
-</div>
+
+<div class="viewcode-block" id="retrieve"><a class="viewcode-back" href="../../goat.html#goat.views.retrieve">[docs]</a><span class="k">def</span> <span class="nf">retrieve</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a :class:`.Concept` by identifier.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">identifier</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;identifier&#39;</span><span class="p">)</span>
+    <span class="n">concept</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Concept</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">)</span>
+    <span class="n">serialized</span> <span class="o">=</span> <span class="n">ConceptSerializer</span><span class="p">(</span><span class="n">concept</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">serialized</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="search"><a class="viewcode-back" href="../../goat.html#goat.views.search">[docs]</a><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Trigger a search.</span>
@@ -129,22 +143,26 @@
 
 <span class="sd">    TODO: should be able to filter the authorities used in the search.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">q</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">q</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;detail&#39;</span><span class="p">:</span> <span class="s1">&#39;No query provided.&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
 
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="n">v</span>
+              <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()}</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="kc">None</span>
+
     <span class="c1"># We let the asynchronous task create the SearchResultSet, since it will</span>
     <span class="c1">#  spawn tasks that need to update the SearchResultSet upon completion.</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">tasks</span><span class="o">.</span><span class="n">orchestrate_search</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
-                                            <span class="n">Authority</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span>
-                                            <span class="p">{</span><span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="n">q</span><span class="p">})</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">tasks</span><span class="o">.</span><span class="n">orchestrate_search</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">Authority</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span>
+                                            <span class="n">params</span><span class="p">)</span>
 
     <span class="c1"># We have to build this manually, since the SearchResultSet probably does</span>
     <span class="c1">#  not yet exist.</span>
     <span class="n">relative_path</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s1">u&#39;/&#39;</span>
-    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">relative_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">relative_path</span><span class="p">)</span></div>
 
-</div>
+
 <div class="viewcode-block" id="search_results"><a class="viewcode-back" href="../../goat.html#goat.views.search_results">[docs]</a><span class="k">def</span> <span class="nf">search_results</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">result_id</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check the status of a search.</span>
@@ -156,13 +174,13 @@
         <span class="n">result</span> <span class="o">=</span> <span class="n">SearchResultSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="n">result_id</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">SearchResultSet</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;detail&#39;</span><span class="p">:</span> <span class="s2">&quot;Your search is pending creation.&quot;</span><span class="p">},</span>
-                            <span class="n">status</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+                            <span class="n">status</span><span class="o">=</span><span class="mi">202</span><span class="p">)</span>
 
     <span class="c1"># Only the owner of the search can check its status here.</span>
-    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">added_by</span> <span class="o">!=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
-        <span class="n">_data</span><span class="p">,</span> <span class="n">_status</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;detail&#39;</span><span class="p">:</span> <span class="s2">&quot;This search does not belong to you.&quot;</span><span class="p">},</span> <span class="mi">403</span>
+    <span class="c1"># if result.added_by != request.user:</span>
+    <span class="c1">#     _data, _status = {&#39;detail&#39;: &quot;This search does not belong to you.&quot;}, 403</span>
 
-    <span class="k">elif</span> <span class="n">result</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">SearchResultSet</span><span class="o">.</span><span class="n">PENDING</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">SearchResultSet</span><span class="o">.</span><span class="n">PENDING</span><span class="p">:</span>
         <span class="n">_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;detail&#39;</span><span class="p">:</span> <span class="s2">&quot;Your search is being executed; please check back later.&quot;</span>
         <span class="p">}</span>
@@ -175,25 +193,35 @@
         <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">redirect_target</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>    <span class="c1"># TODO: Probably we should say something more informative here.</span>
         <span class="n">_data</span><span class="p">,</span> <span class="n">_status</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;detail&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">state</span><span class="p">},</span> <span class="mi">200</span>
-    <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">_data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">_status</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">_data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">_status</span><span class="p">)</span></div>
 
-</div>
+
 <div class="viewcode-block" id="CreateWithUserInfoMixin"><a class="viewcode-back" href="../../goat.html#goat.views.CreateWithUserInfoMixin">[docs]</a><span class="k">class</span> <span class="nc">CreateWithUserInfoMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extends the default :meth:`.ModelViewSet.create` to populate the</span>
 <span class="sd">    ``added_by`` field.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="CreateWithUserInfoMixin.create"><a class="viewcode-back" href="../../goat.html#goat.views.CreateWithUserInfoMixin.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-        <span class="n">added_by_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
-        <span class="n">serializer</span><span class="o">.</span><span class="n">initial_data</span><span class="p">[</span><span class="s1">&#39;added_by&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">added_by_id</span>
-        <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;added_by&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;authority&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;authority&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;concept_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;concept_type&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="nb">print</span> <span class="n">data</span>
+
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span> <span class="n">serializer</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">serializer</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;detail&#39;</span><span class="p">:</span> <span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">perform_create</span><span class="p">(</span><span class="n">serializer</span><span class="p">)</span>
-        <span class="n">headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_success_headers</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
-</div></div>
+        <span class="n">headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_success_headers</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span></div></div>
+
+
 <div class="viewcode-block" id="ConceptViewSet"><a class="viewcode-back" href="../../goat.html#goat.views.ConceptViewSet">[docs]</a><span class="k">class</span> <span class="nc">ConceptViewSet</span><span class="p">(</span><span class="n">CreateWithUserInfoMixin</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
     <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">GoatPermission</span><span class="p">,]</span>
     <span class="n">queryset</span> <span class="o">=</span> <span class="n">Concept</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
@@ -201,7 +229,12 @@
     <span class="n">filter_backends</span> <span class="o">=</span> <span class="p">(</span><span class="n">DjangoFilterBackend</span><span class="p">,</span> <span class="p">)</span>
     <span class="n">filter_class</span> <span class="o">=</span> <span class="n">filters</span><span class="o">.</span><span class="n">ConceptFilter</span>
 
-</div>
+<div class="viewcode-block" id="ConceptViewSet.get_serializer_class"><a class="viewcode-back" href="../../goat.html#goat.views.ConceptViewSet.get_serializer_class">[docs]</a>    <span class="k">def</span> <span class="nf">get_serializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;create&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ConceptLightSerializer</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">ConceptViewSet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_serializer_class</span><span class="p">()</span></div></div>
+
+
 <div class="viewcode-block" id="AuthorityViewSet"><a class="viewcode-back" href="../../goat.html#goat.views.AuthorityViewSet">[docs]</a><span class="k">class</span> <span class="nc">AuthorityViewSet</span><span class="p">(</span><span class="n">CreateWithUserInfoMixin</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
     <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">GoatPermission</span><span class="p">]</span>
     <span class="n">queryset</span> <span class="o">=</span> <span class="n">Authority</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
@@ -214,29 +247,55 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">AuthoritySerializer</span>
-        <span class="k">return</span> <span class="n">AuthorityDetailSerializer</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;create&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">AuthorityLightSerializer</span>
+        <span class="k">return</span> <span class="n">AuthorityDetailSerializer</span></div>
+
+<div class="viewcode-block" id="AuthorityViewSet.create"><a class="viewcode-back" href="../../goat.html#goat.views.AuthorityViewSet.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Populates the ``added_by`` field with the current user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span> <span class="s1">&#39;::: create&#39;</span>
+        <span class="nb">print</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">added_by</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;added_by&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">added_by</span><span class="o">.</span><span class="n">id</span>
+
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">perform_create</span><span class="p">(</span><span class="n">serializer</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_success_headers</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span></div></div>
 
 
-</div></div>
+
+
 <div class="viewcode-block" id="IdentityViewSet"><a class="viewcode-back" href="../../goat.html#goat.views.IdentityViewSet">[docs]</a><span class="k">class</span> <span class="nc">IdentityViewSet</span><span class="p">(</span><span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
     <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">GoatPermission</span><span class="p">]</span>
     <span class="n">queryset</span> <span class="o">=</span> <span class="n">Identity</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">IdentitySerializer</span>
     <span class="n">filter_backends</span> <span class="o">=</span> <span class="p">(</span><span class="n">DjangoFilterBackend</span><span class="p">,</span> <span class="p">)</span>
 
+<div class="viewcode-block" id="IdentityViewSet.get_serializer_class"><a class="viewcode-back" href="../../goat.html#goat.views.IdentityViewSet.get_serializer_class">[docs]</a>    <span class="k">def</span> <span class="nf">get_serializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;create&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">IdentityLightSerializer</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">IdentityViewSet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_serializer_class</span><span class="p">()</span></div>
+
 <div class="viewcode-block" id="IdentityViewSet.create"><a class="viewcode-back" href="../../goat.html#goat.views.IdentityViewSet.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Populates the ``added_by`` field with the current user, and checks that</span>
 <span class="sd">        the user has ``change`` authorization on the :class:`.IdentitySystem`\.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">added_by</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;added_by&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">added_by</span><span class="o">.</span><span class="n">id</span>
 
-        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">auth</span><span class="p">:</span>
-            <span class="n">added_by</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">added_by</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
-        <span class="n">serializer</span><span class="o">.</span><span class="n">initial_data</span><span class="p">[</span><span class="s1">&#39;added_by&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">added_by</span><span class="o">.</span><span class="n">id</span>
-        <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="nb">print</span> <span class="n">serializer</span><span class="o">.</span><span class="n">errors</span>
         <span class="n">identity_system</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;part_of&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">added_by</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="s1">&#39;change_identitysystem&#39;</span><span class="p">,</span> <span class="n">identity_system</span><span class="p">):</span>
             <span class="n">_data</span> <span class="o">=</span> <span class="p">{</span>
@@ -246,14 +305,37 @@
             <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">_data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">perform_create</span><span class="p">(</span><span class="n">serializer</span><span class="p">)</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_success_headers</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="IdentitySystemViewSet"><a class="viewcode-back" href="../../goat.html#goat.views.IdentitySystemViewSet">[docs]</a><span class="k">class</span> <span class="nc">IdentitySystemViewSet</span><span class="p">(</span><span class="n">CreateWithUserInfoMixin</span><span class="p">,</span> <span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
     <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">GoatPermission</span><span class="p">]</span>
     <span class="n">queryset</span> <span class="o">=</span> <span class="n">IdentitySystem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">IdentitySystemSerializer</span>
-    <span class="n">filter_backends</span> <span class="o">=</span> <span class="p">(</span><span class="n">DjangoFilterBackend</span><span class="p">,</span> <span class="p">)</span></div>
+    <span class="n">filter_backends</span> <span class="o">=</span> <span class="p">(</span><span class="n">DjangoFilterBackend</span><span class="p">,</span> <span class="p">)</span>
+
+<div class="viewcode-block" id="IdentitySystemViewSet.get_serializer_class"><a class="viewcode-back" href="../../goat.html#goat.views.IdentitySystemViewSet.get_serializer_class">[docs]</a>    <span class="k">def</span> <span class="nf">get_serializer_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;create&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">IdentitySystemLightSerializer</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">IdentitySystemViewSet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_serializer_class</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="IdentitySystemViewSet.create"><a class="viewcode-back" href="../../goat.html#goat.views.IdentitySystemViewSet.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Populates the ``added_by`` field with the current user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span> <span class="s1">&#39;::: create&#39;</span>
+        <span class="nb">print</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">added_by</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;added_by&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">added_by</span><span class="o">.</span><span class="n">id</span>
+
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">perform_create</span><span class="p">(</span><span class="n">serializer</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_success_headers</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -272,14 +354,11 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -290,8 +369,8 @@
       &copy;2016, Erick Peirson.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
     </div>
 

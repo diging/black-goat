@@ -21,6 +21,12 @@ mappings between authorities, the primary use case is to provide support for
 mappings generated in other ways (e.g. the
 `Linked Open Data Enhancer <http://www.linkedhumanities.com/>`_).
 
+A longer-winded rationale is available `in this blog post
+<https://erickpeirson.github.io/infrastructure/projects/2016/11/16/black-goat.html>`_.
+
+A simple Python client for the API is available `here
+<https://github.com/erickpeirson/black-goat-client>`_.
+
 .. image:: _static/black_goat.png
 
 Contents:

@@ -2,11 +2,11 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>goat.authorities.util &mdash; black-goat 0.1 documentation</title>
+    <title>goat.authorities.util &#8212; black-goat 0.1 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -26,11 +26,14 @@
     <link rel="top" title="black-goat 0.1 documentation" href="../../../index.html" />
     <link rel="up" title="goat.authorities" href="../authorities.html" />
    
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -43,8 +46,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">json</span><span class="o">,</span> <span class="nn">jsonpickle</span>
-<span class="kn">import</span> <span class="nn">lxml.etree</span> <span class="kn">as</span> <span class="nn">ET</span>
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">import</span> <span class="nn">lxml.etree</span> <span class="k">as</span> <span class="nn">ET</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <span class="n">pprint</span>
 
 
 <div class="viewcode-block" id="JSONData"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.JSONData">[docs]</a><span class="k">class</span> <span class="nc">JSONData</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
@@ -57,9 +60,9 @@
             <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="JSONData.get"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.JSONData.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">JSONData</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">JSONData</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="JSONArray"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.JSONArray">[docs]</a><span class="k">class</span> <span class="nc">JSONArray</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Adds ``get`` support to a list.</span>
@@ -74,17 +77,17 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the value of ``key`` in the first object in list.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">None</span>
-</div>
-<div class="viewcode-block" id="JSONArray.get_list"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.JSONArray.get_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="JSONArray.get_list"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.JSONArray.get_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the value of ``key`` in each object in list.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="is_multiple"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.is_multiple">[docs]</a><span class="k">def</span> <span class="nf">is_multiple</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Detect the multi-value flag (``*``) in a path part (``tag``).</span>
@@ -99,12 +102,12 @@
 <span class="sd">        tag name (str), multiple (bool)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">tag</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span>
-    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">ur&#39;([^\*]+)(\*)?&#39;</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">ur&#39;([^\*]+)(\*)?&#39;</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span></div>
 
-</div>
+
 <div class="viewcode-block" id="get_recursive_pathfinder"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.get_recursive_pathfinder">[docs]</a><span class="k">def</span> <span class="nf">get_recursive_pathfinder</span><span class="p">(</span><span class="n">nsmap</span><span class="o">=</span><span class="p">{},</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;find&#39;</span><span class="p">,</span> <span class="n">mult_method</span><span class="o">=</span><span class="s1">&#39;findall&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a recursive function that follows the path in ``tags``, starting</span>
@@ -131,11 +134,17 @@
         <span class="k">if</span> <span class="n">multiple</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_apply</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">this_tag</span><span class="p">,</span> <span class="n">mult_method</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_apply</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">this_tag</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_get</span>
+    <span class="k">return</span> <span class="n">_get</span></div>
 
-</div>
-<span class="n">_etree_attribute_getter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s1">&#39;attrib&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="s1">u&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-<span class="n">_etree_cdata_getter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">u&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;strip&#39;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="s1">u&#39;&#39;</span><span class="p">)()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_to_unicode</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">unicode</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">e</span>
+    <span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+
+<span class="n">_etree_attribute_getter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="n">_to_unicode</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s1">&#39;attrib&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="s1">u&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span><span class="c1">#.encode(&#39;utf-8&#39;)</span>
+<span class="n">_etree_cdata_getter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">_to_unicode</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">u&#39;&#39;</span><span class="p">),</span> <span class="s1">&#39;strip&#39;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="s1">u&#39;&#39;</span><span class="p">)())</span><span class="c1">#.encode(&#39;utf-8&#39;)</span>
 <span class="n">_json_content_getter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span>
 
 
@@ -152,13 +161,13 @@
 <span class="sd">    -------</span>
 <span class="sd">    function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">attribute</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attribute&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sep&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">attribute</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attribute&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sep&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">_separator</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)]</span> <span class="k">if</span> <span class="n">sep</span> <span class="k">else</span> <span class="n">value</span>
     <span class="k">if</span> <span class="n">attribute</span><span class="p">:</span>
         <span class="k">return</span> <span class="k">lambda</span> <span class="n">elem</span><span class="p">:</span> <span class="n">_separator</span><span class="p">(</span><span class="n">attrib_getter</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">attribute</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="k">lambda</span> <span class="n">elem</span><span class="p">:</span> <span class="n">_separator</span><span class="p">(</span><span class="n">content_getter</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">elem</span><span class="p">:</span> <span class="n">_separator</span><span class="p">(</span><span class="n">content_getter</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span></div>
 
-</div>
+
 <div class="viewcode-block" id="passthrough_picker_factory"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.passthrough_picker_factory">[docs]</a><span class="k">def</span> <span class="nf">passthrough_picker_factory</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates a function that simply returns a passed</span>
@@ -172,9 +181,9 @@
 <span class="sd">    -------</span>
 <span class="sd">    function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span></div>
 
-</div>
+
 <div class="viewcode-block" id="decompose_path"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.decompose_path">[docs]</a><span class="k">def</span> <span class="nf">decompose_path</span><span class="p">(</span><span class="n">path_string</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Split a path string into its constituent parts.</span>
@@ -195,7 +204,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Malformed path: only one separator reference&quot;</span>
                              <span class="s2">&quot; (|) allowed.&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">sep</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">sep</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">path</span><span class="p">,</span> <span class="n">attribute</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">ur&#39;([^\[]+)(\[.+\])?&#39;</span><span class="p">,</span> <span class="n">path_string</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
     <span class="k">if</span> <span class="s1">&#39;[&#39;</span> <span class="ow">in</span> <span class="n">path</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">attribute</span><span class="p">:</span>
@@ -203,9 +212,9 @@
                          <span class="s2">&quot; the very end of the path.&quot;</span><span class="p">)</span>
 
     <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">path</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">sep</span>
+    <span class="k">return</span> <span class="n">path</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">sep</span></div>
 
-</div>
+
 <span class="k">def</span> <span class="nf">_parse_path</span><span class="p">(</span><span class="n">path_string</span><span class="p">,</span> <span class="n">nsmap</span><span class="o">=</span><span class="p">{},</span> <span class="n">picker_factory</span><span class="o">=</span><span class="p">{},</span>
                 <span class="n">content_getter</span><span class="o">=</span><span class="n">_etree_cdata_getter</span><span class="p">,</span>
                 <span class="n">attrib_getter</span><span class="o">=</span><span class="n">_etree_attribute_getter</span><span class="p">,</span>
@@ -264,9 +273,9 @@
 <span class="sd">    function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_parse_path</span><span class="p">(</span><span class="n">path_string</span><span class="p">,</span> <span class="n">nsmap</span><span class="p">,</span> <span class="n">picker_factory</span><span class="p">,</span> <span class="n">_json_content_getter</span><span class="p">,</span>
-                       <span class="n">_json_content_getter</span><span class="p">,</span> <span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;get_list&#39;</span><span class="p">)</span>
+                       <span class="n">_json_content_getter</span><span class="p">,</span> <span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;get_list&#39;</span><span class="p">)</span></div>
 
-</div>
+
 <div class="viewcode-block" id="parse_xml_path"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.parse_xml_path">[docs]</a><span class="k">def</span> <span class="nf">parse_xml_path</span><span class="p">(</span><span class="n">path_string</span><span class="p">,</span> <span class="n">nsmap</span><span class="o">=</span><span class="p">{},</span> <span class="n">picker_factory</span><span class="o">=</span><span class="n">content_picker_factory</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a function that will retrieve data of interest from an</span>
@@ -285,9 +294,9 @@
 <span class="sd">    -------</span>
 <span class="sd">    function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_parse_path</span><span class="p">(</span><span class="n">path_string</span><span class="p">,</span> <span class="n">nsmap</span><span class="p">,</span> <span class="n">picker_factory</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_parse_path</span><span class="p">(</span><span class="n">path_string</span><span class="p">,</span> <span class="n">nsmap</span><span class="p">,</span> <span class="n">picker_factory</span><span class="p">)</span></div>
 
-</div>
+
 <div class="viewcode-block" id="generate_request"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.generate_request">[docs]</a><span class="k">def</span> <span class="nf">generate_request</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">glob</span><span class="o">=</span><span class="p">{}):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a function that performs an HTTP request based on the configuration</span>
@@ -310,10 +319,13 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Malformed configuration: no path specified.&quot;</span><span class="p">)</span>
 
     <span class="n">method</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="s2">&quot;GET&quot;</span><span class="p">)</span>    <span class="c1"># GET by default.</span>
+
+    <span class="c1"># Maps accept -&gt; send parameter names.</span>
     <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="n">param</span><span class="p">[</span><span class="s1">&#39;accept&#39;</span><span class="p">]:</span> <span class="n">param</span><span class="p">[</span><span class="s1">&#39;send&#39;</span><span class="p">]</span>
                   <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parameters&quot;</span><span class="p">,</span> <span class="p">[])}</span>
     <span class="n">required</span> <span class="o">=</span> <span class="p">{</span><span class="n">param</span><span class="p">[</span><span class="s1">&#39;accept&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parameters&quot;</span><span class="p">,</span> <span class="p">[])</span>
-                <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;required&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)}</span>
+                <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;required&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)}</span>
+    <span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span><span class="n">param</span><span class="p">[</span><span class="s1">&#39;accept&#39;</span><span class="p">]:</span> <span class="n">param</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parameters&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="k">if</span> <span class="s1">&#39;default&#39;</span> <span class="ow">in</span> <span class="n">param</span><span class="p">}</span>
 
     <span class="n">format_keys</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">ur&#39;\{([^\}]+)\}&#39;</span><span class="p">,</span> <span class="n">path_partial</span><span class="p">)</span>
     <span class="n">fmt</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">format_keys</span><span class="p">}</span>
@@ -339,10 +351,12 @@
             <span class="k">if</span> <span class="n">param</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;expected parameter </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">param</span><span class="p">)</span>
 
+        <span class="c1"># Relabel accepts -&gt; send parameter names.</span>
         <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="n">parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">):</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span>
                   <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">}</span>
 
-        <span class="n">extra</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">format_keys</span>
+        <span class="n">extra</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">defaults</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+                 <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">format_keys</span>
                  <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fmt</span><span class="p">}</span>    <span class="c1"># Don&#39;t overwrite.</span>
 
         <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;GET&#39;</span><span class="p">:</span>
@@ -352,9 +366,9 @@
             <span class="n">request_method</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span>
             <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span> <span class="s1">&#39;headers&#39;</span><span class="p">:</span> <span class="n">headers</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">request_method</span><span class="p">(</span><span class="n">_get_path</span><span class="p">(</span><span class="n">extra</span><span class="p">),</span> <span class="o">**</span><span class="n">payload</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
-    <span class="k">return</span> <span class="n">_call</span>
+    <span class="k">return</span> <span class="n">_call</span></div>
 
-</div>
+
 <div class="viewcode-block" id="parse_result"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.parse_result">[docs]</a><span class="k">def</span> <span class="nf">parse_result</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">path_parser</span><span class="o">=</span><span class="n">parse_xml_path</span><span class="p">,</span> <span class="n">glob</span><span class="o">=</span><span class="p">{},</span> <span class="n">nsmap</span><span class="o">=</span><span class="p">{}):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract data from an :class:`lxml.etree.Element` using a configuration</span>
@@ -372,7 +386,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">base_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">base_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">multiple</span> <span class="o">=</span> <span class="n">is_multiple</span><span class="p">(</span><span class="n">base_path</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">base_path</span><span class="p">:</span>
         <span class="n">_parser</span> <span class="o">=</span> <span class="n">path_parser</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">nsmap</span><span class="o">=</span><span class="n">nsmap</span><span class="p">,</span>
@@ -408,11 +422,11 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">multiple</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">data</span>
+    <span class="k">return</span> <span class="n">data</span></div>
 
 
 <span class="c1"># This isn&#39;t particularly special at the moment, but makes it easier to swap</span>
-<span class="c1">#  out parsers later, or add additional logic.</span></div>
+<span class="c1">#  out parsers later, or add additional logic.</span>
 <div class="viewcode-block" id="parse_raw_xml"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.parse_raw_xml">[docs]</a><span class="k">def</span> <span class="nf">parse_raw_xml</span><span class="p">(</span><span class="n">raw</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse raw XML response content.</span>
@@ -427,9 +441,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># if type(raw) is str:</span>
     <span class="c1">#     raw = raw.decode(&#39;utf-8&#39;)</span>
-    <span class="k">return</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span></div>
 
-</div>
+
 <div class="viewcode-block" id="parse_raw_json"><a class="viewcode-back" href="../../../goat.authorities.html#goat.authorities.util.parse_raw_json">[docs]</a><span class="k">def</span> <span class="nf">parse_raw_json</span><span class="p">(</span><span class="n">raw</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse raw JSON response content.</span>
@@ -465,14 +479,11 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -483,8 +494,8 @@
       &copy;2016, Erick Peirson.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
     </div>
 

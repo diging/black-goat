@@ -2,11 +2,11 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>goat package &mdash; black-goat 0.1 documentation</title>
+    <title>goat package &#8212; black-goat 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -27,11 +27,14 @@
     <link rel="next" title="goat.authorities package" href="goat.authorities.html" />
     <link rel="prev" title="REST API" href="rest.html" />
    
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -178,12 +181,12 @@
 
 <dl class="attribute">
 <dt id="goat.filters.ConceptFilter.base_filters">
-<code class="descclassname">ConceptFilter.</code><code class="descname">base_filters</code><em class="property"> = OrderedDict([('name', &lt;django_filters.filters.MethodFilter object at 0x105ba7bd0&gt;), ('identifier', &lt;django_filters.filters.CharFilter object at 0x105bd3990&gt;), ('concept_type', &lt;django_filters.filters.ModelChoiceFilter object at 0x105ba7f50&gt;), ('added_by', &lt;django_filters.filters.ModelChoiceFilter object at 0x105bd39d0&gt;), ('authority', &lt;django_filters.filters.ModelChoiceFilter object at 0x105bd3cd0&gt;), ('search', &lt;django_filters.filters.CharFilter object at 0x105ba7c50&gt;), (u'o', &lt;django_filters.filters.OrderingFilter object at 0x105bd3810&gt;)])</em><a class="headerlink" href="#goat.filters.ConceptFilter.base_filters" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ConceptFilter.</code><code class="descname">base_filters</code><em class="property"> = OrderedDict([('name', &lt;django_filters.filters.MethodFilter object&gt;), ('identifier', &lt;django_filters.filters.CharFilter object&gt;), ('concept_type', &lt;django_filters.filters.ModelChoiceFilter object&gt;), ('added_by', &lt;django_filters.filters.ModelChoiceFilter object&gt;), ('authority', &lt;django_filters.filters.ModelChoiceFilter object&gt;), ('search', &lt;django_filters.filters.CharFilter object&gt;), (u'o', &lt;django_filters.filters.OrderingFilter object&gt;)])</em><a class="headerlink" href="#goat.filters.ConceptFilter.base_filters" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="goat.filters.ConceptFilter.declared_filters">
-<code class="descclassname">ConceptFilter.</code><code class="descname">declared_filters</code><em class="property"> = OrderedDict([('name', &lt;django_filters.filters.MethodFilter object at 0x105ba7bd0&gt;), ('search', &lt;django_filters.filters.CharFilter object at 0x105ba7c50&gt;), ('concept_type', &lt;django_filters.filters.ModelChoiceFilter object at 0x105ba7f50&gt;)])</em><a class="headerlink" href="#goat.filters.ConceptFilter.declared_filters" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ConceptFilter.</code><code class="descname">declared_filters</code><em class="property"> = OrderedDict([('name', &lt;django_filters.filters.MethodFilter object&gt;), ('search', &lt;django_filters.filters.CharFilter object&gt;), ('concept_type', &lt;django_filters.filters.ModelChoiceFilter object&gt;)])</em><a class="headerlink" href="#goat.filters.ConceptFilter.declared_filters" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -213,13 +216,18 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></code></p>
 </dd></dl>
 
+<dl class="method">
+<dt id="goat.models.Authority.accepts">
+<code class="descclassname">Authority.</code><code class="descname">accepts</code><span class="sig-paren">(</span><em>method</em>, <em>*params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/models.html#Authority.accepts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.models.Authority.accepts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="goat.models.Authority.added_by">
 <code class="descclassname">Authority.</code><code class="descname">added_by</code><a class="headerlink" href="#goat.models.Authority.added_by" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accessor to the related object on the forward side of a many-to-one or
 one-to-one relation.</p>
 <p>In the example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -232,7 +240,7 @@ one-to-one relation.</p>
 <dd><p>Accessor to the related object on the forward side of a many-to-one or
 one-to-one relation.</p>
 <p>In the example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -252,7 +260,7 @@ object the first time, the query is executed.</p>
 <dd><p>Accessor to the related objects manager on the reverse side of a
 many-to-one relation.</p>
 <p>In the example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -355,7 +363,7 @@ object the first time, the query is executed.</p>
 <dd><p>Accessor to the related object on the forward side of a many-to-one or
 one-to-one relation.</p>
 <p>In the example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -423,7 +431,7 @@ of Congress or VIAF.</p>
 <dd><p>Accessor to the related object on the forward side of a many-to-one or
 one-to-one relation.</p>
 <p>In the example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -508,7 +516,7 @@ object the first time, the query is executed.</p>
 <dd><p>Accessor to the related objects manager on the forward and reverse sides of
 a many-to-many relation.</p>
 <p>In the example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -524,7 +532,7 @@ class built by <code class="docutils literal"><span class="pre">create_forward_m
 <dd><p>Accessor to the related objects manager on the reverse side of a
 many-to-one relation.</p>
 <p>In the example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -561,7 +569,7 @@ class built by <code class="docutils literal"><span class="pre">create_forward_m
 <dd><p>Accessor to the related objects manager on the forward and reverse sides of
 a many-to-many relation.</p>
 <p>In the example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -596,7 +604,7 @@ class built by <code class="docutils literal"><span class="pre">create_forward_m
 <dd><p>Accessor to the related object on the forward side of a many-to-one or
 one-to-one relation.</p>
 <p>In the example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -693,7 +701,7 @@ purposes, without having to commit to a particular view of the world.</p>
 <dd><p>Accessor to the related object on the forward side of a many-to-one or
 one-to-one relation.</p>
 <p>In the example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -706,7 +714,7 @@ one-to-one relation.</p>
 <dd><p>Accessor to the related objects manager on the reverse side of a
 many-to-one relation.</p>
 <p>In the example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -748,7 +756,7 @@ object the first time, the query is executed.</p>
 <dd><p>Accessor to the related objects manager on the reverse side of a
 many-to-one relation.</p>
 <p>In the example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -774,7 +782,7 @@ object the first time, the query is executed.</p>
 <dl class="class">
 <dt id="goat.models.SearchResultSet">
 <em class="property">class </em><code class="descclassname">goat.models.</code><code class="descname">SearchResultSet</code><span class="sig-paren">(</span><em>id</em>, <em>added_by</em>, <em>added</em>, <em>updated</em>, <em>created</em>, <em>task_id</em>, <em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/models.html#SearchResultSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.models.SearchResultSet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#goat.models.BasicAccessionMixin" title="goat.models.BasicAccessionMixin"><code class="xref py py-class docutils literal"><span class="pre">goat.models.BasicAccessionMixin</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></code></p>
 <dl class="exception">
 <dt id="goat.models.SearchResultSet.DoesNotExist">
 <em class="property">exception </em><code class="descname">DoesNotExist</code><a class="headerlink" href="#goat.models.SearchResultSet.DoesNotExist" title="Permalink to this definition">¶</a></dt>
@@ -798,16 +806,30 @@ object the first time, the query is executed.</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="goat.models.SearchResultSet.added">
+<code class="descclassname">SearchResultSet.</code><code class="descname">added</code><a class="headerlink" href="#goat.models.SearchResultSet.added" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="goat.models.SearchResultSet.added_by">
 <code class="descclassname">SearchResultSet.</code><code class="descname">added_by</code><a class="headerlink" href="#goat.models.SearchResultSet.added_by" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accessor to the related object on the forward side of a many-to-one or
 one-to-one relation.</p>
 <p>In the example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">child.parent</span></code> is a <code class="docutils literal"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="goat.models.SearchResultSet.added_by_id">
+<code class="descclassname">SearchResultSet.</code><code class="descname">added_by_id</code><a class="headerlink" href="#goat.models.SearchResultSet.added_by_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -879,6 +901,13 @@ object the first time, the query is executed.</p>
 <dd><p>The identifier of the asynchronous search task.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="goat.models.SearchResultSet.updated">
+<code class="descclassname">SearchResultSet.</code><code class="descname">updated</code><a class="headerlink" href="#goat.models.SearchResultSet.updated" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -921,7 +950,7 @@ object the first time, the query is executed.</p>
 <em class="property">class </em><code class="descname">Meta</code><a class="reference internal" href="_modules/goat/serializers.html#AuthorityLightSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.AuthorityLightSerializer.Meta" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
 <dt id="goat.serializers.AuthorityLightSerializer.Meta.fields">
-<code class="descname">fields</code><em class="property"> = ('id', 'name')</em><a class="headerlink" href="#goat.serializers.AuthorityLightSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fields</code><em class="property"> = ('id', 'name', 'added_by')</em><a class="headerlink" href="#goat.serializers.AuthorityLightSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -959,6 +988,62 @@ configuration is hidden.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="goat.serializers.ConceptLightSerializer">
+<em class="property">class </em><code class="descclassname">goat.serializers.</code><code class="descname">ConceptLightSerializer</code><span class="sig-paren">(</span><em>instance=None</em>, <em>data=&lt;class rest_framework.fields.empty&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/serializers.html#ConceptLightSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.ConceptLightSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">rest_framework.serializers.ModelSerializer</span></code></p>
+<dl class="class">
+<dt id="goat.serializers.ConceptLightSerializer.Meta">
+<em class="property">class </em><code class="descname">Meta</code><a class="reference internal" href="_modules/goat/serializers.html#ConceptLightSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.ConceptLightSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="goat.serializers.ConceptLightSerializer.Meta.exclude">
+<code class="descname">exclude</code><em class="property"> = ('data',)</em><a class="headerlink" href="#goat.serializers.ConceptLightSerializer.Meta.exclude" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="goat.serializers.ConceptLightSerializer.Meta.model">
+<code class="descname">model</code><a class="headerlink" href="#goat.serializers.ConceptLightSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Concept</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="goat.serializers.ConceptRepresentationMixin">
+<em class="property">class </em><code class="descclassname">goat.serializers.</code><code class="descname">ConceptRepresentationMixin</code><span class="sig-paren">(</span><em>instance=None</em>, <em>data=&lt;class rest_framework.fields.empty&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/serializers.html#ConceptRepresentationMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.ConceptRepresentationMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">rest_framework.serializers.ModelSerializer</span></code></p>
+<dl class="class">
+<dt id="goat.serializers.ConceptRepresentationMixin.Meta">
+<em class="property">class </em><code class="descname">Meta</code><a class="reference internal" href="_modules/goat/serializers.html#ConceptRepresentationMixin.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.ConceptRepresentationMixin.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="goat.serializers.ConceptRepresentationMixin.Meta.fields">
+<code class="descname">fields</code><em class="property"> = '__all__'</em><a class="headerlink" href="#goat.serializers.ConceptRepresentationMixin.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="goat.serializers.ConceptRepresentationMixin.Meta.model">
+<code class="descname">model</code><a class="headerlink" href="#goat.serializers.ConceptRepresentationMixin.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Identity</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="goat.serializers.ConceptRepresentationMixin.to_internal_value">
+<code class="descclassname">ConceptRepresentationMixin.</code><code class="descname">to_internal_value</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/serializers.html#ConceptRepresentationMixin.to_internal_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.ConceptRepresentationMixin.to_internal_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concepts can be passed as IDs, or as URIs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="goat.serializers.ConceptRepresentationMixin.to_representation">
+<code class="descclassname">ConceptRepresentationMixin.</code><code class="descname">to_representation</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/serializers.html#ConceptRepresentationMixin.to_representation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.ConceptRepresentationMixin.to_representation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concepts should be represented as URIs.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="goat.serializers.ConceptSerializer">
 <em class="property">class </em><code class="descclassname">goat.serializers.</code><code class="descname">ConceptSerializer</code><span class="sig-paren">(</span><em>instance=None</em>, <em>data=&lt;class rest_framework.fields.empty&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/serializers.html#ConceptSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.ConceptSerializer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">rest_framework.serializers.ModelSerializer</span></code></p>
@@ -981,9 +1066,31 @@ configuration is hidden.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="goat.serializers.IdentityLightSerializer">
+<em class="property">class </em><code class="descclassname">goat.serializers.</code><code class="descname">IdentityLightSerializer</code><span class="sig-paren">(</span><em>instance=None</em>, <em>data=&lt;class rest_framework.fields.empty&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/serializers.html#IdentityLightSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.IdentityLightSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#goat.serializers.ConceptRepresentationMixin" title="goat.serializers.ConceptRepresentationMixin"><code class="xref py py-class docutils literal"><span class="pre">goat.serializers.ConceptRepresentationMixin</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">rest_framework.serializers.ModelSerializer</span></code></p>
+<dl class="class">
+<dt id="goat.serializers.IdentityLightSerializer.Meta">
+<em class="property">class </em><code class="descname">Meta</code><a class="reference internal" href="_modules/goat/serializers.html#IdentityLightSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.IdentityLightSerializer.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="goat.serializers.IdentityLightSerializer.Meta.fields">
+<code class="descname">fields</code><em class="property"> = '__all__'</em><a class="headerlink" href="#goat.serializers.IdentityLightSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="goat.serializers.IdentityLightSerializer.Meta.model">
+<code class="descname">model</code><a class="headerlink" href="#goat.serializers.IdentityLightSerializer.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Identity</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="goat.serializers.IdentitySerializer">
 <em class="property">class </em><code class="descclassname">goat.serializers.</code><code class="descname">IdentitySerializer</code><span class="sig-paren">(</span><em>instance=None</em>, <em>data=&lt;class rest_framework.fields.empty&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/serializers.html#IdentitySerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.IdentitySerializer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">rest_framework.serializers.ModelSerializer</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#goat.serializers.ConceptRepresentationMixin" title="goat.serializers.ConceptRepresentationMixin"><code class="xref py py-class docutils literal"><span class="pre">goat.serializers.ConceptRepresentationMixin</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">rest_framework.serializers.ModelSerializer</span></code></p>
 <dl class="class">
 <dt id="goat.serializers.IdentitySerializer.Meta">
 <em class="property">class </em><code class="descname">Meta</code><a class="reference internal" href="_modules/goat/serializers.html#IdentitySerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.IdentitySerializer.Meta" title="Permalink to this definition">¶</a></dt>
@@ -1000,18 +1107,6 @@ configuration is hidden.</p>
 
 </dd></dl>
 
-<dl class="method">
-<dt id="goat.serializers.IdentitySerializer.to_internal_value">
-<code class="descclassname">IdentitySerializer.</code><code class="descname">to_internal_value</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/serializers.html#IdentitySerializer.to_internal_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.IdentitySerializer.to_internal_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Concepts can be passed as IDs, or as URIs.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="goat.serializers.IdentitySerializer.to_representation">
-<code class="descclassname">IdentitySerializer.</code><code class="descname">to_representation</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/serializers.html#IdentitySerializer.to_representation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.IdentitySerializer.to_representation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Concepts should be represented as URIs.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
@@ -1023,7 +1118,7 @@ configuration is hidden.</p>
 <em class="property">class </em><code class="descname">Meta</code><a class="reference internal" href="_modules/goat/serializers.html#IdentitySystemLightSerializer.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.serializers.IdentitySystemLightSerializer.Meta" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
 <dt id="goat.serializers.IdentitySystemLightSerializer.Meta.fields">
-<code class="descname">fields</code><em class="property"> = ('id', 'name')</em><a class="headerlink" href="#goat.serializers.IdentitySystemLightSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fields</code><em class="property"> = ('id', 'name', 'added_by')</em><a class="headerlink" href="#goat.serializers.IdentitySystemLightSerializer.Meta.fields" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1132,6 +1227,12 @@ configuration is hidden.</p>
 <dt id="goat.views.AuthorityViewSet">
 <em class="property">class </em><code class="descclassname">goat.views.</code><code class="descname">AuthorityViewSet</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/views.html#AuthorityViewSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.views.AuthorityViewSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#goat.views.CreateWithUserInfoMixin" title="goat.views.CreateWithUserInfoMixin"><code class="xref py py-class docutils literal"><span class="pre">goat.views.CreateWithUserInfoMixin</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">rest_framework.viewsets.ModelViewSet</span></code></p>
+<dl class="method">
+<dt id="goat.views.AuthorityViewSet.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>request</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/views.html#AuthorityViewSet.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.views.AuthorityViewSet.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populates the <code class="docutils literal"><span class="pre">added_by</span></code> field with the current user.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="goat.views.AuthorityViewSet.filter_backends">
 <code class="descname">filter_backends</code><em class="property"> = (&lt;class 'django_filters.rest_framework.backends.DjangoFilterBackend'&gt;,)</em><a class="headerlink" href="#goat.views.AuthorityViewSet.filter_backends" title="Permalink to this definition">¶</a></dt>
@@ -1150,7 +1251,7 @@ configuration is hidden.</p>
 
 <dl class="attribute">
 <dt id="goat.views.AuthorityViewSet.queryset">
-<code class="descname">queryset</code><em class="property"> = &lt;QuerySet [&lt;Authority: VIAF&gt;, &lt;Authority: Conceptpower&gt;]&gt;</em><a class="headerlink" href="#goat.views.AuthorityViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">queryset</code><em class="property"> = &lt;QuerySet [&lt;Authority: VIAF&gt;, &lt;Authority: Conceptpower&gt;, &lt;Authority: GoatTest&gt;]&gt;</em><a class="headerlink" href="#goat.views.AuthorityViewSet.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1181,6 +1282,11 @@ configuration is hidden.</p>
 <dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">ConceptFilter</span></code></p>
 </dd></dl>
 
+<dl class="method">
+<dt id="goat.views.ConceptViewSet.get_serializer_class">
+<code class="descname">get_serializer_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/views.html#ConceptViewSet.get_serializer_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.views.ConceptViewSet.get_serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="goat.views.ConceptViewSet.permission_classes">
 <code class="descname">permission_classes</code><em class="property"> = [&lt;class 'goat.views.GoatPermission'&gt;]</em><a class="headerlink" href="#goat.views.ConceptViewSet.permission_classes" title="Permalink to this definition">¶</a></dt>
@@ -1188,7 +1294,7 @@ configuration is hidden.</p>
 
 <dl class="attribute">
 <dt id="goat.views.ConceptViewSet.queryset">
-<code class="descname">queryset</code><em class="property"> = &lt;QuerySet [&lt;Concept: &gt;, &lt;Concept: Bradshaw Isherwood, Christopher William, 1904-1986&gt;, &lt;Concept: Bradshaw, John, 1933-&gt;, &lt;Concept: Bradshaw, Paul F&gt;, &lt;Concept: Bradshaw, Henry, 1831-1886&gt;, &lt;Concept: Bradshaw, David, 1955-&gt;, &lt;Concept: Bradshaw, Gillian, 1956-&gt;, &lt;Concept: Bradshaw, Michael J. , 1935-&gt;, &lt;Concept: Bradshaw, Tiny, 1905-1958&gt;, &lt;Concept: Bradshaw, Rita, 1950-&gt;, &lt;Concept: Bradshaw, John, 1950-&gt;, &lt;Concept: &gt;, &lt;Concept: Margaret Elizabeth Bradshaw&gt;, &lt;Concept: christopher william bradshaw isherwood&gt;, &lt;Concept: Anthony D. Bradshaw&gt;, &lt;Concept: Anthony David Bradshaw (1926-2008)&gt;, &lt;Concept: &gt;, &lt;Concept: &gt;, &lt;Concept: Bradshaw 1965&gt;]&gt;</em><a class="headerlink" href="#goat.views.ConceptViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">queryset</code><em class="property"> = &lt;QuerySet [&lt;Concept: &gt;, &lt;Concept: Bradshaw Isherwood, Christopher William, 1904-1986&gt;, &lt;Concept: Bradshaw, John, 1933-&gt;, &lt;Concept: Bradshaw, Paul F&gt;, &lt;Concept: Bradshaw, Henry, 1831-1886&gt;, &lt;Concept: Bradshaw, David, 1955-&gt;, &lt;Concept: Bradshaw, Gillian, 1956-&gt;, &lt;Concept: Bradshaw, Michael J. , 1935-&gt;, &lt;Concept: Bradshaw, Tiny, 1905-1958&gt;, &lt;Concept: Bradshaw, Rita, 1950-&gt;, &lt;Concept: Bradshaw, John, 1950-&gt;, &lt;Concept: &gt;, &lt;Concept: Margaret Elizabeth Bradshaw&gt;, &lt;Concept: christopher william bradshaw isherwood&gt;, &lt;Concept: Anthony D. Bradshaw&gt;, &lt;Concept: Anthony David Bradshaw (1926-2008)&gt;, &lt;Concept: &gt;, &lt;Concept: &gt;, &lt;Concept: Bradshaw 1965&gt;, &lt;Concept: evolutionary biologist and author Richard Dawkins English ethologist&gt;, '...(remaining elements truncated)...']&gt;</em><a class="headerlink" href="#goat.views.ConceptViewSet.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1237,9 +1343,20 @@ configuration is hidden.</p>
 <dt id="goat.views.IdentitySystemViewSet">
 <em class="property">class </em><code class="descclassname">goat.views.</code><code class="descname">IdentitySystemViewSet</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/views.html#IdentitySystemViewSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.views.IdentitySystemViewSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#goat.views.CreateWithUserInfoMixin" title="goat.views.CreateWithUserInfoMixin"><code class="xref py py-class docutils literal"><span class="pre">goat.views.CreateWithUserInfoMixin</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">rest_framework.viewsets.ModelViewSet</span></code></p>
+<dl class="method">
+<dt id="goat.views.IdentitySystemViewSet.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>request</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/views.html#IdentitySystemViewSet.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.views.IdentitySystemViewSet.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populates the <code class="docutils literal"><span class="pre">added_by</span></code> field with the current user.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="goat.views.IdentitySystemViewSet.filter_backends">
 <code class="descname">filter_backends</code><em class="property"> = (&lt;class 'django_filters.rest_framework.backends.DjangoFilterBackend'&gt;,)</em><a class="headerlink" href="#goat.views.IdentitySystemViewSet.filter_backends" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="goat.views.IdentitySystemViewSet.get_serializer_class">
+<code class="descname">get_serializer_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/views.html#IdentitySystemViewSet.get_serializer_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.views.IdentitySystemViewSet.get_serializer_class" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1249,7 +1366,7 @@ configuration is hidden.</p>
 
 <dl class="attribute">
 <dt id="goat.views.IdentitySystemViewSet.queryset">
-<code class="descname">queryset</code><em class="property"> = &lt;QuerySet [&lt;IdentitySystem: builtin:VIAF&gt;, &lt;IdentitySystem: builtin:Conceptpower&gt;]&gt;</em><a class="headerlink" href="#goat.views.IdentitySystemViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">queryset</code><em class="property"> = &lt;QuerySet [&lt;IdentitySystem: builtin:VIAF&gt;, &lt;IdentitySystem: builtin:Conceptpower&gt;, &lt;IdentitySystem: TestSystem&gt;, &lt;IdentitySystem: GoatTest&gt;, &lt;IdentitySystem: builtin:GoatTest&gt;]&gt;</em><a class="headerlink" href="#goat.views.IdentitySystemViewSet.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1281,6 +1398,11 @@ the user has <code class="docutils literal"><span class="pre">change</span></cod
 <code class="descname">filter_backends</code><em class="property"> = (&lt;class 'django_filters.rest_framework.backends.DjangoFilterBackend'&gt;,)</em><a class="headerlink" href="#goat.views.IdentityViewSet.filter_backends" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="goat.views.IdentityViewSet.get_serializer_class">
+<code class="descname">get_serializer_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/views.html#IdentityViewSet.get_serializer_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.views.IdentityViewSet.get_serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="goat.views.IdentityViewSet.permission_classes">
 <code class="descname">permission_classes</code><em class="property"> = [&lt;class 'goat.views.GoatPermission'&gt;]</em><a class="headerlink" href="#goat.views.IdentityViewSet.permission_classes" title="Permalink to this definition">¶</a></dt>
@@ -1288,7 +1410,7 @@ the user has <code class="docutils literal"><span class="pre">change</span></cod
 
 <dl class="attribute">
 <dt id="goat.views.IdentityViewSet.queryset">
-<code class="descname">queryset</code><em class="property"> = &lt;QuerySet [&lt;Identity: Anthony David Bradshaw (1926-2008)&gt;, &lt;Identity: asdf&gt;, &lt;Identity: fdsa&gt;]&gt;</em><a class="headerlink" href="#goat.views.IdentityViewSet.queryset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">queryset</code><em class="property"> = &lt;QuerySet [&lt;Identity: Anthony David Bradshaw (1926-2008)&gt;, &lt;Identity: asdf&gt;, &lt;Identity: fdsa&gt;, &lt;Identity: Anthony David Bradshaw (1926-2008)&gt;, &lt;Identity: Anthony David Bradshaw (1926-2008)&gt;, &lt;Identity: Anthony David Bradshaw (1926-2008)&gt;, &lt;Identity: Anthony David Bradshaw (1926-2008)&gt;, &lt;Identity: GoatTest&gt;, &lt;Identity: Anthony David Bradshaw (1926-2008)&gt;, &lt;Identity: Charles Darwin&gt;, &lt;Identity: Erasmus Darwin&gt;, &lt;Identity: Francis Darwin&gt;, &lt;Identity: Emma Darwin&gt;, &lt;Identity: Charles Darwin&gt;, &lt;Identity: Erasmus Darwin&gt;, &lt;Identity: Francis Darwin&gt;, &lt;Identity: Emma Darwin&gt;, &lt;Identity: Loeb&gt;, &lt;Identity: Jacques Loeb&gt;, &lt;Identity: Charles Darwin&gt;, '...(remaining elements truncated)...']&gt;</em><a class="headerlink" href="#goat.views.IdentityViewSet.queryset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1317,6 +1439,12 @@ the user has <code class="docutils literal"><span class="pre">change</span></cod
 <a class="reference internal" href="#goat.views.IdentityViewSet" title="goat.views.IdentityViewSet"><code class="xref py py-class docutils literal"><span class="pre">IdentityViewSet</span></code></a>. Here the client can pass an identifier and
 (optionally) an ID for a <a class="reference internal" href="#goat.models.IdentitySystem" title="goat.models.IdentitySystem"><code class="xref py py-class docutils literal"><span class="pre">IdentitySystem</span></code></a> instance, and get an
 array of identical <a class="reference internal" href="#goat.models.Concept" title="goat.models.Concept"><code class="xref py py-class docutils literal"><span class="pre">Concept</span></code></a>s.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="goat.views.retrieve">
+<code class="descclassname">goat.views.</code><code class="descname">retrieve</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/goat/views.html#retrieve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#goat.views.retrieve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a <a class="reference internal" href="#goat.models.Concept" title="goat.models.Concept"><code class="xref py py-class docutils literal"><span class="pre">Concept</span></code></a> by identifier.</p>
 </dd></dl>
 
 <dl class="function">
@@ -1394,14 +1522,11 @@ status view.</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -1412,8 +1537,8 @@ status view.</p>
       &copy;2016, Erick Peirson.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
       <a href="_sources/goat.txt"

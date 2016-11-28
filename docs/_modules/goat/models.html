@@ -2,11 +2,11 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>goat.models &mdash; black-goat 0.1 documentation</title>
+    <title>goat.models &#8212; black-goat 0.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -26,11 +26,14 @@
     <link rel="top" title="black-goat 0.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
    
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -38,15 +41,15 @@
           <div class="body" role="main">
             
   <h1>Source code for goat.models</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
-<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="k">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="k">import</span> <span class="n">User</span>
 
-<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">datetime</span><span class="o">,</span> <span class="nn">json</span>
 
-<span class="kn">from</span> <span class="nn">goat.authorities</span> <span class="kn">import</span> <span class="n">AuthorityManager</span>
+<span class="kn">from</span> <span class="nn">goat.authorities</span> <span class="k">import</span> <span class="n">AuthorityManager</span>
 
 
-<span class="n">opt</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;blank&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s1">&#39;null&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;blank&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;null&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 
 
 <div class="viewcode-block" id="BasicAccessionMixin"><a class="viewcode-back" href="../../goat.html#goat.filters.BasicAccessionMixin">[docs]</a><span class="k">class</span> <span class="nc">BasicAccessionMixin</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
@@ -54,13 +57,13 @@
 <span class="sd">    Basic data tracking information.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="BasicAccessionMixin.Meta"><a class="viewcode-back" href="../../goat.html#goat.filters.BasicAccessionMixin.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">abstract</span> <span class="o">=</span> <span class="bp">True</span>
-</div>
-    <span class="n">added_by</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
-    <span class="n">added</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">updated</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">abstract</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-</div>
+    <span class="n">added_by</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+    <span class="n">added</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="Authority"><a class="viewcode-back" href="../../goat.html#goat.filters.Authority">[docs]</a><span class="k">class</span> <span class="nc">Authority</span><span class="p">(</span><span class="n">BasicAccessionMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An Authority service, system, file, or other source of concepts.</span>
@@ -81,10 +84,14 @@
         <span class="n">manager</span> <span class="o">=</span> <span class="n">AuthorityManager</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">)</span><span class="c1">#.search(params)</span>
         <span class="k">return</span> <span class="k">lambda</span> <span class="n">params</span><span class="p">:</span> <span class="n">manager</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+<div class="viewcode-block" id="Authority.accepts"><a class="viewcode-back" href="../../goat.html#goat.filters.Authority.accepts">[docs]</a>    <span class="k">def</span> <span class="nf">accepts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="o">*</span><span class="n">params</span><span class="p">):</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">AuthorityManager</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configuration</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">manager</span><span class="o">.</span><span class="n">accepts</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="o">*</span><span class="n">params</span><span class="p">)</span></div>
 
-</div>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+
 <div class="viewcode-block" id="Concept"><a class="viewcode-back" href="../../goat.html#goat.filters.Concept">[docs]</a><span class="k">class</span> <span class="nc">Concept</span><span class="p">(</span><span class="n">BasicAccessionMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents a single entry in an authority service or system.</span>
@@ -99,7 +106,7 @@
     <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;Primary name or label, used for search and display.&quot;&quot;&quot;</span>
 
-    <span class="n">identifier</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">identifier</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The URI for this concept.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -109,10 +116,10 @@
 <span class="sd">    The symbol used by ``authority`` internally to identify this concept.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;If available, a freeform description provided by the authority.&quot;&quot;&quot;</span>
 
-    <span class="n">data</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;JSON-pickled data about this concept from the authority service.&quot;&quot;&quot;</span>
 
     <span class="n">concept_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;Concept&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;instances&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">opt</span><span class="p">)</span>
@@ -127,12 +134,14 @@
 <div class="viewcode-block" id="Concept.save"><a class="viewcode-back" href="../../goat.html#goat.filters.Concept.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">authority</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">authority</span> <span class="ow">in</span> <span class="n">Authority</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">authority</span><span class="o">.</span><span class="n">namespace</span><span class="p">:</span>
+                    <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">authority</span><span class="o">.</span><span class="n">namespace</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">identifier</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">authority</span> <span class="o">=</span> <span class="n">authority</span>
                     <span class="k">break</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Concept</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Concept</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="IdentitySystem"><a class="viewcode-back" href="../../goat.html#goat.filters.IdentitySystem">[docs]</a><span class="k">class</span> <span class="nc">IdentitySystem</span><span class="p">(</span><span class="n">BasicAccessionMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An identity system organizes a set of identity propositions about concepts.</span>
@@ -144,9 +153,9 @@
     <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
 
-</div>
+
 <div class="viewcode-block" id="Identity"><a class="viewcode-back" href="../../goat.html#goat.filters.Identity">[docs]</a><span class="k">class</span> <span class="nc">Identity</span><span class="p">(</span><span class="n">BasicAccessionMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An identity proposition about a set of concepts.</span>
@@ -158,18 +167,22 @@
     <span class="n">part_of</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;IdentitySystem&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;identities&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;The system to which this identity belongs.&quot;&quot;&quot;</span>
 
-    <span class="n">confidence</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">confidence</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;This can (optionally) be used to express relative confidence levels.&quot;&quot;&quot;</span>
 
     <span class="n">concepts</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="s1">&#39;Concept&#39;</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;identities&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;The concepts asserted to be identical.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
 
-</div>
-<div class="viewcode-block" id="SearchResultSet"><a class="viewcode-back" href="../../goat.html#goat.filters.SearchResultSet">[docs]</a><span class="k">class</span> <span class="nc">SearchResultSet</span><span class="p">(</span><span class="n">BasicAccessionMixin</span><span class="p">):</span>
-    <span class="n">created</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SearchResultSet"><a class="viewcode-back" href="../../goat.html#goat.filters.SearchResultSet">[docs]</a><span class="k">class</span> <span class="nc">SearchResultSet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">added_by</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="o">**</span><span class="n">opt</span><span class="p">)</span>
+    <span class="n">added</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">created</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">task_id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="o">**</span><span class="n">opt</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;The identifier of the asynchronous search task.&quot;&quot;&quot;</span>
@@ -201,14 +214,11 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -219,8 +229,8 @@
       &copy;2016, Erick Peirson.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
     </div>
 
