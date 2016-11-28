@@ -114,6 +114,11 @@ class AuthorityManager(object):
             return self._generic(name)
         return super(AuthorityManager, self).__getattr__(name)
 
+    def accepts(self, method, *params):
+        config = self._get_method_config(method)
+        accepted = {p.get('accept', '') for p in config.get('parameters', [])}
+        return all([param in accepted for param in params])
+
     def get(self, identifier=None, local_identifier=None):
         """
         Get a concept record from the configured authority.

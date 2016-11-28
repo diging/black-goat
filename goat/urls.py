@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^$', views.home, name="home"),
     url(r'^search/$', views.search, name="search"),
     url(r'^search/([a-zA-Z0-9\-]+)', views.search_results, name='search-results'),
+    url(r'^retrieve/$', views.retrieve, name='retrieve'),
     url(r'^identical/$', views.identical, name="identical"),
     url(r'^', include(router.urls)),
     url(r'^login/$', login, {'template_name': 'admin/login.html'}, name="login"),

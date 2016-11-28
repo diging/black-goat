@@ -9,6 +9,7 @@ from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.renderers import JSONRenderer
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import BasePermission, IsAuthenticatedOrReadOnly, DjangoObjectPermissions, DjangoModelPermissions
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -79,6 +80,16 @@ def identical(request):
     return JsonResponse({'results': serialized})
 
 
+def retrieve(request):
+    """
+    Get a :class:`.Concept` by identifier.
+    """
+    identifier = request.GET.get('identifier')
+    concept = get_object_or_404(Concept, identifier=identifier)
+    serialized = ConceptSerializer(concept).data
+    return JsonResponse(serialized)
+
+
 def search(request):
     """
     Trigger a search.
@@ -93,13 +104,15 @@ def search(request):
     if not q:
         return JsonResponse({'detail': 'No query provided.'}, status=400)
 
+    params = {k: v[0] if isinstance(v, list) else v
+              for k, v in dict(request.GET.copy()).iteritems()}
+
     user = request.user if request.user.username != '' else None
 
     # We let the asynchronous task create the SearchResultSet, since it will
     #  spawn tasks that need to update the SearchResultSet upon completion.
-    result = tasks.orchestrate_search.delay(user,
-                                            Authority.objects.all(),
-                                            {'q': q})
+    result = tasks.orchestrate_search.delay(user, Authority.objects.all(),
+                                            params)
 
     # We have to build this manually, since the SearchResultSet probably does
     #  not yet exist.
@@ -121,10 +134,10 @@ def search_results(request, result_id):
                             status=202)
 
     # Only the owner of the search can check its status here.
-    if result.added_by != request.user:
-        _data, _status = {'detail': "This search does not belong to you."}, 403
+    # if result.added_by != request.user:
+    #     _data, _status = {'detail': "This search does not belong to you."}, 403
 
-    elif result.state == SearchResultSet.PENDING:
+    if result.state == SearchResultSet.PENDING:
         _data = {
             'detail': "Your search is being executed; please check back later."
         }
@@ -145,13 +158,23 @@ class CreateWithUserInfoMixin(object):
     Extends the default :meth:`.ModelViewSet.create` to populate the
     ``added_by`` field.
     """
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
 
-        added_by_id = request.user.id
-        serializer.initial_data['added_by'] = added_by_id
-        serializer.is_valid(raise_exception=True)
+    def create(self, request, *args, **kwargs):
+        data = request.data.copy()
+
+        data['added_by'] = request.user.id
+        data['authority'] = data.get('authority', None)
+        data['concept_type'] = data.get('concept_type', None)
+        print data
+
+        serializer = self.get_serializer(data=data)
+        print serializer, type(serializer)
+
+        if not serializer.is_valid(raise_exception=False):
+            return Response({'detail': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
         self.perform_create(serializer)
+
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -162,6 +185,11 @@ class ConceptViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
     serializer_class = ConceptSerializer
     filter_backends = (DjangoFilterBackend, )
     filter_class = filters.ConceptFilter
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return ConceptLightSerializer
+        return super(ConceptViewSet, self).get_serializer_class()
 
 
 class AuthorityViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
@@ -176,7 +204,28 @@ class AuthorityViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
         """
         if self.action == 'list':
             return AuthoritySerializer
+        elif self.action == 'create':
+            return AuthorityLightSerializer
         return AuthorityDetailSerializer
+
+    def create(self, request, *args, **kwargs):
+        """
+        Populates the ``added_by`` field with the current user.
+        """
+        print '::: create'
+        print request.user
+        data = request.data.copy()
+        added_by = request.user
+        data['added_by'] = added_by.id
+
+        serializer = self.get_serializer(data=data)
+
+        serializer.is_valid(raise_exception=True)
+
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 
 
@@ -186,19 +235,24 @@ class IdentityViewSet(viewsets.ModelViewSet):
     serializer_class = IdentitySerializer
     filter_backends = (DjangoFilterBackend, )
 
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return IdentityLightSerializer
+        return super(IdentityViewSet, self).get_serializer_class()
+
     def create(self, request, *args, **kwargs):
         """
         Populates the ``added_by`` field with the current user, and checks that
         the user has ``change`` authorization on the :class:`.IdentitySystem`\.
         """
-        serializer = self.get_serializer(data=request.data)
+        data = request.data.copy()
+        added_by = request.user
+        data['added_by'] = added_by.id
 
-        if request.auth:
-            added_by = request.auth.application.user.id
-        else:
-            added_by = request.user
-        serializer.initial_data['added_by'] = added_by.id
+        serializer = self.get_serializer(data=data)
+
         serializer.is_valid(raise_exception=True)
+        print serializer.errors
         identity_system = serializer.validated_data.get('part_of')
         if not added_by.has_perm('change_identitysystem', identity_system):
             _data = {
@@ -216,3 +270,26 @@ class IdentitySystemViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
     queryset = IdentitySystem.objects.all()
     serializer_class = IdentitySystemSerializer
     filter_backends = (DjangoFilterBackend, )
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return IdentitySystemLightSerializer
+        return super(IdentitySystemViewSet, self).get_serializer_class()
+
+    def create(self, request, *args, **kwargs):
+        """
+        Populates the ``added_by`` field with the current user.
+        """
+        print '::: create'
+        print request.user
+        data = request.data.copy()
+        added_by = request.user
+        data['added_by'] = added_by.id
+
+        serializer = self.get_serializer(data=data)
+
+        serializer.is_valid(raise_exception=True)
+
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

@@ -25,7 +25,7 @@ def orchestrate_search(self, user, authorities, params):
                                              task_id=self.request.id,
                                              state=SearchResultSet.PENDING)
     tasks = [search.s(user, auth, params, results.id)
-             for auth in authorities if auth.configuration]
+             for auth in authorities if auth.configuration and auth.accepts('search', *params.keys())]
     chord(tasks)(register_results.s())
     return results.id
 
@@ -52,8 +52,8 @@ def search(self, user, authority, params, result_id):
     """
     concepts = []
     if user is None:
-        user = authority.created_by
-        
+        user = authority.added_by
+
     results = authority.search(params)
 
     for result in results:

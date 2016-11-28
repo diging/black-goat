@@ -47,12 +47,18 @@
         {
             "name": "search",
             "method": "GET",
-            "path": "{endpoint}/ConceptLookup/{q}/noun",
+            "path": "{endpoint}/ConceptLookup/{q}/{pos}",
             "parameters": [
                 {
                     "accept": "q",
                     "send": "q",
                     "required": true
+                },
+                {
+                    "accept": "pos",
+                    "send": "pos",
+                    "required": false,
+                    "default": "noun"
                 }
             ],
             "response": {

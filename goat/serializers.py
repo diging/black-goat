@@ -20,15 +20,19 @@ class IdentitySystemSerializer(serializers.ModelSerializer):
 
 
 class IdentitySystemLightSerializer(serializers.ModelSerializer):
+    added_by = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+
     class Meta:
         model = IdentitySystem
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'added_by')
 
 
 class AuthorityLightSerializer(serializers.ModelSerializer):
+    added_by = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+
     class Meta:
         model = Authority
-        fields = ('id', 'name',)
+        fields = ('id', 'name', 'added_by')
 
 
 class AuthoritySerializer(serializers.ModelSerializer):
@@ -74,9 +78,20 @@ class ConceptSerializer(serializers.ModelSerializer):
         exclude = ('data', )
 
 
-class IdentitySerializer(serializers.ModelSerializer):
-    added_by = UserSerializer()
-    part_of = IdentitySystemLightSerializer()
+class ConceptLightSerializer(serializers.ModelSerializer):
+    # added_by = UserSerializer()
+    # authority = AuthorityLightSerializer()
+    authority = serializers.PrimaryKeyRelatedField(queryset=Authority.objects.all(), allow_null=True)
+    concept_type = serializers.PrimaryKeyRelatedField(queryset=Concept.objects.all(), allow_null=True)
+
+
+    class Meta:
+        model = Concept
+        exclude = ('data', )
+
+
+class ConceptRepresentationMixin(serializers.ModelSerializer):
+    concepts = serializers.PrimaryKeyRelatedField(queryset=Concept.objects.all(), many=True)
 
     class Meta:
         model = Identity
@@ -86,9 +101,8 @@ class IdentitySerializer(serializers.ModelSerializer):
         """
         Concepts can be passed as IDs, or as URIs.
         """
-        print data
         concepts = []
-        for concept in data.get('concepts', []):
+        for concept in data.getlist('concepts', []):
             if type(concept) in [str, unicode] and concept.startswith('http'):
                 try:
                     concepts.append(Concept.objects.get(identifier=concept).id)
@@ -98,14 +112,34 @@ class IdentitySerializer(serializers.ModelSerializer):
                     })
             else:
                 concepts.append(concept)
-        data['concepts'] = concepts
-        return super(IdentitySerializer, self).to_internal_value(data)
+
+        data.setlist('concepts', concepts)
+
+        return super(ConceptRepresentationMixin, self).to_internal_value(data)
 
     def to_representation(self, obj):
         """
         Concepts should be represented as URIs.
         """
         concepts = obj.concepts.values_list('identifier', flat=True)
-        data = super(IdentitySerializer, self).to_representation(obj)
+        data = super(ConceptRepresentationMixin, self).to_representation(obj)
         data['concepts'] = concepts
         return data
+
+
+class IdentityLightSerializer(ConceptRepresentationMixin, serializers.ModelSerializer):
+    part_of = serializers.PrimaryKeyRelatedField(queryset=IdentitySystem.objects.all())
+    concepts = serializers.PrimaryKeyRelatedField(queryset=Concept.objects.all(), many=True)
+
+    class Meta:
+        model = Identity
+        fields = '__all__'
+
+
+class IdentitySerializer(ConceptRepresentationMixin, serializers.ModelSerializer):
+    added_by = UserSerializer()
+    part_of = IdentitySystemLightSerializer()
+
+    class Meta:
+        model = Identity
+        fields = '__all__'

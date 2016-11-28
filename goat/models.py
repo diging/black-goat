@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-import datetime
+import datetime, json
 
 from goat.authorities import AuthorityManager
 
@@ -40,6 +40,10 @@ class Authority(BasicAccessionMixin):
             raise AttributeError("Configuration unavailable for %s" % self.name)
         manager = AuthorityManager(self.configuration)#.search(params)
         return lambda params: manager.search(params)
+
+    def accepts(self, method, *params):
+        manager = AuthorityManager(self.configuration)
+        return manager.accepts(method, *params)
 
     def __unicode__(self):
         return self.name
@@ -87,6 +91,8 @@ class Concept(BasicAccessionMixin):
     def save(self, *args, **kwargs):
         if not self.authority:
             for authority in Authority.objects.all():
+                if not authority.namespace:
+                    continue
                 if authority.namespace in self.identifier:
                     self.authority = authority
                     break
@@ -128,7 +134,11 @@ class Identity(BasicAccessionMixin):
         return self.name
 
 
-class SearchResultSet(BasicAccessionMixin):
+class SearchResultSet(models.Model):
+    added_by = models.ForeignKey(User, **opt)
+    added = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
     created = models.DateTimeField(auto_now_add=True)
 
     task_id = models.CharField(max_length=255, **opt)

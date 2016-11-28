@@ -270,10 +270,13 @@ def generate_request(config, glob={}):
         raise ValueError("Malformed configuration: no path specified.")
 
     method = config.get("method", "GET")    # GET by default.
+
+    # Maps accept -> send parameter names.
     parameters = {param['accept']: param['send']
                   for param in config.get("parameters", [])}
     required = {param['accept'] for param in config.get("parameters", [])
                 if param.get('required', False)}
+    defaults = {param['accept']: param['default'] for param in config.get("parameters", []) if 'default' in param}
 
     format_keys = re.findall(ur'\{([^\}]+)\}', path_partial)
     fmt = {k: v for k, v in glob.iteritems() if k in format_keys}
@@ -299,10 +302,12 @@ def generate_request(config, glob={}):
             if param not in params:
                 raise TypeError('expected parameter %s' % param)
 
+        # Relabel accepts -> send parameter names.
         params = {parameters.get(k):v for k, v in params.iteritems()
                   if k in parameters}
 
-        extra = {key: params.pop(key, '') for key in format_keys
+        extra = {key: params.pop(key, defaults.pop(key, ''))
+                 for key in format_keys
                  if key not in fmt}    # Don't overwrite.
 
         if method == 'GET':

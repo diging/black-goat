@@ -24,6 +24,20 @@ class TestTaskSearch(unittest.TestCase):
         )
 
     @mock.patch('requests.get')
+    def test_search_pos(self, mock_get):
+        class MockResponse(object):
+            def __init__(self, content):
+                self.content = content
+
+        with open('goat/tests/mock_responses/cp_search.xml', 'r') as f:
+            mock_get.return_value = MockResponse(f.read())
+        path = 'http://chps.asu.edu/conceptpower/rest/ConceptLookup/test/verb'
+        query = {'q': 'test', 'pos': 'verb'}
+        results, _ = tasks.search(self.user, self.authority, query, None)
+        args, kwargs = mock_get.call_args
+        self.assertEqual(args[0], path)
+
+    @mock.patch('requests.get')
     def test_search(self, mock_get):
         class MockResponse(object):
             def __init__(self, content):
@@ -41,7 +55,7 @@ class TestTaskSearch(unittest.TestCase):
 
         identities = Identity.objects.all()
         self.assertEqual(identities.count(), 1)
-        
+
 
 
     def tearDown(self):
