@@ -71,6 +71,7 @@ AUTHENTICATION_BACKENDS = (
 
 
 MIDDLEWARE_CLASSES = (
+    'sslify.middleware.SSLifyMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -164,4 +165,5 @@ CELERYD_TASK_TIME_LIMIT = 300000
 BROKER_POOL_LIMIT = 0
 broker_pool_limit = 0    # Celery 4+
 
+SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
