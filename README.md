@@ -14,6 +14,10 @@ While Black Goat is envisioned to provide some basic tools for discovering
 mappings between authorities, the primary use case is to provide support for
 mappings generated in other ways (e.g. the Linked Open Data Enhancer).
 
+Documentation
+-------------
+For details, including use-cases and API docs, see https://diging.github.io/black-goat/.
+
 Deployment
 ----------
 For a sample deployment on CentOS 7, see [diging/ansible-black-goat-role](https://github.com/diging/ansible-black-goat-role)
