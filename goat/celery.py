@@ -12,3 +12,4 @@ app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 app.conf.update(BROKER_URL=os.environ.get('REDISTOGO_URL', 'redis://'),
                 CELERY_RESULT_BACKEND=os.environ.get('REDISTOGO_URL', 'redis://'))
+app.conf.task_default_queue = 'goat'
