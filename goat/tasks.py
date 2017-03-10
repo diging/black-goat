@@ -117,6 +117,7 @@ def register_results(self, results):
     results : list
         Each item should be a return value (tuple) from :func:`.search`\.
     """
+    print '::register_results::', results
     if not results:
         return
 
