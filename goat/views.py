@@ -111,7 +111,7 @@ def search(request):
 
     # We let the asynchronous task create the SearchResultSet, since it will
     #  spawn tasks that need to update the SearchResultSet upon completion.
-    result = tasks.orchestrate_search.delay(user, Authority.objects.all().values_list('id', flat=True),
+    result = tasks.orchestrate_search.delay(user, list(Authority.objects.all().values_list('id', flat=True)),
                                             params)
 
     # We have to build this manually, since the SearchResultSet probably does
