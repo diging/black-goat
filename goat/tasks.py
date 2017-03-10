@@ -10,16 +10,17 @@ app.conf.update(BROKER_URL=os.environ.get('REDISTOGO_URL', 'redis://'),
                 CELERY_RESULT_BACKEND=os.environ.get('REDISTOGO_URL', 'redis://'))
 
 from celery import chord
-
+from django.contrib.auth.models import User
 from goat.models import *
 
 
 @app.task(name='goat.tasks.orchestrate_search', bind=True)
-def orchestrate_search(self, user, authority_ids, params):
+def orchestrate_search(self, user_id, authority_ids, params):
     """
     Farm out search tasks (in a chord) to each of the :class:`.Authority`
     instances in ``authorities``.
     """
+    user = User.objects.get(pk=user_id)
     authorities = Authority.objects.filter(pk__in=authority_ids)
     results = SearchResultSet.objects.create(added_by=user,
                                              task_id=self.request.id,
@@ -31,7 +32,7 @@ def orchestrate_search(self, user, authority_ids, params):
 
 
 @app.task(name='goat.tasks.search', bind=True)
-def search(self, user, authority_id, params, result_id):
+def search(self, user_id, authority_id, params, result_id):
     """
     Perform a search using a single :class:`.Authority` instance.
 
@@ -50,7 +51,7 @@ def search(self, user, authority_id, params, result_id):
     result_id : int
         PK-identifier for :class:`goat.models.SearchResultSet`\.
     """
-
+    user = User.objects.get(pk=user_id)
     authority = Authority.objects.get(pk=authority_id)
 
     concepts = []
