@@ -102,7 +102,7 @@ def search(self, user, authority_id, params, result_id):
             )
             identity.concepts.add(concept, *alt_concepts)
 
-        concepts.append(concept)
+        concepts.append(concept.id)
     return concepts, result_id
 
 
@@ -124,6 +124,6 @@ def register_results(self, results):
     for concepts, result_id in results:
         if not result_set:
             result_set = SearchResultSet.objects.get(pk=result_id)
-        result_set.results.add(*concepts)
+        result_set.results.add(*Concept.objects.filter(pk__in=concepts))
     result_set.state = SearchResultSet.SUCCESS
     result_set.save()
