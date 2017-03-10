@@ -15,23 +15,23 @@ from goat.models import *
 
 
 @app.task(name='goat.tasks.orchestrate_search', bind=True)
-def orchestrate_search(self, user, authorities, params):
+def orchestrate_search(self, user, authority_ids, params):
     """
     Farm out search tasks (in a chord) to each of the :class:`.Authority`
     instances in ``authorities``.
     """
-
+    authorities = Authority.objects.filter(pk__in=authority_ids)
     results = SearchResultSet.objects.create(added_by=user,
                                              task_id=self.request.id,
                                              state=SearchResultSet.PENDING)
-    tasks = [search.s(user, auth, params, results.id)
+    tasks = [search.s(user, auth.id, params, results.id)
              for auth in authorities if auth.configuration and auth.accepts('search', *params.keys())]
     chord(tasks)(register_results.s())
     return results.id
 
 
 @app.task(name='goat.tasks.search', bind=True)
-def search(self, user, authority, params, result_id):
+def search(self, user, authority_id, params, result_id):
     """
     Perform a search using a single :class:`.Authority` instance.
 
@@ -50,6 +50,9 @@ def search(self, user, authority, params, result_id):
     result_id : int
         PK-identifier for :class:`goat.models.SearchResultSet`\.
     """
+
+    authority = Authority.objects.get(pk=authority_id)
+
     concepts = []
     if user is None:
         user = authority.added_by
