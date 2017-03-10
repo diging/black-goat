@@ -25,7 +25,7 @@ def orchestrate_search(self, user_id, authority_ids, params):
     results = SearchResultSet.objects.create(added_by=user,
                                              task_id=self.request.id,
                                              state=SearchResultSet.PENDING)
-    tasks = [search.s(user, auth.id, params, results.id)
+    tasks = [search.s(user.id, auth.id, params, results.id)
              for auth in authorities if auth.configuration and auth.accepts('search', *params.keys())]
     chord(tasks)(register_results.s())
     return results.id
