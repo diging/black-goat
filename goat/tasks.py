@@ -20,6 +20,7 @@ def orchestrate_search(self, user_id, authority_ids, params):
     Farm out search tasks (in a chord) to each of the :class:`.Authority`
     instances in ``authorities``.
     """
+
     user = User.objects.get(pk=user_id)
     authorities = Authority.objects.filter(pk__in=authority_ids)
     results = SearchResultSet.objects.create(added_by=user,
@@ -51,12 +52,11 @@ def search(self, user_id, authority_id, params, result_id):
     result_id : int
         PK-identifier for :class:`goat.models.SearchResultSet`\.
     """
+
     user = User.objects.get(pk=user_id)
     authority = Authority.objects.get(pk=authority_id)
 
     concepts = []
-    if user is None:
-        user = authority.added_by
 
     results = authority.search(params)
 

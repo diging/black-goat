@@ -9,7 +9,7 @@ from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.renderers import JSONRenderer
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import detail_route, list_route, api_view, permission_classes
 from rest_framework.permissions import BasePermission, IsAuthenticatedOrReadOnly, DjangoObjectPermissions, DjangoModelPermissions
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -24,6 +24,7 @@ from django.contrib.auth.decorators import login_required
 from celery.result import AsyncResult
 
 from itertools import groupby
+
 
 
 class GoatPermission(BasePermission):
@@ -51,6 +52,7 @@ def home(request):
     Just a goat.
     """
     context = RequestContext(request, {})
+    print request.user, request.auth
     return HttpResponse(loader.get_template('goat/base.html').render(context))
 
 
@@ -90,6 +92,8 @@ def retrieve(request):
     return JsonResponse(serialized)
 
 
+@api_view(['GET'])
+@permission_classes((permissions.IsAuthenticated,))
 def search(request):
     """
     Trigger a search.
@@ -100,6 +104,7 @@ def search(request):
 
     TODO: should be able to filter the authorities used in the search.
     """
+
     q = request.GET.get('q', None)
     if not q:
         return JsonResponse({'detail': 'No query provided.'}, status=400)
@@ -107,11 +112,9 @@ def search(request):
     params = {k: v[0] if isinstance(v, list) else v
               for k, v in dict(request.GET.copy()).iteritems()}
 
-    user = request.user if request.user.username != '' else None
-
     # We let the asynchronous task create the SearchResultSet, since it will
     #  spawn tasks that need to update the SearchResultSet upon completion.
-    result = tasks.orchestrate_search.delay(user.id, list(Authority.objects.all().values_list('id', flat=True)),
+    result = tasks.orchestrate_search.delay(request.user.id, list(Authority.objects.all().values_list('id', flat=True)),
                                             params)
 
     # We have to build this manually, since the SearchResultSet probably does
@@ -120,6 +123,8 @@ def search(request):
     return HttpResponseRedirect(relative_path)
 
 
+@api_view(['GET'])
+@permission_classes((permissions.IsAuthenticated,))
 def search_results(request, result_id):
     """
     Check the status of a search.
