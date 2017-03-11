@@ -169,3 +169,4 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 APPEND_SLASH = True    # Rewrite URLs that lack a slash.
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_BACKEND = 'redis://'
+CELERY_DEFAULT_QUEUE = 'goat'
