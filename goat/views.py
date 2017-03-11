@@ -52,7 +52,6 @@ def home(request):
     Just a goat.
     """
     context = RequestContext(request, {})
-    print request.user, request.auth
     return HttpResponse(loader.get_template('goat/base.html').render(context))
 
 
