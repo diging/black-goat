@@ -1,12 +1,13 @@
-amqp==2.1.4
+amqp==1.4.9
 anyjson==0.3.3
-billiard==3.5.0.2
-celery==3.1
+billiard==3.3.0.23
+black-goat-client==0.2.3
+celery==3.1.25
 dj-database-url==0.4.1
 dj-static==0.0.6
 Django==1.10.6
 django-braces==1.10.0
-django-celery==3.1.17
+django-celery==3.2.1
 django-cors-headers==2.0.2
 django-filter==0.15.3
 django-guardian==1.4.6
@@ -14,7 +15,7 @@ djangorestframework==3.6.2
 funcsigs==1.0.2
 gunicorn==19.6.0
 jsonpickle==0.9.3
-kombu==4.0.2
+kombu==3.0.37
 lxml==3.6.4
 mock==2.0.0
 oauthlib==1.0.3
@@ -23,7 +24,7 @@ psycopg2==2.6.2
 python-dateutil==1.5
 pytz==2016.10
 redis==2.10.5
-requests==2.11.1
+requests==2.13.0
 restable==0.1
 six==1.10.0
 static3==0.7.0
