@@ -72,12 +72,17 @@ def search(self, user_id, authority_id, params, result_id):
                 defaults = {
                     'added_by': user,
                     'authority': authority,
-                    'name': concept_type_result.name,
-                    'local_identifier': concept_type_result.local_identifier,
-                    'description': concept_type_result.description,
                     'authority': authority
                 }
+                if concept_type_result:
+                    defaults.update({
+                        'name': concept_type_result.name,
+                        'local_identifier': concept_type_result.local_identifier,
+                        'description': concept_type_result.description,
+
+                    })
                 concept_type = Concept.objects.create(**defaults)
+
 
         else:
             concept_type = None
