@@ -81,7 +81,7 @@ def search(self, user_id, authority_id, params, result_id):
                         'description': concept_type_result.description,
 
                     })
-                concept_type = Concept.objects.create(**defaults)
+                concept_type = Concept.objects.create(identifier=result.concept_type, **defaults)
 
 
         else:
