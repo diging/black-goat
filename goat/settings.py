@@ -170,3 +170,12 @@ APPEND_SLASH = True    # Rewrite URLs that lack a slash.
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_DEFAULT_QUEUE = 'goat'
+
+from kombu import Exchange, Queue
+CELERY_QUEUES = (
+    Queue(
+        'goat',
+        Exchange('goat'),
+        routing_key='goat'
+    ),
+)
