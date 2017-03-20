@@ -69,7 +69,7 @@ class AuthorityDetailSerializer(serializers.ModelSerializer):
         return value
 
 
-class ConceptTypeSerializer(serializer.ModelSerializer):
+class ConceptTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Concept
         fields = ('identifier', 'name', 'description', 'id')
