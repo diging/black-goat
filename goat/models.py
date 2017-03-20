@@ -35,6 +35,12 @@ class Authority(BasicAccessionMixin):
     builtin_identity_system = models.ForeignKey('IdentitySystem', **opt)
 
     @property
+    def get(self):
+        if not self.configuration:
+            raise AttributeError("Configuration unavailable for %s" % self.name)
+        return AuthorityManager(self.configuration).get
+
+    @property
     def search(self):
         if not self.configuration:
             raise AttributeError("Configuration unavailable for %s" % self.name)
