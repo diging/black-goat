@@ -69,9 +69,16 @@ class AuthorityDetailSerializer(serializers.ModelSerializer):
         return value
 
 
+class ConceptTypeSerializer(serializer.ModelSerializer):
+    class Meta:
+        model = Concept
+        fields = ('identifier', 'name', 'description', 'id')
+
+
 class ConceptSerializer(serializers.ModelSerializer):
     added_by = UserSerializer()
     authority = AuthorityLightSerializer()
+    concept_type = ConceptTypeSerializer()
 
     class Meta:
         model = Concept
