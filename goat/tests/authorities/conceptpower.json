@@ -2,14 +2,15 @@
     "name": "Conceptpower",
     "description": "Conceptpower authority service",
     "documentation": "http://diging.github.io/conceptpower",
-    "endpoint": "http://chps.asu.edu/conceptpower/rest",
+    "endpoint": "https://chps.asu.edu/conceptpower/rest",
     "methods": [
         {
             "name": "type",
             "method": "GET",
+            "path": "{endpoint}/Type",
             "parameters": [
                 {
-                    "accept": "id",
+                    "accept": "identifier",
                     "send": "id",
                     "required": true
                 }
@@ -46,7 +47,7 @@
             "parameters": [
                 {
                     "accept": "id",
-                    "send": "sendid",
+                    "send": "id",
                     "required": true
                 }
             ],
