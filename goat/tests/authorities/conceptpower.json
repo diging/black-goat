@@ -5,6 +5,41 @@
     "endpoint": "http://chps.asu.edu/conceptpower/rest",
     "methods": [
         {
+            "name": "type",
+            "method": "GET",
+            "parameters": [
+                {
+                    "accept": "id",
+                    "send": "id",
+                    "required": true
+                }
+            ],
+            "response": {
+                "type": "xml",
+                "path": "digitalHPS:type_entry",
+                "namespaces": [
+                    {
+                        "prefix": "digitalHPS",
+                        "namespace": "http://www.digitalhps.org/"
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "path": "digitalHPS:type"
+                    },
+                    {
+                        "name": "description",
+                        "path": "digitalHPS:description"
+                    },
+                    {
+                        "name": "identities",
+                        "path": "digitalHPS:matches|,"
+                    }
+                ]
+            }
+        },
+        {
             "name": "get",
             "method": "GET",
             "path": "{endpoint}/Concept",

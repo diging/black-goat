@@ -68,7 +68,7 @@ def search(self, user_id, authority_id, params, result_id):
                 concept_type = Concept.objects.get(identifier=result.concept_type)
             except Concept.DoesNotExist:
                 authority.search(params)
-                concept_type_result = authority.get(identifier=result.concept_type)
+                concept_type_result = authority.type(identifier=result.concept_type)
                 defaults = {
                     'added_by': user,
                     'authority': authority,
