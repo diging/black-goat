@@ -23,13 +23,13 @@ def orchestrate_search(self, user_id, authority_ids, params):
     print "orchestrate_search with params", params
     user = User.objects.get(pk=user_id)
     authorities = Authority.objects.filter(pk__in=authority_ids)
-    print "pre-filter", authorities
-    authorities = filter(lambda a: a.configuration is not None, authorities)   #and a.accepts('search', *params.keys())
-    print "post-filter", authorities
+
+    authorities = filter(lambda a: a.configuration is not None, authorities)
+
     results = SearchResultSet.objects.create(added_by=user,
                                              task_id=self.request.id,
                                              state=SearchResultSet.PENDING)
-    tasks = [search.s(user.id, auth.id, params, results.id) for auth in authorities ]  #if auth.configuration and auth.accepts('search', *params.keys())
+    tasks = [search.s(user.id, auth.id, params, results.id) for auth in authorities]
     chord(tasks)(register_results.s())
     return results.id
 
@@ -60,9 +60,7 @@ def search(self, user_id, authority_id, params, result_id):
 
     concepts = []
 
-    print ':::', authority.name,
     results = authority.search(params)
-    print results
 
     for result in results:
         identities = result.extra.pop('identities', None)
