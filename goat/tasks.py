@@ -24,7 +24,7 @@ def orchestrate_search(self, user_id, authority_ids, params):
     user = User.objects.get(pk=user_id)
     authorities = Authority.objects.filter(pk__in=authority_ids)
     print "pre-filter", authorities
-    authorities = filter(lambda a: a.configuration and a.accepts('search', *params.keys()), authorities)
+    authorities = filter(lambda a: a.configuration is not None, authorities)   #and a.accepts('search', *params.keys())
     print "post-filter", authorities
     results = SearchResultSet.objects.create(added_by=user,
                                              task_id=self.request.id,
