@@ -67,7 +67,11 @@ def search(self, user_id, authority_id, params, result_id):
             try:
                 concept_type = Concept.objects.get(identifier=result.concept_type)
             except Concept.DoesNotExist:
-                concept_type_result = authority.manager.type(identifier=result.concept_type)
+                try:
+                    concept_type_result = authority.manager.type(identifier=result.concept_type)
+                except:
+                    concept_type_result = None
+
                 defaults = {
                     'added_by': user,
                     'authority': authority,
@@ -79,6 +83,11 @@ def search(self, user_id, authority_id, params, result_id):
                         'local_identifier': result.concept_type,
                         'description': concept_type_result['description'],
 
+                    })
+                else:
+                    defaults.update({
+                        'name': result.concept_type,
+                        'local_identifier': result.concept_type,
                     })
                 concept_type = Concept.objects.create(identifier=result.concept_type, **defaults)
 
