@@ -59,11 +59,12 @@ def search(self, user_id, authority_id, params, result_id):
     concepts = []
 
     results = authority.search(params)
+    print authority.name, results
 
     for result in results:
         identities = result.extra.pop('identities', None)
 
-        if result.concept_type:
+        if getattr(result, 'concept_type', None):
             try:
                 concept_type = Concept.objects.get(identifier=result.concept_type)
             except Concept.DoesNotExist:
@@ -90,8 +91,6 @@ def search(self, user_id, authority_id, params, result_id):
                         'local_identifier': result.concept_type,
                     })
                 concept_type = Concept.objects.create(identifier=result.concept_type, **defaults)
-
-
         else:
             concept_type = None
 
