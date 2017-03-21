@@ -59,7 +59,7 @@ def search(self, user_id, authority_id, params, result_id):
     concepts = []
 
     results = authority.search(params)
-    print authority.name, results
+    print ':::', authority.name, results
 
     for result in results:
         identities = result.extra.pop('identities', None)
