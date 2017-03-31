@@ -57,14 +57,11 @@ def search(self, user_id, authority_id, params, result_id):
 
     user = User.objects.get(pk=user_id)
     authority = Authority.objects.get(pk=authority_id)
-
     concepts = []
-
     results = authority.search(params)
 
     for result in results:
         identities = result.extra.pop('identities', None)
-
         if getattr(result, 'concept_type', None):
             try:
                 concept_type = Concept.objects.get(identifier=result.concept_type)

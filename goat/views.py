@@ -147,10 +147,14 @@ def search_results(request, result_id):
         }
         _status = 202   # Accepted.
 
+    limit = request.GET.get('limit')
+
     # If the search was successful, send the client to the concept list view
     #  with the appropriate search filter parameter.
     elif result.state == SearchResultSet.SUCCESS:
         redirect_target = reverse('concept-list') + u'?search=' + result.task_id
+        if limit:
+            redirect_target += '&limit=' + str(limit)
         return HttpResponseRedirect(redirect_target)
     else:    # TODO: Probably we should say something more informative here.
         _data, _status = {'detail': result.state}, 200
