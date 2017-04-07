@@ -12,6 +12,7 @@ app.conf.update(BROKER_URL=os.environ.get('REDISTOGO_URL', 'redis://'),
 from celery import chord
 from django.contrib.auth.models import User
 from goat.models import *
+import urllib
 
 
 @app.task(name='goat.tasks.orchestrate_search', bind=True)
@@ -20,7 +21,9 @@ def orchestrate_search(self, user_id, authority_ids, params):
     Farm out search tasks (in a chord) to each of the :class:`.Authority`
     instances in ``authorities``.
     """
-    print "orchestrate_search with params", params
+    # We keep track of the parameters so that we don't end up running the same
+    #  search several times in a row.
+    params_serialized = urllib.urlencode(params)
     user = User.objects.get(pk=user_id)
     authorities = Authority.objects.filter(pk__in=authority_ids)
 
@@ -28,7 +31,8 @@ def orchestrate_search(self, user_id, authority_ids, params):
 
     results = SearchResultSet.objects.create(added_by=user,
                                              task_id=self.request.id,
-                                             state=SearchResultSet.PENDING)
+                                             state=SearchResultSet.PENDING,
+                                             parameters=params_serialized)
     tasks = [search.s(user.id, auth.id, params, results.id) for auth in authorities]
     chord(tasks)(register_results.s())
     return results.id

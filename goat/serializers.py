@@ -75,28 +75,6 @@ class ConceptTypeSerializer(serializers.ModelSerializer):
         fields = ('identifier', 'name', 'description', 'id')
 
 
-class ConceptSerializer(serializers.ModelSerializer):
-    added_by = UserSerializer()
-    authority = AuthorityLightSerializer()
-    concept_type = ConceptTypeSerializer()
-
-    class Meta:
-        model = Concept
-        exclude = ('data', )
-
-
-class ConceptLightSerializer(serializers.ModelSerializer):
-    # added_by = UserSerializer()
-    # authority = AuthorityLightSerializer()
-    authority = serializers.PrimaryKeyRelatedField(queryset=Authority.objects.all(), allow_null=True)
-    concept_type = serializers.PrimaryKeyRelatedField(queryset=Concept.objects.all(), allow_null=True)
-
-
-    class Meta:
-        model = Concept
-        exclude = ('data', )
-
-
 class ConceptRepresentationMixin(serializers.ModelSerializer):
     concepts = serializers.PrimaryKeyRelatedField(queryset=Concept.objects.all(), many=True)
 
@@ -150,3 +128,26 @@ class IdentitySerializer(ConceptRepresentationMixin, serializers.ModelSerializer
     class Meta:
         model = Identity
         fields = '__all__'
+
+
+class ConceptSerializer(serializers.ModelSerializer):
+    added_by = UserSerializer()
+    authority = AuthorityLightSerializer()
+    concept_type = ConceptTypeSerializer()
+    identities = IdentitySerializer(many=True)
+
+    class Meta:
+        model = Concept
+        exclude = ('data', )
+
+
+class ConceptLightSerializer(serializers.ModelSerializer):
+    # added_by = UserSerializer()
+    # authority = AuthorityLightSerializer()
+    authority = serializers.PrimaryKeyRelatedField(queryset=Authority.objects.all(), allow_null=True)
+    concept_type = serializers.PrimaryKeyRelatedField(queryset=Concept.objects.all(), allow_null=True)
+
+
+    class Meta:
+        model = Concept
+        exclude = ('data', )

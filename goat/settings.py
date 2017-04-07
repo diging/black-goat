@@ -164,7 +164,7 @@ CELERYD_TASK_TIME_LIMIT = 300000
 BROKER_POOL_LIMIT = 0
 broker_pool_limit = 0    # Celery 4+
 
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 APPEND_SLASH = True    # Rewrite URLs that lack a slash.
 CELERY_TASK_SERIALIZER = 'json'

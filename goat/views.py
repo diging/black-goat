@@ -20,11 +20,57 @@ from django.http import (JsonResponse, HttpResponse, HttpResponseBadRequest,
                          HttpResponseRedirect, Http404, HttpResponseForbidden)
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from datetime import timedelta
 
 from celery.result import AsyncResult
 
 from itertools import groupby
+import urllib
 
+
+class IdentityIterator:
+    """
+    Wrapper for :class:`.QuerySet` that enforces identity-uniqueness for all
+    or a set of :class:`.IdentitySystem`\s.
+    """
+    def __init__(self, queryset, identity_systems=None):
+        self.queryset = queryset
+        self.identity_systems = identity_systems
+        print "identity_systems", identity_systems
+
+    def __iter__(self):
+        self.queryset = self.queryset.__iter__()
+        return self
+
+    def __len__(self):
+        return self.queryset.count()
+
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            self.queryset = self.queryset[key]
+        return self
+
+    def next(self):
+        instance = self.queryset.next()
+        if instance is None:
+            raise StopIteration()
+
+        ident_qs = instance.identities
+        if ident_qs.count() == 0:
+            return instance
+
+        if self.identity_systems:
+            ident_qs = ident_qs.filter(part_of__id__in=self.identity_systems.values_list('id', flat=True))
+
+        identical_ids = ident_qs.values_list('id', flat=True)
+        lead_concept = Concept.objects.filter(identities__in=identical_ids).distinct('id').order_by('id').first()
+        if lead_concept is None:
+            return instance
+
+        if instance.id != lead_concept.id:
+            return self.next()
+        return instance
 
 
 class GoatPermission(BasePermission):
@@ -108,8 +154,23 @@ def search(request):
     if not q:
         return JsonResponse({'detail': 'No query provided.'}, status=400)
 
+    # The client can coerce a new search even if we have results for an
+    #  identical query.
+    force = request.GET.pop('force', False)
+
     params = {k: v[0] if isinstance(v, list) else v
               for k, v in dict(request.GET.copy()).iteritems()}
+
+    if not force:
+        # Look for an identical search in the last 24 hours,
+        #  and use those results instead of re-running the entire search.
+        params_serialized = urllib.urlencode(params)
+        recent_search = SearchResultSet.objects.filter(parameters=params_serialized,
+                                                       created__gte=timezone.now()-timedelta(hours=24)).first()
+        if recent_search is not None:
+            relative_path = reverse('search') + recent_search.task_id + u'/'
+            return HttpResponseRedirect(relative_path)
+
 
     # We let the asynchronous task create the SearchResultSet, since it will
     #  spawn tasks that need to update the SearchResultSet upon completion.
@@ -200,6 +261,22 @@ class ConceptViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
             return ConceptLightSerializer
         return super(ConceptViewSet, self).get_serializer_class()
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        identitysystem_ids = request.GET.getlist('identitysystem')
+        if identitysystem_ids:
+            systems = IdentitySystem.objects.filter(pk__in=identitysystem_ids)
+            iterator = IdentityIterator(queryset, systems)
+        else:
+            iterator = IdentityIterator(queryset)
+        page = self.paginate_queryset(iterator)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class AuthorityViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
     permission_classes = [GoatPermission]
@@ -234,8 +311,6 @@ class AuthorityViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-
 
 
 class IdentityViewSet(viewsets.ModelViewSet):

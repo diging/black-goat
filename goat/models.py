@@ -159,3 +159,5 @@ class SearchResultSet(models.Model):
     SUCCESS = 'SUCCESS'
     PENDING = 'PENDING'
     state = models.CharField(max_length=255, **opt)
+
+    parameters = models.TextField(blank=True, null=True)
