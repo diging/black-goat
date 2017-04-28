@@ -154,10 +154,9 @@ def search(request):
     if not q:
         return JsonResponse({'detail': 'No query provided.'}, status=400)
 
-
     params = {k: v[0] if isinstance(v, list) else v
               for k, v in dict(request.GET.copy()).iteritems()}
-              
+
     # The client can coerce a new search even if we have results for an
     #  identical query.
     force = params.pop('force', False)
