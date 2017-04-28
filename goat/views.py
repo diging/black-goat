@@ -159,9 +159,9 @@ def search(request):
 
     # The client can coerce a new search even if we have results for an
     #  identical query.
-    force = params.pop('force', None)
+    force = params.pop('force', None) == 'force'
 
-    if force is not None:
+    if force:
         # Look for an identical search in the last 24 hours,
         #  and use those results instead of re-running the entire search.
         params_serialized = urllib.urlencode(params)
