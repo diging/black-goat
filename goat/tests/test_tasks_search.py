@@ -28,6 +28,7 @@ class TestTaskSearch(unittest.TestCase):
         class MockResponse(object):
             def __init__(self, content):
                 self.content = content
+                self.status_code = 200
 
         with open('goat/tests/mock_responses/cp_search.xml', 'r') as f:
             mock_get.return_value = MockResponse(f.read())
