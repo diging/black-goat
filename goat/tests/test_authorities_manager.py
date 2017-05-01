@@ -43,6 +43,7 @@ class TestAuthorityManager(unittest.TestCase):
         class MockResponse(object):
             def __init__(self, content):
                 self.content = content
+                self.status_code = 200
 
         mock_get.return_value = MockResponse("""
             <conceptpowerReply xmlns:digitalHPS="http://www.digitalhps.org/">
@@ -96,6 +97,7 @@ class TestAuthorityManager(unittest.TestCase):
         class MockResponse(object):
             def __init__(self, content):
                 self.content = content
+                self.status_code = 200
 
         with open('goat/tests/mock_responses/cp_search.xml', 'r') as f:
             mock_get.return_value = MockResponse(f.read())
@@ -117,6 +119,7 @@ class TestAuthorityManager(unittest.TestCase):
         class MockResponse(object):
             def __init__(self, content):
                 self.content = content
+                self.status_code = 200
 
         with open('goat/tests/mock_responses/cp_search.xml', 'r') as f:
             mock_get.return_value = MockResponse(f.read())
@@ -169,6 +172,7 @@ class TestAuthorityManagerVIAF(unittest.TestCase):
         class MockResponse(object):
             def __init__(self, content):
                 self.content = content
+                self.status_code = 200
 
         with open('goat/tests/mock_responses/viaf_get.xml', 'rb') as f:
             mock_get.return_value = MockResponse(f.read())
@@ -188,6 +192,7 @@ class TestAuthorityManagerVIAF(unittest.TestCase):
         class MockResponse(object):
             def __init__(self, content):
                 self.content = content
+                self.status_code = 200
 
         with open('goat/tests/mock_responses/viaf_search.json', 'r') as f:
             mock_get.return_value = MockResponse(f.read())
@@ -210,6 +215,7 @@ class TestAuthorityManagerVIAF(unittest.TestCase):
         class MockResponse(object):
             def __init__(self, content):
                 self.content = content
+                self.status_code = 200
 
         with open('goat/tests/mock_responses/viaf_search.json', 'r') as f:
             mock_get.return_value = MockResponse(f.read())
