@@ -92,6 +92,8 @@ def search(self, user_id, authority_id, params, result_id):
                         'name': result.concept_type,
                         'local_identifier': result.concept_type,
                     })
+                if defaults.get('name') is None:
+                    defaults['name'] = result.concept_type
                 concept_type = Concept.objects.create(identifier=result.concept_type, **defaults)
         else:
             concept_type = None
