@@ -80,7 +80,7 @@ class TestAuthorityManager(unittest.TestCase):
                 </digitalHPS:conceptEntry>
             </conceptpowerReply>
             """)
-        expected_endpoint = 'http://chps.asu.edu/conceptpower/rest/Concept'
+        expected_endpoint = 'https://chps.asu.edu/conceptpower/rest/Concept'
         manager = AuthorityManager(configuration)
         func = manager._generic('get')
 
@@ -101,7 +101,7 @@ class TestAuthorityManager(unittest.TestCase):
 
         with open('goat/tests/mock_responses/cp_search.xml', 'r') as f:
             mock_get.return_value = MockResponse(f.read())
-        path = 'http://chps.asu.edu/conceptpower/rest/ConceptLookup/test/noun'
+        path = 'https://chps.asu.edu/conceptpower/rest/ConceptSearch'
         manager = AuthorityManager(configuration)
         func = manager._generic('search')
 
@@ -123,7 +123,7 @@ class TestAuthorityManager(unittest.TestCase):
 
         with open('goat/tests/mock_responses/cp_search.xml', 'r') as f:
             mock_get.return_value = MockResponse(f.read())
-        path = 'http://chps.asu.edu/conceptpower/rest/ConceptLookup/test/noun'
+        path = 'https://chps.asu.edu/conceptpower/rest/ConceptLookup/test/noun'
         manager = AuthorityManager(configuration)
         results = manager.search({'q': 'test'})
 

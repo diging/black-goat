@@ -83,11 +83,11 @@
         {
             "name": "search",
             "method": "GET",
-            "path": "{endpoint}/ConceptLookup/{q}/{pos}",
+            "path": "{endpoint}/ConceptSearch",
             "parameters": [
                 {
                     "accept": "q",
-                    "send": "q",
+                    "send": "word",
                     "required": true
                 },
                 {
@@ -95,6 +95,12 @@
                     "send": "pos",
                     "required": false,
                     "default": "noun"
+                },
+                {
+                    "accept": "limit",
+                    "send": "number_of_records_per_page",
+                    "required": false,
+                    "default": "100"
                 }
             ],
             "response": {
