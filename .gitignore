@@ -52,6 +52,9 @@ coverage.xml
 # Django stuff:
 *.log
 local_settings.py
+staticfiles/
+venv/
+goat.komodoproject
 
 # Flask stuff:
 instance/

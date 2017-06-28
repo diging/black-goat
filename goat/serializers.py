@@ -108,7 +108,7 @@ class ConceptRepresentationMixin(serializers.ModelSerializer):
         """
         concepts = obj.concepts.values_list('identifier', flat=True)
         data = super(ConceptRepresentationMixin, self).to_representation(obj)
-        data['concepts'] = concepts
+        data['concepts'] = list(concepts)
         return data
 
 
