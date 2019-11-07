@@ -8,8 +8,8 @@ import json
 
 class ConceptSearchResult(object):
     def __init__(self, name='', identifier='', **extra):
-        assert isinstance(name, unicode)
-        assert isinstance(identifier, unicode)
+        assert isinstance(name, str)
+        assert isinstance(identifier, str)
         self.name = name
         self.identifier = identifier
         self.extra = extra

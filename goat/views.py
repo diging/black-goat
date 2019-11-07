@@ -1,5 +1,6 @@
 from __future__ import absolute_import
-
+from __future__ import print_function
+from functools import reduce 
 
 from goat.models import *
 from goat.serializers import *
@@ -9,7 +10,7 @@ from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.renderers import JSONRenderer
-from rest_framework.decorators import detail_route, list_route, api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import BasePermission, IsAuthenticatedOrReadOnly, DjangoObjectPermissions, DjangoModelPermissions
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -21,15 +22,16 @@ from django.http import (JsonResponse, HttpResponse, HttpResponseBadRequest,
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.core.cache import cache
 from datetime import timedelta
-
-from celery.result import AsyncResult
 
 from itertools import groupby
 import urllib
+import urllib.request, urllib.parse, urllib.error
+from builtins import str, object, next
 
 
-class IdentityIterator:
+class IdentityIterator(object):
     """
     Wrapper for :class:`.QuerySet` that enforces identity-uniqueness for all
     or a set of :class:`.IdentitySystem`\s.
@@ -37,22 +39,21 @@ class IdentityIterator:
     def __init__(self, queryset, identity_systems=None):
         self.queryset = queryset
         self.identity_systems = identity_systems
-        print "identity_systems", identity_systems
 
     def __iter__(self):
         self.queryset = self.queryset.__iter__()
         return self
 
     def __len__(self):
-        return self.queryset.count()
+        return len(self.queryset)
 
     def __getitem__(self, key):
         if isinstance(key, slice):
             self.queryset = self.queryset[key]
         return self
 
-    def next(self):
-        instance = self.queryset.next()
+    def __next__(self):
+        instance = next(self.queryset)
         if instance is None:
             raise StopIteration()
 
@@ -69,7 +70,7 @@ class IdentityIterator:
             return instance
 
         if instance.id != lead_concept.id:
-            return self.next()
+            return next(self)
         return instance
 
 
@@ -97,8 +98,7 @@ def home(request):
     """
     Just a goat.
     """
-    context = RequestContext(request, {})
-    return HttpResponse(loader.get_template('goat/base.html').render(context))
+    return HttpResponse(loader.get_template('goat/base.html').render({}))
 
 
 def identical(request):
@@ -154,32 +154,26 @@ def search(request):
         return JsonResponse({'detail': 'No query provided.'}, status=400)
 
     params = {k: v[0] if isinstance(v, list) else v
-              for k, v in dict(request.GET.copy()).iteritems()}
+              for k, v in dict(request.GET.copy()).items()}
 
     # The client can coerce a new search even if we have results for an
     #  identical query.
     force = params.pop('force', None) == 'force'
-    
-    if force:
-        # Look for an identical search in the last 24 hours,
-        #  and use those results instead of re-running the entire search.
-        params_serialized = urllib.urlencode(params)
-        recent_search = SearchResultSet.objects.filter(parameters=params_serialized,
-                                                       created__gte=timezone.now()-timedelta(hours=24)).first()
-        if recent_search is not None:
-            relative_path = reverse('search') + recent_search.task_id + u'/'
-            return HttpResponseRedirect(relative_path)
 
+    if not force and cache.get(q):
+        return Response(cache.get(q))
 
     # We let the asynchronous task create the SearchResultSet, since it will
     #  spawn tasks that need to update the SearchResultSet upon completion.
-    result = tasks.orchestrate_search.delay(request.user.id, list(Authority.objects.all().values_list('id', flat=True)),
+    result = tasks.orchestrate_search(request.user.id, list(Authority.objects.all().values_list('id', flat=True)),
                                             params)
 
     # We have to build this manually, since the SearchResultSet probably does
     #  not yet exist.
-    relative_path = reverse('search') + result.id + u'/'
-    return HttpResponseRedirect(relative_path)
+    result = reduce(lambda x,y: x+y, result) # Flatten
+    result = ConceptSerializer(result, many=True).data
+    cache.set(q, result, 24 * 60 * 60) # Set 24hrs expiry
+    return Response(result)
 
 
 @api_view(['GET'])
@@ -234,10 +228,10 @@ class CreateWithUserInfoMixin(object):
         data['added_by'] = request.user.id
         data['authority'] = data.get('authority', None)
         data['concept_type'] = data.get('concept_type', None)
-        print data
+        print(data)
 
         serializer = self.get_serializer(data=data)
-        print serializer, type(serializer)
+        print(serializer, type(serializer))
 
         if not serializer.is_valid(raise_exception=False):
             return Response({'detail': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -297,8 +291,8 @@ class AuthorityViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
         """
         Populates the ``added_by`` field with the current user.
         """
-        print '::: create'
-        print request.user
+        print('::: create')
+        print(request.user)
         data = request.data.copy()
         added_by = request.user
         data['added_by'] = added_by.id
@@ -335,7 +329,7 @@ class IdentityViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=data)
 
         serializer.is_valid(raise_exception=True)
-        print serializer.errors
+        print(serializer.errors)
         identity_system = serializer.validated_data.get('part_of')
         if not added_by.has_perm('change_identitysystem', identity_system):
             _data = {
@@ -363,8 +357,8 @@ class IdentitySystemViewSet(CreateWithUserInfoMixin, viewsets.ModelViewSet):
         """
         Populates the ``added_by`` field with the current user.
         """
-        print '::: create'
-        print request.user
+        print('::: create')
+        print(request.user)
         data = request.data.copy()
         added_by = request.user
         data['added_by'] = added_by.id

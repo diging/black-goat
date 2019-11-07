@@ -16,7 +16,7 @@ class BasicAccessionMixin(models.Model):
     class Meta:
         abstract = True
 
-    added_by = models.ForeignKey(User)
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE)
     added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -32,7 +32,7 @@ class Authority(BasicAccessionMixin):
     configuration = models.TextField(**opt)
     """JSON-serialized configuration (if available) for this authority."""
 
-    builtin_identity_system = models.ForeignKey('IdentitySystem', **opt)
+    builtin_identity_system = models.ForeignKey('IdentitySystem', on_delete=models.CASCADE, **opt)
 
     @property
     def manager(self):
@@ -51,7 +51,7 @@ class Authority(BasicAccessionMixin):
     def accepts(self, method, *params):
         return self.manager.accepts(method, *params)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -63,7 +63,7 @@ class Concept(BasicAccessionMixin):
     of Congress or VIAF.
     """
 
-    authority = models.ForeignKey('Authority', related_name='concepts', **opt)
+    authority = models.ForeignKey('Authority', related_name='concepts', on_delete=models.CASCADE, **opt)
     """The authority system to which this concept belongs."""
 
     name = models.CharField(max_length=255)
@@ -85,7 +85,7 @@ class Concept(BasicAccessionMixin):
     data = models.TextField(blank=True, null=True)
     """JSON-pickled data about this concept from the authority service."""
 
-    concept_type = models.ForeignKey('Concept', related_name='instances', **opt)
+    concept_type = models.ForeignKey('Concept', related_name='instances', on_delete=models.CASCADE, **opt)
     """
     Some authority systems may have type ontologies. Types should be treated as
     concepts.
@@ -115,7 +115,7 @@ class IdentitySystem(BasicAccessionMixin):
 
     name = models.CharField(max_length=255)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -127,7 +127,7 @@ class Identity(BasicAccessionMixin):
     name = models.CharField(max_length=255, **opt)
     """Can be used to provide an appellation for the cluster of concepts."""
 
-    part_of = models.ForeignKey('IdentitySystem', related_name='identities')
+    part_of = models.ForeignKey('IdentitySystem', on_delete=models.CASCADE, related_name='identities')
     """The system to which this identity belongs."""
 
     confidence = models.FloatField(default=1.0, blank=True, null=True)
@@ -136,12 +136,12 @@ class Identity(BasicAccessionMixin):
     concepts = models.ManyToManyField('Concept', related_name='identities')
     """The concepts asserted to be identical."""
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
 class SearchResultSet(models.Model):
-    added_by = models.ForeignKey(User, **opt)
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE, **opt)
     added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

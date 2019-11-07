@@ -6,7 +6,7 @@ from goat.models import *
 
 
 class ConceptFilter(django_filters.FilterSet):
-    name = django_filters.MethodFilter(action='lookup_name_in_parts')
+    name = django_filters.CharFilter(method='lookup_name_in_parts')
     search = django_filters.CharFilter('search_sets__task_id')
     concept_type = django_filters.ModelChoiceFilter(queryset=Concept.objects.filter(instances__isnull=False))
 

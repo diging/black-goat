@@ -19,9 +19,11 @@ class ConceptAdmin(GuardedModelAdmin):
 class AuthorityAdmin(GuardedModelAdmin):
     pass
 
-
+class SearchResultAdmin(GuardedModelAdmin):
+    pass
 
 admin.site.register(IdentitySystem, IdentitySystemAdmin)
 admin.site.register(Identity, IdentityAdmin)
 admin.site.register(Concept, ConceptAdmin)
 admin.site.register(Authority, AuthorityAdmin)
+admin.site.register(SearchResultSet, SearchResultAdmin)

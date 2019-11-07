@@ -1,45 +1,30 @@
 from __future__ import absolute_import
 
 import os
-from django.conf import settings
-from celery import Celery
-app = Celery('goat')
-app.config_from_object('django.conf:settings')
-app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
-app.conf.update(BROKER_URL=os.environ.get('REDISTOGO_URL', 'redis://'),
-                CELERY_RESULT_BACKEND=os.environ.get('REDISTOGO_URL', 'redis://'))
-
-from celery import chord
-from django.contrib.auth.models import User
-from goat.models import *
 import urllib
+from django.conf import settings
+from django.contrib.auth.models import User
+
+from goat.models import *
 
 
-@app.task(name='goat.tasks.orchestrate_search', bind=True)
-def orchestrate_search(self, user_id, authority_ids, params):
+def orchestrate_search(user_id, authority_ids, params):
     """
     Farm out search tasks (in a chord) to each of the :class:`.Authority`
     instances in ``authorities``.
     """
     # We keep track of the parameters so that we don't end up running the same
     #  search several times in a row.
-    params_serialized = urllib.urlencode(params)
+    params_serialized = urllib.parse.urlencode(params)
     user = User.objects.get(pk=user_id)
     authorities = Authority.objects.filter(pk__in=authority_ids)
 
     authorities = filter(lambda a: a.configuration is not None, authorities)
-
-    results = SearchResultSet.objects.create(added_by=user,
-                                             task_id=self.request.id,
-                                             state=SearchResultSet.PENDING,
-                                             parameters=params_serialized)
-    tasks = [search.s(user.id, auth.id, params, results.id) for auth in authorities]
-    chord(tasks)(register_results.s())
-    return results.id
+    result = [search(user.id, auth.id, params) for auth in authorities]
+    return result
 
 
-@app.task(name='goat.tasks.search', bind=True)
-def search(self, user_id, authority_id, params, result_id):
+def search(user_id, authority_id, params):
     """
     Perform a search using a single :class:`.Authority` instance.
 
@@ -127,29 +112,5 @@ def search(self, user_id, authority_id, params, result_id):
             )
             identity.concepts.add(concept, *alt_concepts)
 
-        concepts.append(concept.id)
-    return concepts, result_id
-
-
-@app.task(name='goat.tasks.register_results', bind=True)
-def register_results(self, results):
-    """
-    Callback for :func:`.search`\. Updates the :class:`.SearchResultSet` with
-    :class:`.Concept`\s, and flags it as successful.
-
-    Parameters
-    ----------
-    results : list
-        Each item should be a return value (tuple) from :func:`.search`\.
-    """
-    print '::register_results::', results
-    if not results:
-        return
-
-    result_set = None
-    for concepts, result_id in results:
-        if not result_set:
-            result_set = SearchResultSet.objects.get(pk=result_id)
-        result_set.results.add(*Concept.objects.filter(pk__in=concepts))
-    result_set.state = SearchResultSet.SUCCESS
-    result_set.save()
+        concepts.append(concept)
+    return concepts

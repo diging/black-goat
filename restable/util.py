@@ -1,10 +1,17 @@
 """
-Helper functions for parsing authority descriptions.
+Helper functions for parsing REST responses.
 """
 
 import re, requests, json, jsonpickle
 import lxml.etree as ET
 from pprint import pprint
+
+
+class ResultList(list):
+    def __init__(self, *args, **kwargs):
+        super(ResultList, self).__init__(*args)
+        self.previous_page = kwargs.get('previous_page')
+        self.next_page = kwargs.get('next_page')
 
 
 class JSONData(dict):
@@ -84,10 +91,15 @@ def get_recursive_pathfinder(nsmap={}, method='find', mult_method='findall'):
         this_tag, multiple = is_multiple(tags.pop())
         base = _get(elem, tags)
 
+        if not base:
+            return [] if multiple else None
+
         if type(base) is list:
             _apply = lambda b, t, meth: [getattr(c, meth)(t, nsmap) for c in b]
         else:
             _apply = lambda b, t, meth: getattr(b, meth)(t, nsmap)
+
+
         if multiple:
             return _apply(base, this_tag, mult_method)
         return _apply(base, this_tag, method)
@@ -282,7 +294,9 @@ def generate_request(config, glob={}):
                   for param in config.get("parameters", [])}
     required = {param['accept'] for param in config.get("parameters", [])
                 if param.get('required', False)}
-    defaults = {param['accept']: param['default'] for param in config.get("parameters", []) if 'default' in param}
+    defaults = {param['accept']: param['default']
+                for param in config.get("parameters", [])
+                if 'default' in param}
 
     format_keys = re.findall(r'\{([^\}]+)\}', path_partial)
     fmt = {k: v for k, v in glob.items() if k in format_keys}
@@ -309,7 +323,7 @@ def generate_request(config, glob={}):
                 raise TypeError('expected parameter %s' % param)
 
         # Relabel accepts -> send parameter names.
-        params = {parameters.get(k):v for k, v in params.items()
+        params = {parameters.get(k): v for k, v in params.items()
                   if k in parameters}
 
         extra = {key: params.pop(key, defaults.pop(key, ''))
@@ -322,7 +336,45 @@ def generate_request(config, glob={}):
         elif method == 'POST':
             request_method = requests.post
             payload = {'data': params, 'headers': headers}
-        return request_method(_get_path(extra), **payload).content
+
+        target = _get_path(extra)
+        try:
+            response = request_method(target, **payload)
+        except Exception as E:
+            print('request to %s failed with %s' % (target, str(payload)))
+            raise E
+        if response.status_code >= 400:
+            print('request to %s failed' % response.url)
+            raise IOError(response.content)
+        return response.content
+    return _call
+
+
+def generate_simple_request(path, method):
+    def _call(**params):
+        """
+        Perform the configured request.
+
+        Parameters
+        ----------
+        params : kwargs
+
+        Returns
+        -------
+
+        """
+        headers = params.pop('headers', {})
+
+        if method == 'GET':
+            request_method = requests.get
+            payload = {'params': params, 'headers': headers}
+        elif method == 'POST':
+            request_method = requests.post
+            payload = {'data': params, 'headers': headers}
+        response = request_method(path, **params)
+        if response.status_code >= 400:
+            raise IOError(response.content)
+        return response.content
     return _call
 
 
@@ -352,7 +404,16 @@ def parse_result(config, data, path_parser=parse_xml_path, glob={}, nsmap={}):
     else:
         base_elems = [data]
 
-    data = []
+    data = ResultList()
+
+    # Pagination.
+    pagination = config.get('pagination')
+    if pagination:
+        if "next" in pagination:
+            data.next_page = generate_simple_request(path_parser(pagination.get("next").get('path'), nsmap)(data), 'GET')
+        if "previous" in pagination:
+            data.previous_page = generate_simple_request(path_parser(pagination.get("previous").get('path'), nsmap)(data), 'GET')
+
     base_elems = [base_elems] if not type(base_elems) is list else base_elems
     for base_elem in base_elems:
         # Serialized raw data is preserved.
@@ -361,7 +422,13 @@ def parse_result(config, data, path_parser=parse_xml_path, glob={}, nsmap={}):
         # Each parameter is parsed separately.
         for parameter in config.get('parameters'):
             name = parameter.get('name')
+            ctype = parameter.get('type')
+
             value = path_parser(parameter.get('path'), nsmap)(base_elem)
+            if ctype == 'object':
+                value = parse_result(parameter.get('config'), value,
+                                     path_parser=path_parser, glob=glob,
+                                     nsmap=nsmap)
 
             # Templated parameters use response data and globals to generate
             #  values (e.g. URI from ID).

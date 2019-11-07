@@ -18,6 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'nope')
 DEBUG = eval(os.environ.get('DEBUG', 'False'))
+DEBUG = True
 ALLOWED_HOSTS = ['*']
 DEVELOP = eval(os.environ.get('DEVELOP', 'False'))
 TEST = eval(os.environ.get('TEST', 'False'))
@@ -70,17 +71,16 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -119,6 +119,7 @@ else:
         'default': dj_database_url.config()
     }
     DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+    DATABASES['default']['NAME'] = 'goat_db'
 
 
 
