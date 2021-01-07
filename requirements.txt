@@ -16,7 +16,7 @@ funcsigs==1.0.2
 gunicorn==19.6.0
 jsonpickle==0.9.3
 kombu==3.0.37
-lxml==3.6.4
+lxml==4.6.2
 mock==2.0.0
 oauthlib==1.0.3
 pbr==1.10.0
