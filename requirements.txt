@@ -11,7 +11,7 @@ django-celery==3.2.1
 django-cors-headers==2.0.2
 django-filter==0.15.3
 django-guardian==1.4.6
-djangorestframework==3.6.2
+djangorestframework==3.11.2
 funcsigs==1.0.2
 gunicorn==19.6.0
 jsonpickle==0.9.3
